@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class TendersFragmentPageAdapter extends FragmentPagerAdapter {
 
-    final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "Все", "Мои", "Готовые" };
+    private final int PAGE_COUNT = 3;
+    private String tabTitles[] = new String[] { "Все", "Задания", "Готовые"};
 
     public TendersFragmentPageAdapter(FragmentManager fm) {
         super(fm);

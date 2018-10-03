@@ -29,8 +29,10 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        TextView textView = viewHolder.textView;
-        textView.setText(tenderArrayList.get(i).getText());
+        TextView purchaseTextView = viewHolder.purchaseTextView;
+        TextView orgNameTextView = viewHolder.orgNameTextView;
+        purchaseTextView.setText(tenderArrayList.get(i).getPurchase());
+        orgNameTextView.setText(tenderArrayList.get(i).getOrgName());
     }
 
 
@@ -39,18 +41,20 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
         return tenderArrayList.size();
     }
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView textView;
+        TextView purchaseTextView;
+        TextView orgNameTextView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.item_all_tenders_text_view);
+            purchaseTextView = itemView.findViewById(R.id.item_purchase_text_view);
+            orgNameTextView = itemView.findViewById(R.id.item_org_name_text_view);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(context, TenderActivity.class);
-            intent.putExtra("tender_data", tenderArrayList.get(getAdapterPosition()).getText());
+            intent.putExtra("tender", tenderArrayList.get(getAdapterPosition()));
             context.startActivity(intent);
         }
     }

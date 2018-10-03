@@ -29,8 +29,10 @@ public class AllTendersFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_all_tenders, container, false);
         RecyclerView allTendersRecyclerView = view.findViewById(R.id.all_tenders_recycler_view);
         ArrayList<Tender> tenderArrayList = new ArrayList<>();
-        tenderArrayList.add(new Tender("asdasfd"));
-        tenderArrayList.add(new Tender("ashajwebkbff"));
+        Tender tender = new Tender();
+        tender.setPurchase("Purchase");
+        tender.setOrgName("Org name");
+        tenderArrayList.add(tender);
         allTendersRecyclerView.setHasFixedSize(true);
         allTendersRecyclerView.setAdapter(new TendersRecyclerViewAdapter(getContext(), tenderArrayList));
         allTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
