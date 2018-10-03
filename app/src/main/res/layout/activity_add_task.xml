@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AddTaskActivity">
+
+    <EditText
+        android:id="@+id/add_task_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/task_text"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/horizontal_padding"
+        android:paddingEnd="@dimen/horizontal_padding"
+        android:text="@string/choose_location" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_note_add_black_24dp" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/horizontal_padding"
+        android:paddingEnd="@dimen/horizontal_padding"
+        android:text="@string/choose_attachement_type" />
+
+
+    <RadioButton
+        android:id="@+id/photo_radio_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/photo" />
+
+    <RadioButton
+        android:id="@+id/video_radio_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/video" />
+
+    <RadioButton
+        android:id="@+id/audion_radio_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/audio" />
+
+
+</LinearLayout>

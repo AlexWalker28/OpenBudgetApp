@@ -3,4 +3,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_task">Добавить задание</string>
+    <string name="photo">Фото</string>
+    <string name="video">Видео</string>
+    <string name="audio">Аудио</string>
+    <string name="task_text">Опишите задание</string>
+    <string name="choose_attachement_type">Выберите тип приложения</string>
+    <string name="choose_location">Укажите расположение</string>
+    <string name="done">Готово</string>
 </resources>
