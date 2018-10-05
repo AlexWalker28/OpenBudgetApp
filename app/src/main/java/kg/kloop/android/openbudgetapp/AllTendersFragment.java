@@ -26,8 +26,8 @@ import javax.annotation.Nullable;
 
 public class AllTendersFragment extends Fragment {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    TendersRecyclerViewAdapter adapter;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private TendersRecyclerViewAdapter adapter;
 
     public AllTendersFragment() {
     }

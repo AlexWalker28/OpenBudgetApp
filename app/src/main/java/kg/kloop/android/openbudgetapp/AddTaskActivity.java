@@ -1,21 +1,34 @@
 package kg.kloop.android.openbudgetapp;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 public class AddTaskActivity extends AppCompatActivity {
+
+    private static final String TAG = AddTaskActivity.class.getSimpleName();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private EditText taskEditText;
     private RadioButton photoRadioButton;
     private RadioButton videoRadioButton;
     private RadioButton audioRadioButton;
+    private String tenderId;
+    private CollectionReference collectionReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +39,9 @@ public class AddTaskActivity extends AppCompatActivity {
         photoRadioButton = findViewById(R.id.photo_radio_button);
         videoRadioButton = findViewById(R.id.video_radio_button);
         audioRadioButton = findViewById(R.id.audion_radio_button);
-
+        Intent intent = getIntent();
+        tenderId = intent.getStringExtra("tender_id");
+        collectionReference = db.collection("tenders/" + tenderId + "/tasks/");
 
     }
 
@@ -44,8 +59,10 @@ public class AddTaskActivity extends AppCompatActivity {
                 TenderTask task = new TenderTask();
                 task.setDescription(taskEditText.getText().toString());
                 task.setAttachmentTypes(getAttachmentTypes());
-                task.setId("");
-                intent.putExtra("task", task);
+                String taskId = collectionReference.document().getId();
+                task.setId(taskId);
+                collectionReference.document(taskId).set(task);
+                intent.putExtra("task_id", taskId);
                 setResult(RESULT_OK, intent);
                 finish();
         }

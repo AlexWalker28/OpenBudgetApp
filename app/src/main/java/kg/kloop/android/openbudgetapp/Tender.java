@@ -19,7 +19,6 @@ class Tender implements Serializable {
     private String currency;
     private String deadline;
     private String validPeriod;
-    private ArrayList<TenderTask> tasks;
 
     Tender() {
     }
@@ -144,11 +143,4 @@ class Tender implements Serializable {
         this.validPeriod = validPeriod;
     }
 
-    public ArrayList<TenderTask> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(ArrayList<TenderTask> tasks) {
-        this.tasks = tasks;
-    }
 }
