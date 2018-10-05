@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +29,8 @@ public class TenderActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 100;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Tender tender;
-    private CollectionReference collectionReference;
+    private CollectionReference tasksCollectionReference;
+    private DocumentReference tenderDocumentReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +39,13 @@ public class TenderActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         tender = (Tender) intent.getSerializableExtra("tender");
-        collectionReference = db.collection("tenders/" + tender.getId() + "/tasks/");
+        tasksCollectionReference = db.collection("tenders/" + tender.getId() + "/tasks/");
+        tenderDocumentReference = db.document("tenders/" + tender.getId());
         TextView purchaseTextView = findViewById(R.id.tender_purchase_text_view);
         TextView orgNameTextView = findViewById(R.id.tender_org_name_text_view);
         purchaseTextView.setText(tender.getPurchase());
         orgNameTextView.setText(tender.getOrgName());
-        collectionReference.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+        tasksCollectionReference.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null) {
@@ -67,6 +69,20 @@ public class TenderActivity extends AppCompatActivity {
                 Intent intent = new Intent(TenderActivity.this, AddTaskActivity.class);
                 intent.putExtra("tender_id", tender.getId());
                 startActivityForResult(intent, REQUEST_CODE);
+                break;
+            case R.id.close_tender_menu_item:
+                tenderDocumentReference.update("isCompleted", true)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.tender_closed), Toast.LENGTH_SHORT).show();
+                            //TODO: add snackbar to cancel this
+                            finish();
+                        }
+                    }
+                });
+                break;
         }
         return true;
     }
@@ -75,7 +91,7 @@ public class TenderActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (data != null) {
             String taskId = data.getStringExtra("task_id");
-            collectionReference.document(taskId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            tasksCollectionReference.document(taskId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {

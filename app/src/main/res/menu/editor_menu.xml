@@ -6,5 +6,9 @@
         android:title="@string/add_task"
         android:icon="@drawable/ic_note_add_black_24dp"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/close_tender_menu_item"
+        android:title="@string/close_tender"
+        app:showAsAction="never"/>
 
 </menu>

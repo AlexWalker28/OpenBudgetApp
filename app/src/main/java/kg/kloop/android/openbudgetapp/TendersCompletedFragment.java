@@ -43,7 +43,7 @@ public class TendersCompletedFragment extends Fragment {
         adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList);
         collectionReference
                 .whereEqualTo("isCompleted", true)
-                .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen

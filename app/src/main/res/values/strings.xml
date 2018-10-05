@@ -11,4 +11,6 @@
     <string name="choose_attachement_type">Выберите тип приложения</string>
     <string name="choose_location">Укажите расположение</string>
     <string name="done">Готово</string>
+    <string name="close_tender">Завершить тендер</string>
+    <string name="tender_closed">Тендер завершен</string>
 </resources>
