@@ -41,7 +41,7 @@ public class AddTaskActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.done_add_task_menu_item:
                 Intent intent = new Intent();
-                Task task = new Task();
+                TenderTask task = new TenderTask();
                 task.setDescription(taskEditText.getText().toString());
                 task.setAttachmentTypes(getAttachmentTypes());
                 task.setId("");

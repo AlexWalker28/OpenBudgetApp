@@ -3,12 +3,12 @@ package kg.kloop.android.openbudgetapp;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Task implements Serializable {
+public class TenderTask implements Serializable {
     private String id;
     private String description;
     private ArrayList<String> attachmentTypes;
 
-    public Task() {
+    public TenderTask() {
     }
 
     public String getId() {

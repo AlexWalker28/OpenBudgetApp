@@ -27,6 +27,11 @@ public class TenderActivity extends AppCompatActivity {
         TextView orgNameTextView = findViewById(R.id.tender_org_name_text_view);
         purchaseTextView.setText(tender.getPurchase());
         orgNameTextView.setText(tender.getOrgName());
+        if (tender.getTasks() != null) {
+            for (TenderTask task : tender.getTasks()) {
+                addTask(task);
+            }
+        }
     }
 
     @Override
@@ -47,12 +52,12 @@ public class TenderActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            addTask((Task) data.getSerializableExtra("task"));
+            addTask((TenderTask) data.getSerializableExtra("task"));
         }
 
     }
 
-    private void addTask(Task task) {
+    private void addTask(TenderTask task) {
         View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tender_task, null);
         TextView textView = view.findViewById(R.id.tender_task_text_view);
         textView.setText(task.getDescription());

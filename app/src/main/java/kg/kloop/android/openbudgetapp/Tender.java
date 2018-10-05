@@ -1,6 +1,7 @@
 package kg.kloop.android.openbudgetapp;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 class Tender implements Serializable {
     private String id;
@@ -18,6 +19,7 @@ class Tender implements Serializable {
     private String currency;
     private String deadline;
     private String validPeriod;
+    private ArrayList<TenderTask> tasks;
 
     Tender() {
     }
@@ -140,5 +142,13 @@ class Tender implements Serializable {
 
     public void setValidPeriod(String validPeriod) {
         this.validPeriod = validPeriod;
+    }
+
+    public ArrayList<TenderTask> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(ArrayList<TenderTask> tasks) {
+        this.tasks = tasks;
     }
 }
