@@ -47,6 +47,7 @@ public class TendersWithTasksFragment extends Fragment {
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
                 tenderArrayList.clear();
                 tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
                 adapter.notifyDataSetChanged();

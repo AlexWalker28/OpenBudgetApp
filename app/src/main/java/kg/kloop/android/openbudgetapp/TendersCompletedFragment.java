@@ -2,19 +2,14 @@ package kg.kloop.android.openbudgetapp;
 
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -24,29 +19,31 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-public class AllTendersFragment extends Fragment {
+public class TendersCompletedFragment extends Fragment {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TendersRecyclerViewAdapter adapter;
     private ArrayList<Tender> tenderArrayList;
 
-    public AllTendersFragment() {
+    public TendersCompletedFragment() {
     }
 
     public static Fragment newInstance() {
-        return new AllTendersFragment();
+        return new TendersCompletedFragment();
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_all_tenders, container, false);
-        RecyclerView allTendersRecyclerView = view.findViewById(R.id.all_tenders_recycler_view);
+        View view = inflater.inflate(R.layout.fragment_tenders_completed, container, false);
+        RecyclerView tendersCompletedRecyclerView = view.findViewById(R.id.tenders_completed_recycler_view);
         CollectionReference collectionReference = db.collection("tenders");
         tenderArrayList = new ArrayList<>();
         adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList);
-        collectionReference.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+        collectionReference
+                .whereEqualTo("isCompleted", true)
+                .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
@@ -55,10 +52,9 @@ public class AllTendersFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-        allTendersRecyclerView.setHasFixedSize(true);
-        allTendersRecyclerView.setAdapter(adapter);
-        allTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        tendersCompletedRecyclerView.setHasFixedSize(true);
+        tendersCompletedRecyclerView.setAdapter(adapter);
+        tendersCompletedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
     }
 

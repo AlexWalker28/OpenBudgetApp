@@ -21,6 +21,8 @@ public class TendersFragmentPageAdapter extends FragmentPagerAdapter {
                 return AllTendersFragment.newInstance();
             case 1:
                 return TendersWithTasksFragment.newInstance();
+            case 2:
+                return TendersCompletedFragment.newInstance();
             default:
                 return AllTendersFragment.newInstance();
         }
