@@ -19,8 +19,10 @@ class Tender implements Serializable {
     private String currency;
     private String deadline;
     private String validPeriod;
+    private boolean isCompleted;
 
     Tender() {
+        isCompleted = false;
     }
 
     public String getId() {
@@ -143,4 +145,11 @@ class Tender implements Serializable {
         this.validPeriod = validPeriod;
     }
 
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
 }

@@ -6,9 +6,11 @@ import java.util.ArrayList;
 public class TenderTask implements Serializable {
     private String id;
     private String description;
+    private boolean isCompleted;
     private ArrayList<String> attachmentTypes;
 
     public TenderTask() {
+        isCompleted = false;
     }
 
     public String getId() {
@@ -25,6 +27,14 @@ public class TenderTask implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
     public ArrayList<String> getAttachmentTypes() {

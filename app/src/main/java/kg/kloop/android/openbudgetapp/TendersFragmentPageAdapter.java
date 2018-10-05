@@ -16,7 +16,14 @@ public class TendersFragmentPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        return AllTendersFragment.newInstance();
+        switch (i) {
+            case 0:
+                return AllTendersFragment.newInstance();
+            case 1:
+                return TendersWithTasksFragment.newInstance();
+            default:
+                return AllTendersFragment.newInstance();
+        }
     }
 
     @Nullable
