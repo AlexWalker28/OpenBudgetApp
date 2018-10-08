@@ -13,4 +13,5 @@
     <string name="done">Готово</string>
     <string name="close_tender">Завершить тендер</string>
     <string name="tender_closed">Тендер завершен</string>
+    <string name="accept_tender">Взяться за тендер</string>
 </resources>

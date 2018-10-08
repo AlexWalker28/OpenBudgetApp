@@ -59,6 +59,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 TenderTask task = new TenderTask();
                 task.setDescription(taskEditText.getText().toString());
                 task.setAttachmentTypes(getAttachmentTypes());
+                task.setTenderId(tenderId);
                 String taskId = collectionReference.document().getId();
                 task.setId(taskId);
                 collectionReference.document(taskId).set(task);

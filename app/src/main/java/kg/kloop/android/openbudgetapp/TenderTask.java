@@ -8,6 +8,7 @@ public class TenderTask implements Serializable {
     private String description;
     private boolean isCompleted;
     private ArrayList<String> attachmentTypes;
+    private String tenderId;
 
     public TenderTask() {
         isCompleted = false;
@@ -43,5 +44,13 @@ public class TenderTask implements Serializable {
 
     public void setAttachmentTypes(ArrayList<String> attachmentTypes) {
         this.attachmentTypes = attachmentTypes;
+    }
+
+    public String getTenderId() {
+        return tenderId;
+    }
+
+    public void setTenderId(String tenderId) {
+        this.tenderId = tenderId;
     }
 }
