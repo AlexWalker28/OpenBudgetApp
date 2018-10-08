@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
                         User newUser = new User();
                         newUser.setId(firebaseUser.getUid());
                         newUser.setName(firebaseUser.getDisplayName());
+                        newUser.setEmail(firebaseUser.getEmail());
+                        newUser.setPhoneNumber(firebaseUser.getPhoneNumber());
                         newUser.setPhotoUrl(String.valueOf(firebaseUser.getPhotoUrl()));
                         usersCollectionRef.document(newUser.getId()).set(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
