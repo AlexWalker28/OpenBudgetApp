@@ -18,4 +18,6 @@
     <string name="add_task_info">Добавить информацию</string>
     <string name="deny_tender">Отказаться от тендера</string>
     <string name="send">Отправить</string>
+    <string name="select_picture">Выберите изображение</string>
+    <string name="upload_finished">Загрузка завершена</string>
 </resources>
