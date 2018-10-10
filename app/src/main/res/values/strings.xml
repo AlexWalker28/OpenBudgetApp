@@ -14,4 +14,8 @@
     <string name="close_tender">Завершить тендер</string>
     <string name="tender_closed">Тендер завершен</string>
     <string name="accept_tender">Взяться за тендер</string>
+    <string name="tender_accepted">Тендер принят</string>
+    <string name="add_task_info">Добавить информацию</string>
+    <string name="deny_tender">Отказаться от тендера</string>
+    <string name="send">Отправить</string>
 </resources>

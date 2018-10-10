@@ -14,7 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -26,21 +29,27 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class TenderActivity extends AppCompatActivity {
 
-    private static final int REQUEST_CODE = 100;
+    private static final int ADD_TASK_REQUEST_CODE = 100;
+    private static final int DO_TASK_REQUEST_CODE = 101;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Tender tender;
     private CollectionReference tasksCollectionReference;
     private DocumentReference tenderDocumentReference;
+    private FirebaseUser firebaseUser;
+    private DocumentReference userDocRef;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tender);
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Intent intent = getIntent();
         tender = (Tender) intent.getSerializableExtra("tender");
         tasksCollectionReference = db.collection("tenders/" + tender.getId() + "/tasks/");
         tenderDocumentReference = db.document("tenders/" + tender.getId());
+
         TextView purchaseTextView = findViewById(R.id.tender_purchase_text_view);
         TextView orgNameTextView = findViewById(R.id.tender_org_name_text_view);
         purchaseTextView.setText(tender.getPurchase());
@@ -57,8 +66,22 @@ public class TenderActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.editor_menu, menu);
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        userDocRef = db.document("users/" + firebaseUser.getUid());
+        userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user = documentSnapshot.toObject(User.class);
+                if (user != null) {
+                    if (user.getRole().equals(Constants.USER)) {
+                        getMenuInflater().inflate(R.menu.user_tender_menu, menu);
+                        menu.findItem(R.id.deny_tender_menu_item).setVisible(false);
+                    } else if (user.getRole().equals(Constants.EDITOR)) {
+                        getMenuInflater().inflate(R.menu.editor_menu, menu);
+                    }
+                }
+            }
+        });
         return true;
     }
 
@@ -68,7 +91,7 @@ public class TenderActivity extends AppCompatActivity {
             case R.id.add_task_menu_item:
                 Intent intent = new Intent(TenderActivity.this, AddTaskActivity.class);
                 intent.putExtra("tender_id", tender.getId());
-                startActivityForResult(intent, REQUEST_CODE);
+                startActivityForResult(intent, ADD_TASK_REQUEST_CODE);
                 break;
             case R.id.close_tender_menu_item:
                 tenderDocumentReference.update("isCompleted", true)
@@ -83,9 +106,38 @@ public class TenderActivity extends AppCompatActivity {
                     }
                 });
                 break;
+            case R.id.accept_tender_menu_item:
+                userDocRef.collection("tenders").document(tender.getId()).set(tender).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.tender_accepted), Toast.LENGTH_SHORT).show();
+                        //invalidateOptionsMenu();
+                    }
+                });
+                break;
+            case R.id.add_tender_task_data_menu_item:
+                Intent intent1 = new Intent(TenderActivity.this, DoTaskActivity.class);
+                intent1.putExtra("tender_id", tender.getId());
+                startActivityForResult(intent1, DO_TASK_REQUEST_CODE);
+                break;
         }
         return true;
     }
+
+    /*@Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        userDocRef.collection("tenders").document(tender.getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+
+                    menu.findItem(R.id.deny_tender_menu_item).setVisible(true);
+                    menu.findItem(R.id.accept_tender_menu_item).setVisible(false);
+                }
+            }
+        });
+        return super.onPrepareOptionsMenu(menu);
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
