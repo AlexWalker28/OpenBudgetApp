@@ -5,10 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,10 +29,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TenderActivity extends AppCompatActivity {
 
     private static final int ADD_TASK_REQUEST_CODE = 100;
     private static final int DO_TASK_REQUEST_CODE = 101;
+    private static final String TAG = TenderActivity.class.getSimpleName();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Tender tender;
     private CollectionReference tasksCollectionReference;
@@ -38,6 +44,8 @@ public class TenderActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private DocumentReference userDocRef;
     private User user;
+    private ArrayList<TenderTask> taskArrayList;
+    private CollectionReference workCollectionReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,7 @@ public class TenderActivity extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Intent intent = getIntent();
+        taskArrayList = new ArrayList<>();
         tender = (Tender) intent.getSerializableExtra("tender");
         tasksCollectionReference = db.collection("tenders/" + tender.getId() + "/tasks/");
         tenderDocumentReference = db.document("tenders/" + tender.getId());
@@ -59,6 +68,8 @@ public class TenderActivity extends AppCompatActivity {
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null) {
                     updateTaskViews(queryDocumentSnapshots);
+                    taskArrayList.addAll(queryDocumentSnapshots.toObjects(TenderTask.class));
+                    showTenderWork(taskArrayList);
                 }
             }
         });
@@ -96,15 +107,15 @@ public class TenderActivity extends AppCompatActivity {
             case R.id.close_tender_menu_item:
                 tenderDocumentReference.update("isCompleted", true)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.tender_closed), Toast.LENGTH_SHORT).show();
-                            //TODO: add snackbar to cancel this
-                            finish();
-                        }
-                    }
-                });
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.tender_closed), Toast.LENGTH_SHORT).show();
+                                    //TODO: add snackbar to cancel this
+                                    finish();
+                                }
+                            }
+                        });
                 break;
             case R.id.accept_tender_menu_item:
                 userDocRef.collection("tenders").document(tender.getId()).set(tender).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -124,33 +135,36 @@ public class TenderActivity extends AppCompatActivity {
         return true;
     }
 
-    /*@Override
-    public boolean onPrepareOptionsMenu(final Menu menu) {
-        userDocRef.collection("tenders").document(tender.getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-
-                    menu.findItem(R.id.deny_tender_menu_item).setVisible(true);
-                    menu.findItem(R.id.accept_tender_menu_item).setVisible(false);
-                }
-            }
-        });
-        return super.onPrepareOptionsMenu(menu);
-    }*/
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (data != null) {
             String taskId = data.getStringExtra("task_id");
-            tasksCollectionReference.document(taskId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot snapshot = task.getResult();
-                        if (snapshot.exists()) {
-                            addTask(snapshot.toObject(TenderTask.class));
+            switch (requestCode) {
+                case ADD_TASK_REQUEST_CODE:
+                    tasksCollectionReference.document(taskId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot snapshot = task.getResult();
+                                if (snapshot.exists()) {
+                                    addTask(snapshot.toObject(TenderTask.class));
+                                }
+                            }
                         }
+                    });
+                    break;
+
+            }
+        }
+        if (requestCode == DO_TASK_REQUEST_CODE) {
+            String taskId = taskArrayList.get(0).getId(); // just for first task for now TODO: fix this
+            workCollectionReference = tasksCollectionReference.document(taskId).collection("work");
+            workCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        taskArrayList.addAll(task.getResult().toObjects(TenderTask.class));
+                        showTenderWork(taskArrayList);
                     }
                 }
             });
@@ -173,5 +187,35 @@ public class TenderActivity extends AppCompatActivity {
         for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
             addTask(snapshot.toObject(TenderTask.class));
         }
+    }
+
+
+    private void showTenderWork(ArrayList<TenderTask> taskArrayList) {
+        final LinearLayout linearLayout = findViewById(R.id.tender_work_linear_layout);
+        linearLayout.removeAllViews();
+        for (TenderTask task : taskArrayList) {
+            workCollectionReference = tasksCollectionReference.document(task.getId()).collection("work");
+            workCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        updateWorkViews(task.getResult().getDocuments(), linearLayout);
+                    } else Log.v(TAG, task.getException().getMessage());
+                }
+            });
+        }
+    }
+
+    private void updateWorkViews(List<DocumentSnapshot> documentSnapshots, LinearLayout linearLayout) {
+        for (DocumentSnapshot snapshot : documentSnapshots) {
+            addWorkView(snapshot.toObject(TenderTaskWork.class), linearLayout);
+        }
+    }
+
+    private void addWorkView(TenderTaskWork tenderTaskWork, ViewGroup layout) {
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tender_work, null);
+        TextView textView = view.findViewById(R.id.tender_work_text_view);
+        textView.setText(tenderTaskWork.getText());
+        layout.addView(view);
     }
 }

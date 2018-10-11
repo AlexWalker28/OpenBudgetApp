@@ -200,6 +200,8 @@ public class DoTaskActivity extends AppCompatActivity {
                 tenderTaskWork.setText(doTaskEditText.getText().toString());
                 tenderTaskWork.setPhotoUrl(photoUrl);
                 taskWorkCollectionRef.document(tenderTaskWork.getId()).set(tenderTaskWork);
+                setResult(RESULT_OK);
+                finish();
                 break;
         }
         return true;
