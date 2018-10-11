@@ -29,10 +29,14 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        Tender tender = tenderArrayList.get(i);
         TextView purchaseTextView = viewHolder.purchaseTextView;
         TextView orgNameTextView = viewHolder.orgNameTextView;
-        purchaseTextView.setText(tenderArrayList.get(i).getPurchase());
-        orgNameTextView.setText(tenderArrayList.get(i).getOrgName());
+        TextView plannedSumTextView = viewHolder.plannedSumTextView;
+        purchaseTextView.setText(tender.getPurchase());
+        orgNameTextView.setText(tender.getOrgName());
+        String sum = tender.getPlanSum() + " " + tender.getCurrency();
+        plannedSumTextView.setText(sum);
     }
 
 
@@ -43,11 +47,13 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView purchaseTextView;
         TextView orgNameTextView;
+        TextView plannedSumTextView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             purchaseTextView = itemView.findViewById(R.id.item_purchase_text_view);
             orgNameTextView = itemView.findViewById(R.id.item_org_name_text_view);
+            plannedSumTextView = itemView.findViewById(R.id.item_planned_sum_text_view);
             itemView.setOnClickListener(this);
         }
 
