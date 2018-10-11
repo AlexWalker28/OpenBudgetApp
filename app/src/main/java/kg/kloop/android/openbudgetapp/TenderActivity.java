@@ -60,8 +60,11 @@ public class TenderActivity extends AppCompatActivity {
         tenderDocumentReference = db.document("tenders/" + tender.getId());
 
         TextView purchaseTextView = findViewById(R.id.tender_purchase_text_view);
+        TextView plannedSumTextView = findViewById(R.id.tender_planned_sum_text_view);
         TextView orgNameTextView = findViewById(R.id.tender_org_name_text_view);
         purchaseTextView.setText(tender.getPurchase());
+        String sum = tender.getPlanSum() + " " + tender.getCurrency();
+        plannedSumTextView.setText(sum);
         orgNameTextView.setText(tender.getOrgName());
         tasksCollectionReference.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
             @Override
