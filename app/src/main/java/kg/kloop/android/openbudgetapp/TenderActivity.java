@@ -32,7 +32,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TenderActivity extends AppCompatActivity {
 
@@ -123,11 +125,16 @@ public class TenderActivity extends AppCompatActivity {
                         });
                 break;
             case R.id.accept_tender_menu_item:
-                userDocRef.collection("tenders").document(tender.getId()).set(tender).addOnSuccessListener(new OnSuccessListener<Void>() {
+                Map<String, String> tenderIdMap = new HashMap<>();
+                tenderIdMap.put("id", tender.getId());
+                userDocRef.collection("tenders").document(tender.getId()).set(tenderIdMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.tender_accepted), Toast.LENGTH_SHORT).show();
-                        //invalidateOptionsMenu();
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.tender_accepted), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 break;
