@@ -1,4 +1,4 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -35,6 +35,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import kg.kloop.android.openbudgetapp.utils.Constants;
+import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.objects.Tender;
+import kg.kloop.android.openbudgetapp.objects.TenderTask;
+import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
+import kg.kloop.android.openbudgetapp.objects.User;
 
 public class TenderActivity extends AppCompatActivity {
 

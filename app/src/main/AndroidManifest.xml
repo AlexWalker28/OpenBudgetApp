@@ -12,16 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TenderActivity" />
-        <activity android:name=".AddTaskActivity" />
-        <activity android:name=".DoTaskActivity"></activity>
+        <activity android:name=".activities.TenderActivity" />
+        <activity android:name=".activities.AddTaskActivity" />
+        <activity android:name=".activities.DoTaskActivity"></activity>
     </application>
 
 </manifest>

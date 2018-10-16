@@ -1,4 +1,4 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.fragments;
 
 
 import android.arch.lifecycle.MutableLiveData;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,27 +22,31 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-public class TendersWithTasksFragment extends Fragment {
+import kg.kloop.android.openbudgetapp.utils.MainViewModel;
+import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.objects.Tender;
+import kg.kloop.android.openbudgetapp.adapters.TendersRecyclerViewAdapter;
+import kg.kloop.android.openbudgetapp.objects.User;
 
-    private static final String TAG = TendersWithTasksFragment.class.getSimpleName();
+public class AllTendersFragment extends Fragment {
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TendersRecyclerViewAdapter adapter;
     private ArrayList<Tender> tenderArrayList;
 
-
-    public TendersWithTasksFragment() {
+    public AllTendersFragment() {
     }
 
     public static Fragment newInstance() {
-        return new TendersWithTasksFragment();
+        return new AllTendersFragment();
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tenders_with_tasks, container, false);
-        final RecyclerView tendersWithTasksRecyclerView = view.findViewById(R.id.tenders_with_tasks_recycler_view);
+        View view =  inflater.inflate(R.layout.fragment_all_tenders, container, false);
+        final RecyclerView allTendersRecyclerView = view.findViewById(R.id.all_tenders_recycler_view);
         final CollectionReference collectionReference = db.collection("tenders");
         tenderArrayList = new ArrayList<>();
         MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
@@ -53,7 +56,6 @@ public class TendersWithTasksFragment extends Fragment {
             public void onChanged(@android.support.annotation.Nullable User user) {
                 adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, user);
                 collectionReference
-                        .whereEqualTo("isCompleted", false)
                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
                             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -64,11 +66,13 @@ public class TendersWithTasksFragment extends Fragment {
                             }
                         });
 
-                tendersWithTasksRecyclerView.setHasFixedSize(true);
-                tendersWithTasksRecyclerView.setAdapter(adapter);
-                tendersWithTasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                allTendersRecyclerView.setHasFixedSize(true);
+                allTendersRecyclerView.setAdapter(adapter);
+                allTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
         });
+
         return view;
     }
+
 }

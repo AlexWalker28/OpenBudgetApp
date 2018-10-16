@@ -1,7 +1,6 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.activities;
 
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -27,6 +25,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 import java.util.List;
+
+import kg.kloop.android.openbudgetapp.utils.Constants;
+import kg.kloop.android.openbudgetapp.utils.MainViewModel;
+import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.adapters.TenderFragmentSimpleUsersPageAdapter;
+import kg.kloop.android.openbudgetapp.adapters.TendersFragmentEditorsPageAdapter;
+import kg.kloop.android.openbudgetapp.objects.User;
 
 public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 

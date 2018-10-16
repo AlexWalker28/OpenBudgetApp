@@ -1,4 +1,4 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -22,12 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -36,6 +34,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.UUID;
+
+import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.objects.TenderTask;
+import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 
 public class DoTaskActivity extends AppCompatActivity {
 

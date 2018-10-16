@@ -1,9 +1,13 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.adapters;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import kg.kloop.android.openbudgetapp.fragments.MyTendersFragment;
+import kg.kloop.android.openbudgetapp.fragments.TendersCompletedFragment;
+import kg.kloop.android.openbudgetapp.fragments.TendersWithTasksFragment;
 
 public class TenderFragmentSimpleUsersPageAdapter extends FragmentPagerAdapter {
     private final int PAGE_COUNT = 3;

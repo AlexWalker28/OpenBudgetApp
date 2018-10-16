@@ -1,4 +1,4 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;

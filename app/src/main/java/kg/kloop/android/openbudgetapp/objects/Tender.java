@@ -1,9 +1,9 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-class Tender implements Serializable {
+public class Tender implements Serializable {
     private String id;
     private String linkId;
     private String tenderNum;

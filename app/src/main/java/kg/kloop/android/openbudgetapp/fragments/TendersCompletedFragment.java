@@ -1,4 +1,4 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.fragments;
 
 
 import android.arch.lifecycle.MutableLiveData;
@@ -21,6 +21,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
+
+import kg.kloop.android.openbudgetapp.utils.MainViewModel;
+import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.objects.Tender;
+import kg.kloop.android.openbudgetapp.adapters.TendersRecyclerViewAdapter;
+import kg.kloop.android.openbudgetapp.objects.User;
 
 public class TendersCompletedFragment extends Fragment {
 

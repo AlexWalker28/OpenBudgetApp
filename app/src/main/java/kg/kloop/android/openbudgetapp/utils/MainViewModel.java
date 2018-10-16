@@ -1,7 +1,9 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.utils;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+
+import kg.kloop.android.openbudgetapp.objects.User;
 
 public class MainViewModel extends ViewModel {
     private MutableLiveData<User> userLiveData;

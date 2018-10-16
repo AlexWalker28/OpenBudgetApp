@@ -1,4 +1,4 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.activities.TenderActivity;
+import kg.kloop.android.openbudgetapp.objects.Tender;
+import kg.kloop.android.openbudgetapp.objects.User;
+
 public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = TendersRecyclerViewAdapter.class.getSimpleName();
@@ -19,7 +24,7 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
     private Context context;
     private User currentUser;
 
-    TendersRecyclerViewAdapter(Context context, ArrayList<Tender> tenderArrayList, User currentUser) {
+    public TendersRecyclerViewAdapter(Context context, ArrayList<Tender> tenderArrayList, User currentUser) {
         this.tenderArrayList = tenderArrayList;
         this.context = context;
         this.currentUser = currentUser;

@@ -1,4 +1,4 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.objects;
 
 public class TenderTaskWork {
     private String id;

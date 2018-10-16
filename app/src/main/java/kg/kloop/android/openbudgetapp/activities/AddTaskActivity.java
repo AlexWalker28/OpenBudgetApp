@@ -1,22 +1,20 @@
-package kg.kloop.android.openbudgetapp;
+package kg.kloop.android.openbudgetapp.activities;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+
+import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.objects.TenderTask;
 
 public class AddTaskActivity extends AppCompatActivity {
 
