@@ -34,6 +34,7 @@ public class MyTendersFragment extends Fragment {
     private TendersRecyclerViewAdapter adapter;
     private ArrayList<Tender> tenderArrayList;
     private static final String TAG = MyTendersFragment.class.getSimpleName();
+    private User currentUser;
 
     public MyTendersFragment() {
     }
@@ -50,13 +51,13 @@ public class MyTendersFragment extends Fragment {
         RecyclerView myTendersRecyclerView = view.findViewById(R.id.my_tenders_recycler_view);
         final CollectionReference tendersCollectionReference = db.collection("tenders");
         ViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
-        MutableLiveData<String> userIdLiveData = ((MainViewModel) viewModel).getUserIdLiveData();
+        MutableLiveData<User> userLiveData = ((MainViewModel) viewModel).getUserLiveData();
         tenderArrayList = new ArrayList<>();
-        adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList);
-        userIdLiveData.observe(this, new Observer<String>() {
+        userLiveData.observe(this, new Observer<User>() {
             @Override
-            public void onChanged(@android.support.annotation.Nullable String userId) {
-                CollectionReference usersTendersCollectionRef = db.collection("users/" + userId + "/tenders");
+            public void onChanged(@android.support.annotation.Nullable User user) {
+                currentUser = user;
+                CollectionReference usersTendersCollectionRef = db.collection("users/" + user.getId() + "/tenders");
                 usersTendersCollectionRef.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -81,8 +82,7 @@ public class MyTendersFragment extends Fragment {
                 });
             }
         });
-
-
+        adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, currentUser);
         myTendersRecyclerView.setHasFixedSize(true);
         myTendersRecyclerView.setAdapter(adapter);
         myTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

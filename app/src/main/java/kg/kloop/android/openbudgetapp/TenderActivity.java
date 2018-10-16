@@ -47,9 +47,9 @@ public class TenderActivity extends AppCompatActivity {
     private DocumentReference tenderDocumentReference;
     private FirebaseUser firebaseUser;
     private DocumentReference userDocRef;
-    private User user;
     private ArrayList<TenderTask> taskArrayList;
     private CollectionReference workCollectionReference;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +57,15 @@ public class TenderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tender);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        Intent intent = getIntent();
         taskArrayList = new ArrayList<>();
+
+        Intent intent = getIntent();
+        currentUser = (User) intent.getSerializableExtra("current_user");
         tender = (Tender) intent.getSerializableExtra("tender");
+        currentUser = (User) intent.getSerializableExtra("current_user");
         tasksCollectionReference = db.collection("tenders/" + tender.getId() + "/tasks/");
         tenderDocumentReference = db.document("tenders/" + tender.getId());
-
+        userDocRef = db.document("users/" + currentUser.getId());
         TextView purchaseTextView = findViewById(R.id.tender_purchase_text_view);
         TextView plannedSumTextView = findViewById(R.id.tender_planned_sum_text_view);
         TextView orgNameTextView = findViewById(R.id.tender_org_name_text_view);
@@ -85,21 +88,23 @@ public class TenderActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        userDocRef = db.document("users/" + firebaseUser.getUid());
-        userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user = documentSnapshot.toObject(User.class);
-                if (user != null) {
-                    if (user.getRole().equals(Constants.USER)) {
-                        getMenuInflater().inflate(R.menu.user_tender_menu, menu);
-                        menu.findItem(R.id.deny_tender_menu_item).setVisible(false);
-                    } else if (user.getRole().equals(Constants.EDITOR)) {
-                        getMenuInflater().inflate(R.menu.editor_menu, menu);
+        if (currentUser != null) {
+            if (currentUser.getRole().equals(Constants.USER)) {
+                DocumentReference documentReference = db.document("users/" + currentUser.getId() + "/tenders/" + tender.getId());
+                getMenuInflater().inflate(R.menu.user_tender_menu, menu);
+                documentReference.get().addOnSuccessListener(this, new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            MenuItem menuItem = menu.findItem(R.id.accept_tender_menu_item);
+                            menuItem.setIcon(R.drawable.ic_bookmark_white_24dp);
+                        }
                     }
-                }
+                });
+            } else if (currentUser.getRole().equals(Constants.EDITOR)) {
+                getMenuInflater().inflate(R.menu.editor_menu, menu);
             }
-        });
+        }
         return true;
     }
 

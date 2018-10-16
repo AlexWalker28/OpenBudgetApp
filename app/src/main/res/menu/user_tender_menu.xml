@@ -6,10 +6,8 @@
         android:id="@+id/accept_tender_menu_item"
         android:title="@string/accept_tender"
         app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_bookmark_border_white_24dp"
         />
-    <item android:id="@+id/deny_tender_menu_item"
-        android:title="@string/deny_tender"
-        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/add_tender_task_data_menu_item"
         android:icon="@drawable/ic_edit_white_24dp"

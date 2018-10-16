@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,15 @@ import java.util.ArrayList;
 
 public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecyclerViewAdapter.ViewHolder> {
 
+    private static final String TAG = TendersRecyclerViewAdapter.class.getSimpleName();
     private ArrayList<Tender> tenderArrayList;
     private Context context;
+    private User currentUser;
 
-    TendersRecyclerViewAdapter(Context context, ArrayList<Tender> tenderArrayList) {
+    TendersRecyclerViewAdapter(Context context, ArrayList<Tender> tenderArrayList, User currentUser) {
         this.tenderArrayList = tenderArrayList;
         this.context = context;
+        this.currentUser = currentUser;
     }
 
     @NonNull
@@ -61,6 +65,8 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
         public void onClick(View view) {
             Intent intent = new Intent(context, TenderActivity.class);
             intent.putExtra("tender", tenderArrayList.get(getAdapterPosition()));
+            intent.putExtra("current_user", currentUser);
+            Log.v(TAG, "current_user: " + currentUser.getName());
             context.startActivity(intent);
         }
     }

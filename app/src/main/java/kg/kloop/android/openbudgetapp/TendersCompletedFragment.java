@@ -1,6 +1,9 @@
 package kg.kloop.android.openbudgetapp;
 
 
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +27,7 @@ public class TendersCompletedFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TendersRecyclerViewAdapter adapter;
     private ArrayList<Tender> tenderArrayList;
+    private User currentUser;
 
     public TendersCompletedFragment() {
     }
@@ -37,25 +41,36 @@ public class TendersCompletedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tenders_completed, container, false);
-        RecyclerView tendersCompletedRecyclerView = view.findViewById(R.id.tenders_completed_recycler_view);
-        CollectionReference collectionReference = db.collection("tenders");
+        final RecyclerView tendersCompletedRecyclerView = view.findViewById(R.id.tenders_completed_recycler_view);
+        final CollectionReference collectionReference = db.collection("tenders");
         tenderArrayList = new ArrayList<>();
-        adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList);
-        collectionReference
-                .whereEqualTo("isCompleted", true)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+        MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        MutableLiveData<User> userLiveData = viewModel.getUserLiveData();
+        userLiveData.observe(this, new Observer<User>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
-                tenderArrayList.clear();
-                tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
-                adapter.notifyDataSetChanged();
+            public void onChanged(@android.support.annotation.Nullable User user) {
+                adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, user);
+                collectionReference
+                        .whereEqualTo("isCompleted", true)
+                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
+                                tenderArrayList.clear();
+                                tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+
+                tendersCompletedRecyclerView.setHasFixedSize(true);
+                tendersCompletedRecyclerView.setAdapter(adapter);
+                tendersCompletedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
         });
-        tendersCompletedRecyclerView.setHasFixedSize(true);
-        tendersCompletedRecyclerView.setAdapter(adapter);
-        tendersCompletedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
     }
+
+
+
 
 }

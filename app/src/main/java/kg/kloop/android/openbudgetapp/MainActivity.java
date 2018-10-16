@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
                     if (user != null) {
-                        mainViewModel.getUserIdLiveData().postValue(user.getId());
+                        mainViewModel.getUserLiveData().postValue(user);
                         if (user.getRole().equals(Constants.USER)) {
                             viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
                         } else if (user.getRole().equals(Constants.EDITOR)) {

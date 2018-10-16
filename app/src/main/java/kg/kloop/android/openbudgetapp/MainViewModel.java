@@ -4,17 +4,17 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {
-    private MutableLiveData<String> userIdLiveData;
+    private MutableLiveData<User> userLiveData;
 
     public MainViewModel() {
-        userIdLiveData = new MutableLiveData<>();
+        userLiveData = new MutableLiveData<>();
     }
 
-    public MutableLiveData<String> getUserIdLiveData() {
-        return userIdLiveData;
+    public MutableLiveData<User> getUserLiveData() {
+        return userLiveData;
     }
 
-    public void setUserIdLiveData(MutableLiveData<String> userIdLiveData) {
-        this.userIdLiveData = userIdLiveData;
+    public void setUserLiveData(MutableLiveData<User> userLiveData) {
+        this.userLiveData = userLiveData;
     }
 }
