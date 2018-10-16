@@ -1,6 +1,7 @@
 package kg.kloop.android.openbudgetapp.activities;
 
 import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Arrays;
 import java.util.List;
 
+import kg.kloop.android.openbudgetapp.controllers.MainActivityController;
 import kg.kloop.android.openbudgetapp.utils.Constants;
 import kg.kloop.android.openbudgetapp.utils.MainViewModel;
 import kg.kloop.android.openbudgetapp.R;
@@ -37,11 +39,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
     private static final int RC_SIGN_IN = 100;
     private static final String TAG = MainActivity.class.getSimpleName();
-    private FirebaseFirestore db;
-    private CollectionReference usersCollectionRef;
-    private DocumentReference userDocRef;
-    private FirebaseUser firebaseUser;
     private MainViewModel mainViewModel;
+    private MainActivityController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,33 +50,29 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         final ViewPager viewPager = findViewById(R.id.main_view_pager);
         final TabLayout tabLayout = findViewById(R.id.main_tab_layout);
 
-        db = FirebaseFirestore.getInstance();
-        usersCollectionRef = db.collection("users");
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        controller = new MainActivityController(mainViewModel);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null) {
-            signIn();
-        } else {
-            userDocRef = db.document("users/" + firebaseUser.getUid());
-            userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    User user = documentSnapshot.toObject(User.class);
-                    if (user != null) {
-                        mainViewModel.getUserLiveData().postValue(user);
-                        if (user.getRole().equals(Constants.USER)) {
-                            viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
-                        } else if (user.getRole().equals(Constants.EDITOR)) {
-                            viewPager.setAdapter(new TendersFragmentEditorsPageAdapter(getSupportFragmentManager()));
-                        } else signIn();
-                        tabLayout.setupWithViewPager(viewPager);
-                    }
+        mainViewModel.getFirebaseUserMutableLiveData().observe(this, new Observer<FirebaseUser>() {
+            @Override
+            public void onChanged(@Nullable FirebaseUser firebaseUser) {
+                if (firebaseUser == null) {
+                    signIn();
+                } else {
+                    mainViewModel.getUserRoleMutableLiveData().observe(MainActivity.this, new Observer<String>() {
+                        @Override
+                        public void onChanged(@Nullable String userRole) {
+                            if (userRole.equals(Constants.USER)) {
+                                viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
+                            } else if (userRole.equals(Constants.EDITOR)) {
+                                viewPager.setAdapter(new TendersFragmentEditorsPageAdapter(getSupportFragmentManager()));
+                            } else signIn();
+                            tabLayout.setupWithViewPager(viewPager);
+                        }
+                    });
                 }
-            });
-        }
-
-
+            }
+        });
 
     }
 
@@ -97,42 +92,16 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
+            //IdpResponse response = IdpResponse.fromResultIntent(data);
             if (resultCode == RESULT_OK) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                addUserToDbIfNew(user);
-
+                mainViewModel.getFirebaseUserMutableLiveData().observe(this, new Observer<FirebaseUser>() {
+                    @Override
+                    public void onChanged(@Nullable FirebaseUser firebaseUser) {
+                        controller.addUserToDbIfNew(firebaseUser);
+                    }
+                });
             }
         }
     }
 
-    private void addUserToDbIfNew(final FirebaseUser firebaseUser) {
-        userDocRef = db.document("users/" + firebaseUser.getUid());
-        userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (!task.getResult().exists()) {
-                        final User newUser = new User();
-                        newUser.setId(firebaseUser.getUid());
-                        newUser.setName(firebaseUser.getDisplayName());
-                        newUser.setEmail(firebaseUser.getEmail());
-                        newUser.setPhoneNumber(firebaseUser.getPhoneNumber());
-                        newUser.setPhotoUrl(String.valueOf(firebaseUser.getPhotoUrl()));
-                        usersCollectionRef.document(newUser.getId()).set(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.v(TAG, "User is saved to db");
-                                }
-                            }
-                        });
-
-                    } else {
-                        Log.v(TAG, "User is already in db");
-                    }
-                }
-            }
-        });
-    }
 }
