@@ -21,4 +21,6 @@
     <string name="select_picture">Выберите изображение</string>
     <string name="upload_finished">Загрузка завершена</string>
     <string name="error">Ошибка</string>
+    <string name="log_out">Выйти</string>
+    <string name="yout_signed_out">Вы вышли из аккаунта</string>
 </resources>
