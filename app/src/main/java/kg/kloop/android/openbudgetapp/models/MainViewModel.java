@@ -1,4 +1,4 @@
-package kg.kloop.android.openbudgetapp.utils;
+package kg.kloop.android.openbudgetapp.models;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;

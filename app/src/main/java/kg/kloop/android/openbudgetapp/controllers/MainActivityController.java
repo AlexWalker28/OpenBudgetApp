@@ -16,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import kg.kloop.android.openbudgetapp.objects.User;
 import kg.kloop.android.openbudgetapp.utils.Constants;
-import kg.kloop.android.openbudgetapp.utils.MainViewModel;
+import kg.kloop.android.openbudgetapp.models.MainViewModel;
 
 public class MainActivityController {
     private static final String TAG = MainActivityController.class.getSimpleName();

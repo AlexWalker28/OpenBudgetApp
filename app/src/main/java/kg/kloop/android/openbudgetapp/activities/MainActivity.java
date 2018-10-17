@@ -25,7 +25,7 @@ import java.util.List;
 
 import kg.kloop.android.openbudgetapp.controllers.MainActivityController;
 import kg.kloop.android.openbudgetapp.utils.Constants;
-import kg.kloop.android.openbudgetapp.utils.MainViewModel;
+import kg.kloop.android.openbudgetapp.models.MainViewModel;
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.adapters.TenderFragmentSimpleUsersPageAdapter;
 import kg.kloop.android.openbudgetapp.adapters.TendersFragmentEditorsPageAdapter;

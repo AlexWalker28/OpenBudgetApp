@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import kg.kloop.android.openbudgetapp.utils.MainViewModel;
+import kg.kloop.android.openbudgetapp.models.MainViewModel;
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.Tender;
 import kg.kloop.android.openbudgetapp.adapters.TendersRecyclerViewAdapter;
