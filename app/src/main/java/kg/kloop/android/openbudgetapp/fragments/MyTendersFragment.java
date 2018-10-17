@@ -69,14 +69,14 @@ public class MyTendersFragment extends Fragment {
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         if (!queryDocumentSnapshots.isEmpty()) {
                             for (DocumentSnapshot tenderId : queryDocumentSnapshots) {
+                                tenderArrayList.clear();
                                 if (tenderId.exists()) {
                                     tendersCollectionReference.whereEqualTo("id", tenderId.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
                                                 //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
-                                                tenderArrayList.clear();
-                                                tenderArrayList.addAll(task.getResult().toObjects(Tender.class));
+                                                tenderArrayList.add(task.getResult().toObjects(Tender.class).get(0)); //there must be only one tender with correct id
                                                 adapter.notifyDataSetChanged();
                                             } else Log.d(TAG, task.getException().getMessage());
                                         }
