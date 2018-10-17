@@ -81,7 +81,7 @@ public class TenderActivityController {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    model.setMyTender(true);
+                    model.getMyTender().postValue(true);
                 }
             }
         });
@@ -94,7 +94,7 @@ public class TenderActivityController {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            model.setTenderClosed(true);
+                            model.getTenderClosed().postValue(true);
                         } else Log.v(TAG, task.getException().getMessage());
                     }
                 });
@@ -107,7 +107,7 @@ public class TenderActivityController {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    model.setTenderAccepted(true);
+                    model.getTenderAccepted().postValue(true);
                 } else Log.v(TAG, task.getException().getMessage());
             }
         });
@@ -121,7 +121,7 @@ public class TenderActivityController {
                 if (task.isSuccessful()) {
                     DocumentSnapshot snapshot = task.getResult();
                     if (snapshot.exists()) {
-                        model.setTaskAdded(true);
+                        model.getTaskAdded().postValue(true);
                     }
                 }
             }

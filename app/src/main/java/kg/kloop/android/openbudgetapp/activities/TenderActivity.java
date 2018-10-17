@@ -101,10 +101,15 @@ public class TenderActivity extends AppCompatActivity {
                 getMenuInflater().inflate(R.menu.editor_menu, menu);
             } else if (currentUser.getRole().equals(Constants.USER)) {
                 getMenuInflater().inflate(R.menu.user_tender_menu, menu);
-                if (model.isMyTender()) {
-                    MenuItem menuItem = menu.findItem(R.id.accept_tender_menu_item);
-                    menuItem.setIcon(R.drawable.ic_bookmark_white_24dp);
-                }
+                model.getMyTender().observe(this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(@Nullable Boolean isMyTender) {
+                        if (isMyTender) {
+                            MenuItem menuItem = menu.findItem(R.id.accept_tender_menu_item);
+                            menuItem.setIcon(R.drawable.ic_bookmark_white_24dp);
+                        }
+                    }
+                });
             }
         }
         return true;
@@ -120,17 +125,28 @@ public class TenderActivity extends AppCompatActivity {
                 break;
             case R.id.close_tender_menu_item:
                 controller.closeTender();
-                if (model.isTenderClosed()) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.tender_closed), Toast.LENGTH_SHORT).show();
-                    //TODO: add snackbar to cancel this
-                    finish();
-                }
+                model.getTenderClosed().observe(this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(@Nullable Boolean isTenderClosed) {
+                        if (isTenderClosed) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.tender_closed), Toast.LENGTH_SHORT).show();
+                            //TODO: add snackbar to cancel this
+                            finish();
+                        }
+                    }
+                });
+
                 break;
             case R.id.accept_tender_menu_item:
                 controller.acceptTender();
-                if (model.isTenderAccepted()) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.tender_accepted), Toast.LENGTH_SHORT).show();
-                }
+                model.getTenderAccepted().observe(this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(@Nullable Boolean isTenderAccepted) {
+                        if (isTenderAccepted) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.tender_accepted), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 break;
             case R.id.add_tender_task_data_menu_item:
                 Intent intent1 = new Intent(TenderActivity.this, DoTaskActivity.class);
@@ -147,9 +163,14 @@ public class TenderActivity extends AppCompatActivity {
             switch (requestCode) {
                 case ADD_TASK_REQUEST_CODE:
                     controller.addTask(data);
-                    if (model.isTaskAdded()) {
-                        addTask(model.getAddedTask());
-                    }
+                    model.getTaskAdded().observe(this, new Observer<Boolean>() {
+                        @Override
+                        public void onChanged(@Nullable Boolean isTaskAdded) {
+                            if (isTaskAdded) {
+                                addTask(model.getAddedTask());
+                            }
+                        }
+                    });
                     break;
 
             }

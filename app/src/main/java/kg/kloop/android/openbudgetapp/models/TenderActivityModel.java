@@ -12,17 +12,20 @@ import kg.kloop.android.openbudgetapp.objects.User;
 public class TenderActivityModel {
     private Tender tender;
     private User currentUser;
-    private boolean myTender;
-    private boolean tenderClosed;
-    private boolean tenderAccepted;
+    private MutableLiveData<Boolean> myTender;
+    private MutableLiveData<Boolean> tenderClosed;
+    private MutableLiveData<Boolean> tenderAccepted;
     private MutableLiveData<ArrayList<TenderTask>> tenderTaskArrayListMutableLiveData;
     private MutableLiveData<ArrayList<TenderTaskWork>> tenderTaskWorkArrayList;
-    private boolean taskAdded;
+    private MutableLiveData<Boolean> taskAdded;
     private TenderTask addedTask;
 
     public TenderActivityModel() {
         tenderTaskArrayListMutableLiveData = new MutableLiveData<>();
         tenderTaskWorkArrayList = new MutableLiveData<>();
+        myTender = new MutableLiveData<>();
+        tenderClosed = new MutableLiveData<>();
+        tenderAccepted = new MutableLiveData<>();
     }
 
     public Tender getTender() {
@@ -45,28 +48,36 @@ public class TenderActivityModel {
         return tender.getPlanSum() + " " + tender.getCurrency();
     }
 
-    public boolean isMyTender() {
+    public MutableLiveData<Boolean> getMyTender() {
         return myTender;
     }
 
-    public void setMyTender(boolean myTender) {
+    public void setMyTender(MutableLiveData<Boolean> myTender) {
         this.myTender = myTender;
     }
 
-    public boolean isTenderClosed() {
+    public MutableLiveData<Boolean> getTenderClosed() {
         return tenderClosed;
     }
 
-    public void setTenderClosed(boolean tenderClosed) {
+    public void setTenderClosed(MutableLiveData<Boolean> tenderClosed) {
         this.tenderClosed = tenderClosed;
     }
 
-    public boolean isTenderAccepted() {
+    public MutableLiveData<Boolean> getTenderAccepted() {
         return tenderAccepted;
     }
 
-    public void setTenderAccepted(boolean tenderAccepted) {
+    public void setTenderAccepted(MutableLiveData<Boolean> tenderAccepted) {
         this.tenderAccepted = tenderAccepted;
+    }
+
+    public MutableLiveData<Boolean> getTaskAdded() {
+        return taskAdded;
+    }
+
+    public void setTaskAdded(MutableLiveData<Boolean> taskAdded) {
+        this.taskAdded = taskAdded;
     }
 
     public void setTenderTaskArrayListMutableLiveData(MutableLiveData<ArrayList<TenderTask>> tenderTaskArrayListMutableLiveData) {
@@ -85,12 +96,8 @@ public class TenderActivityModel {
         this.tenderTaskWorkArrayList = tenderTaskWorkArrayList;
     }
 
-    public boolean isTaskAdded() {
-        return taskAdded;
-    }
-
-    public void setTaskAdded(boolean taskAdded) {
-        this.taskAdded = taskAdded;
+    public void setAddedTask(TenderTask addedTask) {
+        this.addedTask = addedTask;
     }
 
     public TenderTask getAddedTask() {
