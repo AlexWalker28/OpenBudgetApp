@@ -41,11 +41,11 @@ public class MainActivityController {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     user = documentSnapshot.toObject(User.class);
                     if (user != null) {
-                        mainViewModel.getUserLiveData().postValue(user);
+                        mainViewModel.getUserLiveData().setValue(user);
                         if (user.getRole().equals(Constants.USER)) {
-                            mainViewModel.getUserRoleMutableLiveData().postValue(Constants.USER);
+                            mainViewModel.getUserRoleMutableLiveData().setValue(Constants.USER);
                         } else if (user.getRole().equals(Constants.EDITOR)) {
-                            mainViewModel.getUserRoleMutableLiveData().postValue(Constants.EDITOR);
+                            mainViewModel.getUserRoleMutableLiveData().setValue(Constants.EDITOR);
                         }
                     }
                 }

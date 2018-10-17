@@ -54,7 +54,7 @@ public class MyTendersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_my_tenders, container, false);
-        RecyclerView myTendersRecyclerView = view.findViewById(R.id.my_tenders_recycler_view);
+        final RecyclerView myTendersRecyclerView = view.findViewById(R.id.my_tenders_recycler_view);
         final CollectionReference tendersCollectionReference = db.collection("tenders");
         ViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         MutableLiveData<User> userLiveData = ((MainViewModel) viewModel).getUserLiveData();
@@ -86,12 +86,12 @@ public class MyTendersFragment extends Fragment {
                         }
                     }
                 });
+                adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, currentUser);
+                myTendersRecyclerView.setHasFixedSize(true);
+                myTendersRecyclerView.setAdapter(adapter);
+                myTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
         });
-        adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, currentUser);
-        myTendersRecyclerView.setHasFixedSize(true);
-        myTendersRecyclerView.setAdapter(adapter);
-        myTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
     }
 

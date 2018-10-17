@@ -69,7 +69,6 @@ public class TenderActivity extends AppCompatActivity {
         Intent intent = getIntent();
         currentUser = (User) intent.getSerializableExtra("current_user");
         tender = (Tender) intent.getSerializableExtra("tender");
-        currentUser = (User) intent.getSerializableExtra("current_user");
         tasksCollectionReference = db.collection("tenders/" + tender.getId() + "/tasks/");
         tenderDocumentReference = db.document("tenders/" + tender.getId());
         userDocRef = db.document("users/" + currentUser.getId());

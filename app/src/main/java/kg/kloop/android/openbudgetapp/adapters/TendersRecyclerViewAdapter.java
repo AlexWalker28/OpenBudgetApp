@@ -70,8 +70,10 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
         public void onClick(View view) {
             Intent intent = new Intent(context, TenderActivity.class);
             intent.putExtra("tender", tenderArrayList.get(getAdapterPosition()));
-            intent.putExtra("current_user", currentUser);
-            Log.v(TAG, "current_user: " + currentUser.getName());
+            if (currentUser != null) {
+                intent.putExtra("current_user", currentUser);
+                Log.v(TAG, "current_user: " + currentUser.getName());
+            }
             context.startActivity(intent);
         }
     }

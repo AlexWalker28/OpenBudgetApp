@@ -104,10 +104,10 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                     public void onChanged(@Nullable FirebaseUser firebaseUser) {
                         if (firebaseUser != null) {
                             controller.saveUserToDb(firebaseUser);
-                            updateLayout();
                         }
                     }
                 });
+                updateLayout();
             }
         }
     }
