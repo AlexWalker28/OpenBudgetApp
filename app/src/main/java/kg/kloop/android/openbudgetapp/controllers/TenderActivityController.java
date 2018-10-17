@@ -64,7 +64,7 @@ public class TenderActivityController {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    model.getTenderTaskWorkArrayList().postValue((ArrayList<TenderTaskWork>) task.getResult().toObjects(TenderTaskWork.class));
+                                    model.getTenderTaskWorkArrayList().setValue((ArrayList<TenderTaskWork>) task.getResult().toObjects(TenderTaskWork.class));
                                     //updateWorkViews(task.getResult().getDocuments(), linearLayout);
                                 } else Log.v(TAG, task.getException().getMessage());
                             }

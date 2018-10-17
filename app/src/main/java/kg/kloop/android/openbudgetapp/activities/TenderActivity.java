@@ -1,12 +1,12 @@
 package kg.kloop.android.openbudgetapp.activities;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,35 +19,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.controllers.TenderActivityController;
 import kg.kloop.android.openbudgetapp.models.TenderActivityModel;
-import kg.kloop.android.openbudgetapp.utils.Constants;
-import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.Tender;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 import kg.kloop.android.openbudgetapp.objects.User;
+import kg.kloop.android.openbudgetapp.utils.Constants;
 
-public class TenderActivity extends AppCompatActivity {
+public class TenderActivity extends AppCompatActivity implements LifecycleOwner {
 
     private static final int ADD_TASK_REQUEST_CODE = 100;
     private static final int DO_TASK_REQUEST_CODE = 101;
@@ -81,14 +66,20 @@ public class TenderActivity extends AppCompatActivity {
         tasks.observe(this, new Observer<ArrayList<TenderTask>>() {
             @Override
             public void onChanged(@Nullable ArrayList<TenderTask> tenderTasks) {
-                updateTaskViews(tenderTasks);
+                if (tenderTasks != null && !tenderTasks.isEmpty()) {
+                    Log.v(TAG, "tasks: " + tenderTasks.get(0).getTenderId());
+                    updateTaskViews(tenderTasks);
+                }
             }
         });
         MutableLiveData<ArrayList<TenderTaskWork>> works = model.getTenderTaskWorkArrayList();
         works.observe(this, new Observer<ArrayList<TenderTaskWork>>() {
             @Override
             public void onChanged(@Nullable ArrayList<TenderTaskWork> tenderTaskWorks) {
-                showTenderWork(tenderTaskWorks);
+                if (tenderTaskWorks != null && !tenderTaskWorks.isEmpty()) {
+                    Log.v(TAG, "works: " + tenderTaskWorks.get(0).getId());
+                    showTenderWork(tenderTaskWorks);
+                }
             }
         });
 
