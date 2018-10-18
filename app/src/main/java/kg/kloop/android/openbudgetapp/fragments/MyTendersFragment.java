@@ -63,33 +63,35 @@ public class MyTendersFragment extends Fragment {
             @Override
             public void onChanged(@android.support.annotation.Nullable User user) {
                 currentUser = user;
-                CollectionReference usersTendersCollectionRef = db.collection("users/" + user.getId() + "/tenders");
-                usersTendersCollectionRef.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if (!queryDocumentSnapshots.isEmpty()) {
-                            for (DocumentSnapshot tenderId : queryDocumentSnapshots) {
-                                tenderArrayList.clear();
-                                if (tenderId.exists()) {
-                                    tendersCollectionReference.whereEqualTo("id", tenderId.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
-                                                tenderArrayList.add(task.getResult().toObjects(Tender.class).get(0)); //there must be only one tender with correct id
-                                                adapter.notifyDataSetChanged();
-                                            } else Log.d(TAG, task.getException().getMessage());
-                                        }
-                                    });
+                if (user != null) {
+                    CollectionReference usersTendersCollectionRef = db.collection("users/" + user.getId() + "/tenders");
+                    usersTendersCollectionRef.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                for (DocumentSnapshot tenderId : queryDocumentSnapshots) {
+                                    tenderArrayList.clear();
+                                    if (tenderId.exists()) {
+                                        tendersCollectionReference.whereEqualTo("id", tenderId.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
+                                                    tenderArrayList.add(task.getResult().toObjects(Tender.class).get(0)); //there must be only one tender with correct id
+                                                    adapter.notifyDataSetChanged();
+                                                } else Log.d(TAG, task.getException().getMessage());
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-                adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, currentUser);
-                myTendersRecyclerView.setHasFixedSize(true);
-                myTendersRecyclerView.setAdapter(adapter);
-                myTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    });
+                    adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, currentUser);
+                    myTendersRecyclerView.setHasFixedSize(true);
+                    myTendersRecyclerView.setAdapter(adapter);
+                    myTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                }
             }
         });
         return view;

@@ -167,6 +167,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
             }
         }
         if (requestCode == DO_TASK_REQUEST_CODE) {
+            controller.updateTenderWork();
             model.getTenderTaskWorkArrayList().observe(this, new Observer<ArrayList<TenderTaskWork>>() {
                 @Override
                 public void onChanged(@Nullable ArrayList<TenderTaskWork> tenderTasks) {

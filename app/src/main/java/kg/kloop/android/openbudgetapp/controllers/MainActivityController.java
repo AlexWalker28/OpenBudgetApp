@@ -24,16 +24,21 @@ public class MainActivityController {
     private FirebaseFirestore db;
     private User user;
     private MainViewModel mainViewModel;
+    private FirebaseUser firebaseUser;
 
     public MainActivityController(final MainViewModel mainViewModel) {
         this.mainViewModel = mainViewModel;
         db = FirebaseFirestore.getInstance();
         mainViewModel.setDb(db);
-        MutableLiveData<FirebaseUser> firebaseUserMutableLiveData = mainViewModel.getFirebaseUserMutableLiveData();
         usersCollectionRef = db.collection("users");
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mainViewModel.getFirebaseUserMutableLiveData().setValue(firebaseUser);
 
+        getUserData();
+    }
+
+    private void getUserData() {
+        MutableLiveData<FirebaseUser> firebaseUserMutableLiveData = mainViewModel.getFirebaseUserMutableLiveData();
         if (firebaseUserMutableLiveData.getValue() != null) {
             DocumentReference userDocRef = db.document("users/" + firebaseUserMutableLiveData.getValue().getUid());
             userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -84,6 +89,12 @@ public class MainActivityController {
     }
 
     public void signOut() {
-        mainViewModel.getFirebaseUserMutableLiveData().setValue(null);
+        mainViewModel.getUserLiveData().setValue(null);
+    }
+
+    public void signIn() {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mainViewModel.getFirebaseUserMutableLiveData().setValue(firebaseUser);
+        getUserData();
     }
 }

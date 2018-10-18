@@ -127,4 +127,8 @@ public class TenderActivityController {
             }
         });
     }
+
+    public void updateTenderWork() {
+        //TODO: updateTenderWork()
+    }
 }

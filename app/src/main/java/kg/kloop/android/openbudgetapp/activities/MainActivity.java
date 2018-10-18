@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -99,15 +100,16 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         if (requestCode == RC_SIGN_IN) {
             //IdpResponse response = IdpResponse.fromResultIntent(data);
             if (resultCode == RESULT_OK) {
+                controller.signIn();
                 mainViewModel.getFirebaseUserMutableLiveData().observe(this, new Observer<FirebaseUser>() {
                     @Override
                     public void onChanged(@Nullable FirebaseUser firebaseUser) {
                         if (firebaseUser != null) {
                             controller.saveUserToDb(firebaseUser);
                         }
+                        updateLayout();
                     }
                 });
-                updateLayout();
             }
         }
     }
@@ -129,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.yout_signed_out), Toast.LENGTH_SHORT).show();
                                     controller.signOut();
+                                    hideUi();
+                                    signIn();
                                 } else {
                                     Log.v(TAG, task.getException().getMessage());
                                 }
@@ -136,5 +140,10 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                         });
         }
         return true;
+    }
+
+    private void hideUi() {
+        LinearLayout linearLayout = findViewById(R.id.main_activity_linear_layout);
+        linearLayout.removeAllViews();
     }
 }
