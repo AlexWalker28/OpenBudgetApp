@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -46,7 +48,7 @@ public class DoTaskActivity extends AppCompatActivity {
     private static final String TAG = DoTaskActivity.class.getSimpleName();
     private FirebaseFirestore db;
     private ArrayList<TenderTask> tasks;
-    private CollectionReference taskCollectionRef;
+    private DocumentReference taskDocRef;
     private EditText doTaskEditText;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
@@ -61,8 +63,10 @@ public class DoTaskActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("images");
-        String tenderId = getIntent().getStringExtra("tender_id");
-        taskCollectionRef = db.collection("tenders/" + tenderId + "/tasks");
+        Intent intent = getIntent();
+        String tenderId = intent.getStringExtra("tender_id");
+        String taskId = intent.getStringExtra("task_id");
+        taskDocRef = db.document("tenders/" + tenderId + "/tasks/" + taskId);
 
         final TextView tasksTextView = findViewById(R.id.do_task_task_text_view);
         progressBar = findViewById(R.id.do_task_progress_bar);
@@ -71,12 +75,11 @@ public class DoTaskActivity extends AppCompatActivity {
         ImageButton attachFileImageButton = findViewById(R.id.add_attachment_image_button);
         tasks = new ArrayList<>();
 
-        taskCollectionRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        taskDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                tasks.addAll(queryDocumentSnapshots.toObjects(TenderTask.class));
-                for (TenderTask task : tasks) {
-                    tasksTextView.append(task.getDescription() + "\n");
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    tasksTextView.setText(documentSnapshot.toObject(TenderTask.class).getDescription());
                 }
             }
         });
@@ -194,9 +197,7 @@ public class DoTaskActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.do_task_send_menu_item:
-                CollectionReference taskWorkCollectionRef = taskCollectionRef
-                        .document(tasks.get(0).getId())
-                        .collection("work");
+                CollectionReference taskWorkCollectionRef = taskDocRef.collection("work");
                 TenderTaskWork tenderTaskWork = new TenderTaskWork();
                 tenderTaskWork.setId(taskWorkCollectionRef.document().getId());
                 tenderTaskWork.setText(doTaskEditText.getText().toString());

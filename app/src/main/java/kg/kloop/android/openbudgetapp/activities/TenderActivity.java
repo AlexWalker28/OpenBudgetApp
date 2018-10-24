@@ -153,11 +153,6 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                     }
                 });
                 break;
-            case R.id.add_tender_task_data_menu_item:
-                Intent intent1 = new Intent(TenderActivity.this, DoTaskActivity.class);
-                intent1.putExtra("tender_id", tender.getId());
-                startActivityForResult(intent1, DO_TASK_REQUEST_CODE);
-                break;
         }
         return true;
     }
