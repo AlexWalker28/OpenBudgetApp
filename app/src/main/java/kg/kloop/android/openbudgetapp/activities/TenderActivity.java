@@ -10,22 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.adapters.TenderTaskRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.adapters.TenderWorkRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.controllers.TenderActivityController;
 import kg.kloop.android.openbudgetapp.models.TenderActivityModel;
@@ -45,7 +38,9 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
     private User currentUser;
     private Tender tender;
     private ArrayList<TenderTaskWork> tenderTaskWorkArrayList;
-    private TenderWorkRecyclerViewAdapter adapter;
+    private TenderWorkRecyclerViewAdapter taskWorkAdapter;
+    private TenderTaskRecyclerViewAdapter taskAdapter;
+    private ArrayList<TenderTask> tenderTaskArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,26 +54,32 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         tender = model.getTender();
         currentUser = model.getCurrentUser();
         tenderTaskWorkArrayList = new ArrayList<>();
+        tenderTaskArrayList = new ArrayList<>();
 
         TextView purchaseTextView = findViewById(R.id.tender_purchase_text_view);
         TextView plannedSumTextView = findViewById(R.id.tender_planned_sum_text_view);
         TextView orgNameTextView = findViewById(R.id.tender_org_name_text_view);
+        RecyclerView tasksRecyclerView = findViewById(R.id.tender_task_recycler_view);
         RecyclerView workRecyclerView = findViewById(R.id.tender_work_recycler_view);
 
         purchaseTextView.setText(tender.getPurchase());
         plannedSumTextView.setText(model.getTenderSum());
         orgNameTextView.setText(tender.getOrgName());
-        adapter = new TenderWorkRecyclerViewAdapter(getApplicationContext(), tenderTaskWorkArrayList);
-        workRecyclerView.setAdapter(adapter);
+        taskAdapter = new TenderTaskRecyclerViewAdapter(getApplicationContext(), tenderTaskArrayList);
+        taskWorkAdapter = new TenderWorkRecyclerViewAdapter(getApplicationContext(), tenderTaskWorkArrayList);
+        workRecyclerView.setAdapter(taskWorkAdapter);
         workRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tasksRecyclerView.setAdapter(taskAdapter);
+        tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         MutableLiveData<ArrayList<TenderTask>> tasks = model.getTenderTaskArrayListMutableLiveData();
         tasks.observe(this, new Observer<ArrayList<TenderTask>>() {
             @Override
             public void onChanged(@Nullable ArrayList<TenderTask> tenderTasks) {
                 if (tenderTasks != null && !tenderTasks.isEmpty()) {
-                    Log.v(TAG, "tasks: " + tenderTasks.get(0).getTenderId());
-                    updateTaskViews(tenderTasks);
+                    Log.v(TAG, "tasks: " + tenderTasks.size());
+                    tenderTaskArrayList.addAll(tenderTasks);
+                    taskAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -89,8 +90,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                 if (tenderTaskWorks != null && !tenderTaskWorks.isEmpty()) {
                     Log.v(TAG, "works: " + tenderTaskWorks.size());
                     tenderTaskWorkArrayList.addAll(tenderTaskWorks);
-                    adapter.notifyDataSetChanged();
-                    //showTenderWork(tenderTaskWorks);
+                    taskWorkAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -170,7 +170,8 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                         @Override
                         public void onChanged(@Nullable Boolean isTaskAdded) {
                             if (isTaskAdded) {
-                                addTask(model.getAddedTask());
+                                tenderTaskArrayList.add(model.getAddedTask());
+                                taskAdapter.notifyDataSetChanged();
                             }
                         }
                     });
@@ -189,22 +190,6 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         }
 
 
-    }
-
-    private void addTask(TenderTask task) {
-        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tender_task, null);
-        TextView textView = view.findViewById(R.id.tender_task_text_view);
-        textView.setText(task.getDescription());
-        LinearLayout linearLayout = findViewById(R.id.tender_task_linear_layout);
-        linearLayout.addView(view);
-    }
-
-    private void updateTaskViews(ArrayList<TenderTask> tenderTasks) {
-        LinearLayout linearLayout = findViewById(R.id.tender_task_linear_layout);
-        linearLayout.removeAllViews();
-        for (TenderTask tenderTask : tenderTasks) {
-            addTask(tenderTask);
-        }
     }
 
 }

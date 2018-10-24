@@ -2,11 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/tender_task_text_view"
+        android:id="@+id/tender_task_item_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -31,7 +31,7 @@
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_photo_black_24dp"
         app:layout_constraintEnd_toStartOf="@+id/tender_task_video_image_view"
-        app:layout_constraintTop_toBottomOf="@+id/tender_task_text_view" />
+        app:layout_constraintTop_toBottomOf="@+id/tender_task_item_text_view" />
 
     <ImageView
         android:id="@+id/tender_task_video_image_view"
@@ -50,7 +50,7 @@
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_audiotrack_black_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/tender_task_photo_image_view"
-        app:layout_constraintEnd_toEndOf="@+id/tender_task_text_view"
+        app:layout_constraintEnd_toEndOf="@+id/tender_task_item_text_view"
         app:layout_constraintTop_toTopOf="@+id/tender_task_photo_image_view" />
 
 </android.support.constraint.ConstraintLayout>
