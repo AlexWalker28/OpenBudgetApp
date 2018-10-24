@@ -1,8 +1,6 @@
 package kg.kloop.android.openbudgetapp.objects;
 
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,7 +9,8 @@ public class TenderTask implements Serializable {
     private String description;
     private boolean isCompleted;
     private ArrayList<String> attachmentTypes;
-    private LatLng location;
+    private double latitude;
+    private double longitude;
     private String tenderId;
 
     public TenderTask() {
@@ -58,11 +57,19 @@ public class TenderTask implements Serializable {
         this.tenderId = tenderId;
     }
 
-    public LatLng getLocation() {
-        return location;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(LatLng location) {
-        this.location = location;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

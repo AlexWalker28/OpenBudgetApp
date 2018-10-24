@@ -26,6 +26,7 @@ public class TenderActivityModel {
         myTender = new MutableLiveData<>();
         tenderClosed = new MutableLiveData<>();
         tenderAccepted = new MutableLiveData<>();
+        taskAdded = new MutableLiveData<>();
     }
 
     public Tender getTender() {

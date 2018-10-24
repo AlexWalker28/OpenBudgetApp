@@ -121,7 +121,8 @@ public class TenderActivityController {
                 if (task.isSuccessful()) {
                     DocumentSnapshot snapshot = task.getResult();
                     if (snapshot.exists()) {
-                        model.getTaskAdded().postValue(true);
+                        model.setAddedTask(snapshot.toObject(TenderTask.class));
+                        model.getTaskAdded().setValue(true);
                     }
                 }
             }

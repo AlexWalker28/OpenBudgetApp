@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -103,9 +101,9 @@ public class AddTaskActivity extends AppCompatActivity {
             switch (requestCode) {
                 case LOCATION_REQUEST_CODE:
                     if (data != null) {
-                        LatLng latLng = new LatLng(data.getDoubleExtra("lat", 0), data.getDoubleExtra("lng", 0));
-                        task.setLocation(latLng);
-                        Toast.makeText(getApplicationContext(), "location: " + latLng.toString(), Toast.LENGTH_SHORT).show();
+                        task.setLatitude(data.getDoubleExtra("lat", 0));
+                        task.setLongitude(data.getDoubleExtra("lng", 0));
+                        Toast.makeText(getApplicationContext(), "lat: " + task.getLatitude(), Toast.LENGTH_SHORT).show();
                     }
                     break;
             }
