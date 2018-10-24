@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:paddingStart="@dimen/horizontal_padding"
         android:paddingTop="@dimen/horizontal_padding"
@@ -18,6 +17,7 @@
         android:paddingBottom="@dimen/horizontal_padding"
         android:textColor="@android:color/black"
         android:textSize="@dimen/title_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/ic_photo_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tender_task_video_image_view"
         app:layout_constraintTop_toBottomOf="@+id/tender_task_item_text_view" />
 

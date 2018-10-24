@@ -39,11 +39,17 @@ public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<TenderTa
         return tenderTaskArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView taskTextView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             taskTextView = itemView.findViewById(R.id.tender_task_item_text_view);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
         }
     }
 }
