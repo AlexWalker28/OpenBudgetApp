@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.objects.Tender;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 
 public class TenderWorkRecyclerViewAdapter extends RecyclerView.Adapter<TenderWorkRecyclerViewAdapter.ViewHolder> {

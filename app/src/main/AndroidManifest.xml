@@ -41,12 +41,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".activities.MapsActivity">
+        <activity android:name=".activities.MapsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="kg.kloop.android.openbudgetapp.activities.AddTaskActivity" />
         </activity>
+        <activity android:name=".activities.WorkActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package kg.kloop.android.openbudgetapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,16 +12,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.activities.WorkActivity;
+import kg.kloop.android.openbudgetapp.objects.Tender;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
 
 public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<TenderTaskRecyclerViewAdapter.ViewHolder> {
 
     private Context context;
     private ArrayList<TenderTask> tenderTaskArrayList;
+    private Tender tender;
 
-    public TenderTaskRecyclerViewAdapter(Context context, ArrayList<TenderTask> tenderTaskArrayList) {
+    public TenderTaskRecyclerViewAdapter(Context context, ArrayList<TenderTask> tenderTaskArrayList, Tender tender) {
         this.context = context;
         this.tenderTaskArrayList = tenderTaskArrayList;
+        this.tender = tender;
     }
 
     @NonNull
@@ -49,7 +54,10 @@ public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<TenderTa
 
         @Override
         public void onClick(View view) {
-
+            Intent intent = new Intent(context.getApplicationContext(), WorkActivity.class);
+            intent.putExtra("task_id", tenderTaskArrayList.get(getAdapterPosition()).getId());
+            intent.putExtra("tender_id", tender.getId());
+            context.startActivity(intent);
         }
     }
 }
