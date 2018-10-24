@@ -65,6 +65,7 @@ public class TenderActivityController {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     model.getTenderTaskWorkArrayList().setValue((ArrayList<TenderTaskWork>) task.getResult().toObjects(TenderTaskWork.class));
+                                    Log.v(TAG, "tender works: " + model.getTenderTaskWorkArrayList().getValue().size());
                                     //updateWorkViews(task.getResult().getDocuments(), linearLayout);
                                 } else Log.v(TAG, task.getException().getMessage());
                             }

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.adapters.TenderWorkRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.controllers.TenderActivityController;
 import kg.kloop.android.openbudgetapp.models.TenderActivityModel;
 import kg.kloop.android.openbudgetapp.objects.Tender;
@@ -41,6 +44,8 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
     private TenderActivityModel model;
     private User currentUser;
     private Tender tender;
+    private ArrayList<TenderTaskWork> tenderTaskWorkArrayList;
+    private TenderWorkRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +58,19 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
 
         tender = model.getTender();
         currentUser = model.getCurrentUser();
+        tenderTaskWorkArrayList = new ArrayList<>();
 
         TextView purchaseTextView = findViewById(R.id.tender_purchase_text_view);
         TextView plannedSumTextView = findViewById(R.id.tender_planned_sum_text_view);
         TextView orgNameTextView = findViewById(R.id.tender_org_name_text_view);
+        RecyclerView workRecyclerView = findViewById(R.id.tender_work_recycler_view);
 
         purchaseTextView.setText(tender.getPurchase());
         plannedSumTextView.setText(model.getTenderSum());
         orgNameTextView.setText(tender.getOrgName());
+        adapter = new TenderWorkRecyclerViewAdapter(getApplicationContext(), tenderTaskWorkArrayList);
+        workRecyclerView.setAdapter(adapter);
+        workRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         MutableLiveData<ArrayList<TenderTask>> tasks = model.getTenderTaskArrayListMutableLiveData();
         tasks.observe(this, new Observer<ArrayList<TenderTask>>() {
@@ -77,8 +87,10 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
             @Override
             public void onChanged(@Nullable ArrayList<TenderTaskWork> tenderTaskWorks) {
                 if (tenderTaskWorks != null && !tenderTaskWorks.isEmpty()) {
-                    Log.v(TAG, "works: " + tenderTaskWorks.get(0).getId());
-                    showTenderWork(tenderTaskWorks);
+                    Log.v(TAG, "works: " + tenderTaskWorks.size());
+                    tenderTaskWorkArrayList.addAll(tenderTaskWorks);
+                    adapter.notifyDataSetChanged();
+                    //showTenderWork(tenderTaskWorks);
                 }
             }
         });
@@ -171,7 +183,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
             model.getTenderTaskWorkArrayList().observe(this, new Observer<ArrayList<TenderTaskWork>>() {
                 @Override
                 public void onChanged(@Nullable ArrayList<TenderTaskWork> tenderTasks) {
-                    showTenderWork(tenderTasks);
+                    //showTenderWork(tenderTasks);
                 }
             });
         }
@@ -195,29 +207,4 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         }
     }
 
-
-    private void showTenderWork(ArrayList<TenderTaskWork> tenderTaskWorks) {
-        final LinearLayout linearLayout = findViewById(R.id.tender_work_linear_layout);
-        linearLayout.removeAllViews();
-        updateWorkViews(tenderTaskWorks, linearLayout);
-    }
-
-    private void updateWorkViews(List<TenderTaskWork> works, LinearLayout linearLayout) {
-        for (TenderTaskWork work : works) {
-            addWorkView(work, linearLayout);
-        }
-    }
-
-    private void addWorkView(TenderTaskWork tenderTaskWork, ViewGroup layout) {
-        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tender_work, (ViewGroup) layout.getRootView(), false);
-        TextView textView = view.findViewById(R.id.tender_work_text_view);
-        textView.setText(tenderTaskWork.getText());
-        if (tenderTaskWork.getPhotoUrl() != null) {
-            ImageView imageView = view.findViewById(R.id.tender_work_image_view);
-            Glide.with(this)
-                    .load(tenderTaskWork.getPhotoUrl())
-                    .into(imageView);
-        }
-        layout.addView(view);
-    }
 }

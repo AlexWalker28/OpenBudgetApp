@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tender_work_text_view"
+            android:id="@+id/tender_work_item_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/horizontal_padding"
@@ -35,7 +35,7 @@
             tools:text="Some text of work" />
 
         <ImageView
-            android:id="@+id/tender_work_image_view"
+            android:id="@+id/tender_work_item_image_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/horizontal_padding"
@@ -46,9 +46,9 @@
             android:paddingTop="@dimen/horizontal_padding"
             android:paddingEnd="@dimen/horizontal_padding"
             android:paddingBottom="@dimen/horizontal_padding"
-            app:layout_constraintEnd_toEndOf="@id/tender_work_text_view"
-            app:layout_constraintStart_toStartOf="@id/tender_work_text_view"
-            app:layout_constraintTop_toBottomOf="@id/tender_work_text_view"
+            app:layout_constraintEnd_toEndOf="@id/tender_work_item_text_view"
+            app:layout_constraintStart_toStartOf="@id/tender_work_item_text_view"
+            app:layout_constraintTop_toBottomOf="@id/tender_work_item_text_view"
             tools:src="@drawable/ic_photo_black_24dp" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
