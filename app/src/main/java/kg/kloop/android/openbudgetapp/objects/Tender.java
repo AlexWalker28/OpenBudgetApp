@@ -1,12 +1,11 @@
 package kg.kloop.android.openbudgetapp.objects;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Tender implements Serializable {
     private String id;
-    private String linkId;
-    private String tenderNum;
+    private String link_id;
+    private String tender_num;
     private String orgName;
     private String orgAddress;
     private String orgPhone;
@@ -33,20 +32,20 @@ public class Tender implements Serializable {
         this.id = id;
     }
 
-    public String getLinkId() {
-        return linkId;
+    public String getLink_id() {
+        return link_id;
     }
 
-    public void setLinkId(String linkId) {
-        this.linkId = linkId;
+    public void setLink_id(String link_id) {
+        this.link_id = link_id;
     }
 
-    public String getTenderNum() {
-        return tenderNum;
+    public String getTender_num() {
+        return tender_num;
     }
 
-    public void setTenderNum(String tenderNum) {
-        this.tenderNum = tenderNum;
+    public void setTender_num(String tender_num) {
+        this.tender_num = tender_num;
     }
 
     public String getOrgName() {
