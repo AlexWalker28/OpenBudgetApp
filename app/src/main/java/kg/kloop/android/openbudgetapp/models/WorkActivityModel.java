@@ -8,7 +8,7 @@ import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 
 public class WorkActivityModel {
 
-    private String tenderId;
+    private String tenderNum;
     private String taskId;
 
     public WorkActivityModel() {
@@ -25,12 +25,12 @@ public class WorkActivityModel {
         this.workArrayList = workArrayList;
     }
 
-    public void setTenderId(String tenderId) {
-        this.tenderId = tenderId;
+    public void setTenderNum(String tenderNum) {
+        this.tenderNum = tenderNum;
     }
 
-    public String getTenderId() {
-        return tenderId;
+    public String getTenderNum() {
+        return tenderNum;
     }
 
     public void setTaskId(String taskId) {

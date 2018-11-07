@@ -64,9 +64,9 @@ public class DoTaskActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("images");
         Intent intent = getIntent();
-        String tenderId = intent.getStringExtra("tender_id");
+        String tenderNum = intent.getStringExtra("tender_num");
         String taskId = intent.getStringExtra("task_id");
-        taskDocRef = db.document("tenders/" + tenderId + "/tasks/" + taskId);
+        taskDocRef = db.document("tenders_db/" + tenderNum + "/tasks/" + taskId);
 
         final TextView tasksTextView = findViewById(R.id.do_task_task_text_view);
         progressBar = findViewById(R.id.do_task_progress_bar);

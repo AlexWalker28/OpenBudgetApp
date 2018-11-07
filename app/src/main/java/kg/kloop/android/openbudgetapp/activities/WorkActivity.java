@@ -18,7 +18,6 @@ import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.adapters.WorkRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.controllers.WorkActivityController;
 import kg.kloop.android.openbudgetapp.models.WorkActivityModel;
-import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 
 public class WorkActivity extends AppCompatActivity {
@@ -44,10 +43,10 @@ public class WorkActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String taskId = intent.getStringExtra("task_id");
-        String tenderId = intent.getStringExtra("tender_id");
-        model.setTenderId(tenderId);
+        String tenderNum = intent.getStringExtra("tender_num");
+        model.setTenderNum(tenderNum);
         model.setTaskId(taskId);
-        controller.getWorkForTask(tenderId, taskId);
+        controller.getWorkForTask(tenderNum, taskId);
         MutableLiveData<ArrayList<TenderTaskWork>> liveData = model.getWorkArrayList();
         liveData.observe(this, new Observer<ArrayList<TenderTaskWork>>() {
             @Override
@@ -72,7 +71,7 @@ public class WorkActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.do_work_menu_item:
                 Intent intent = new Intent(WorkActivity.this, DoTaskActivity.class);
-                intent.putExtra("tender_id", model.getTenderId());
+                intent.putExtra("tender_num", model.getTenderNum());
                 intent.putExtra("task_id", model.getTaskId());
                 startActivity(intent);
                 break;

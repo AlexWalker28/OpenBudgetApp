@@ -44,15 +44,15 @@ public class TenderActivityController {
         model.setCurrentUser(currentUser);
         tender = (Tender) intent.getSerializableExtra("tender");
         model.setTender(tender);
-        tasksCollectionReference = db.collection("tenders/" + tender.getId() + "/tasks/");
-        tenderDocumentReference = db.document("tenders/" + tender.getId());
+        tasksCollectionReference = db.collection("tenders_db/" + tender.getTender_num() + "/tasks/");
+        tenderDocumentReference = db.document("tenders_db/" + tender.getTender_num());
         userDocRef = db.document("users/" + currentUser.getId());
         taskArrayList = new ArrayList<>();
 
         tasksCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
-                if (queryDocumentSnapshots != null) {
+                if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
                     taskArrayList.addAll(queryDocumentSnapshots.toObjects(TenderTask.class));
                     model.getTenderTaskArrayListMutableLiveData().setValue(taskArrayList);
 

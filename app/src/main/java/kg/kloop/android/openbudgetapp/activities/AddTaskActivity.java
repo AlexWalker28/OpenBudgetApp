@@ -36,7 +36,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private RadioButton videoRadioButton;
     private RadioButton audioRadioButton;
     private ImageView locationImageView;
-    private String tenderId;
+    private String tenderNum;
     private CollectionReference collectionReference;
     private TenderTask task;
 
@@ -52,8 +52,8 @@ public class AddTaskActivity extends AppCompatActivity {
         locationImageView = findViewById(R.id.add_task_location_image_view);
         Intent intent = getIntent();
         task = new TenderTask();
-        tenderId = intent.getStringExtra("tender_id");
-        collectionReference = db.collection("tenders/" + tenderId + "/tasks/");
+        tenderNum = intent.getStringExtra("tender_num");
+        collectionReference = db.collection("tenders_db/" + tenderNum + "/tasks/");
 
         locationImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +117,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 task.setDescription(taskEditText.getText().toString());
                 task.setAttachmentTypes(getAttachmentTypes());
-                task.setTenderId(tenderId);
+                task.setTenderId(tenderNum);
                 String taskId = collectionReference.document().getId();
                 task.setId(taskId);
                 collectionReference.document(taskId).set(task);

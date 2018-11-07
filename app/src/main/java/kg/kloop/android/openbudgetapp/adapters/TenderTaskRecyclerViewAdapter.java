@@ -56,7 +56,7 @@ public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<TenderTa
         public void onClick(View view) {
             Intent intent = new Intent(context.getApplicationContext(), WorkActivity.class);
             intent.putExtra("task_id", tenderTaskArrayList.get(getAdapterPosition()).getId());
-            intent.putExtra("tender_id", tender.getId());
+            intent.putExtra("tender_num", tender.getTender_num());
             context.startActivity(intent);
         }
     }

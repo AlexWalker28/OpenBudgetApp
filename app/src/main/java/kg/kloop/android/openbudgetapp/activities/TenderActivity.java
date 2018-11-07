@@ -125,7 +125,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         switch (item.getItemId()) {
             case R.id.add_task_menu_item:
                 Intent intent = new Intent(TenderActivity.this, AddTaskActivity.class);
-                intent.putExtra("tender_id", tender.getId());
+                intent.putExtra("tender_num", tender.getTender_num());
                 startActivityForResult(intent, ADD_TASK_REQUEST_CODE);
                 break;
             case R.id.close_tender_menu_item:
