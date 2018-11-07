@@ -56,9 +56,7 @@ public class TenderActivityController {
                     taskArrayList.addAll(queryDocumentSnapshots.toObjects(TenderTask.class));
                     model.getTenderTaskArrayListMutableLiveData().setValue(taskArrayList);
 
-                    String taskId = taskArrayList.get(0).getId(); // just for first task for now TODO: fix this
-                    workCollectionReference = tasksCollectionReference.document(taskId).collection("work");
-                    for (TenderTask task : taskArrayList) {
+                    for (TenderTask task : taskArrayList) { //TODO: there is probably better solution on db level
                         workCollectionReference = tasksCollectionReference.document(task.getId()).collection("work");
                         workCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
