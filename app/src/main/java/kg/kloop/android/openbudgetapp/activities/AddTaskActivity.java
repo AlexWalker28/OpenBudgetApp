@@ -17,6 +17,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -37,8 +38,9 @@ public class AddTaskActivity extends AppCompatActivity {
     private RadioButton audioRadioButton;
     private ImageView locationImageView;
     private String tenderNum;
-    private CollectionReference collectionReference;
+    private CollectionReference tenderTasksColRef;
     private TenderTask task;
+    private DocumentReference tenderDocRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,8 @@ public class AddTaskActivity extends AppCompatActivity {
         Intent intent = getIntent();
         task = new TenderTask();
         tenderNum = intent.getStringExtra("tender_num");
-        collectionReference = db.collection("tenders_db/" + tenderNum + "/tasks/");
+        tenderTasksColRef = db.collection("tenders_db/" + tenderNum + "/tasks/");
+        tenderDocRef = db.document("tenders_db/" + tenderNum);
 
         locationImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,9 +121,10 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setDescription(taskEditText.getText().toString());
                 task.setAttachmentTypes(getAttachmentTypes());
                 task.setTenderId(tenderNum);
-                String taskId = collectionReference.document().getId();
+                String taskId = tenderTasksColRef.document().getId();
                 task.setId(taskId);
-                collectionReference.document(taskId).set(task);
+                tenderTasksColRef.document(taskId).set(task);
+                tenderDocRef.update("hasTasks", true);
                 intent.putExtra("task_id", taskId);
                 setResult(RESULT_OK, intent);
                 finish();

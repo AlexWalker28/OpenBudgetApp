@@ -18,10 +18,11 @@ public class Tender implements Serializable {
     private String currency;
     private String deadline;
     private String validPeriod;
+    private Boolean hasTasks;
     private boolean isCompleted;
 
-    Tender() {
-        isCompleted = false;
+    public Tender() {
+
     }
 
     public String getId() {
@@ -142,6 +143,14 @@ public class Tender implements Serializable {
 
     public void setValidPeriod(String validPeriod) {
         this.validPeriod = validPeriod;
+    }
+
+    public Boolean getHasTasks() {
+        return hasTasks;
+    }
+
+    public void setHasTasks(Boolean hasTasks) {
+        this.hasTasks = hasTasks;
     }
 
     public boolean isCompleted() {

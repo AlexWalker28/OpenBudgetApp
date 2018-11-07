@@ -69,7 +69,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                 PagedList.Config config = new PagedList.Config.Builder()
                         .setEnablePlaceholders(false)
                         .setPrefetchDistance(10)
-                        .setPageSize(20)
+                        .setPageSize(10)
                         .build();
 
                 FirestorePagingOptions<Tender> options = new FirestorePagingOptions.Builder<Tender>()

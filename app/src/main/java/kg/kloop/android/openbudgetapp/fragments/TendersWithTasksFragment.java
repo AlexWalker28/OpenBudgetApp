@@ -49,7 +49,7 @@ public class TendersWithTasksFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tenders_with_tasks, container, false);
         final RecyclerView tendersWithTasksRecyclerView = view.findViewById(R.id.tenders_with_tasks_recycler_view);
-        final CollectionReference collectionReference = db.collection("tenders");
+        final CollectionReference collectionReference = db.collection("tenders_db");
         tenderArrayList = new ArrayList<>();
         MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         MutableLiveData<User> userLiveData = viewModel.getUserLiveData();
@@ -58,6 +58,7 @@ public class TendersWithTasksFragment extends Fragment {
             public void onChanged(@android.support.annotation.Nullable User user) {
                 adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, user);
                 collectionReference
+                        .whereEqualTo("hasTasks", true)
                         .whereEqualTo("isCompleted", false)
                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
