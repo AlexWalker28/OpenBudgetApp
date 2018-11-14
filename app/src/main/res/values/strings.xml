@@ -24,4 +24,5 @@
     <string name="log_out">Выйти</string>
     <string name="yout_signed_out">Вы вышли из аккаунта</string>
     <string name="title_activity_maps">Map</string>
+    <string name="filter">Фильтр</string>
 </resources>

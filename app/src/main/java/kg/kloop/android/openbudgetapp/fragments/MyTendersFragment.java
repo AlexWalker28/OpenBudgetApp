@@ -55,7 +55,7 @@ public class MyTendersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_my_tenders, container, false);
         final RecyclerView myTendersRecyclerView = view.findViewById(R.id.my_tenders_recycler_view);
-        final CollectionReference tendersCollectionReference = db.collection("tenders");
+        final CollectionReference tendersCollectionReference = db.collection("tenders_db");
         ViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         MutableLiveData<User> userLiveData = ((MainViewModel) viewModel).getUserLiveData();
         tenderArrayList = new ArrayList<>();
@@ -64,7 +64,7 @@ public class MyTendersFragment extends Fragment {
             public void onChanged(@android.support.annotation.Nullable User user) {
                 currentUser = user;
                 if (user != null) {
-                    CollectionReference usersTendersCollectionRef = db.collection("users/" + user.getId() + "/tenders");
+                    CollectionReference usersTendersCollectionRef = db.collection("users/" + user.getId() + "/tenders_db");
                     usersTendersCollectionRef.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {

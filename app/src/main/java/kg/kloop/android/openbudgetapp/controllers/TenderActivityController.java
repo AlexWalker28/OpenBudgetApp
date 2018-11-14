@@ -102,7 +102,7 @@ public class TenderActivityController {
     public void acceptTender() {
         Map<String, String> tenderIdMap = new HashMap<>();
         tenderIdMap.put("id", tender.getId());
-        userDocRef.collection("tenders").document(tender.getId()).set(tenderIdMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        userDocRef.collection("tenders_db").document(tender.getId()).set(tenderIdMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {

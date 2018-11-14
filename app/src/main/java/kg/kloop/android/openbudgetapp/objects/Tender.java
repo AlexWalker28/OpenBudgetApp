@@ -13,7 +13,7 @@ public class Tender implements Serializable {
     private String procuringEntity;
     private String format;
     private String method;
-    private String planSum;
+    private long planSum;
     private String published;
     private String currency;
     private String deadline;
@@ -105,11 +105,11 @@ public class Tender implements Serializable {
         this.method = method;
     }
 
-    public String getPlanSum() {
+    public long getPlanSum() {
         return planSum;
     }
 
-    public void setPlanSum(String planSum) {
+    public void setPlanSum(long planSum) {
         this.planSum = planSum;
     }
 

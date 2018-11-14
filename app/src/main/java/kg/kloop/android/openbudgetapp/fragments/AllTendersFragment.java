@@ -11,11 +11,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,14 +38,15 @@ import kg.kloop.android.openbudgetapp.adapters.TenderFirestorePagingAdapter;
 import kg.kloop.android.openbudgetapp.models.MainViewModel;
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.Tender;
-import kg.kloop.android.openbudgetapp.adapters.TendersRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.objects.User;
 
 public class AllTendersFragment extends Fragment implements LifecycleOwner {
 
+    private static final String TAG = AllTendersFragment.class.getSimpleName();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TenderFirestorePagingAdapter adapter;
     private ArrayList<Tender> tenderArrayList;
+    private CollectionReference tendersDbColRef;
 
     public AllTendersFragment() {
     }
@@ -53,18 +61,19 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_all_tenders, container, false);
         final RecyclerView allTendersRecyclerView = view.findViewById(R.id.all_tenders_recycler_view);
-        final CollectionReference collectionReference = db.collection("tenders_db");
+        tendersDbColRef = db.collection("tenders_db");
         tenderArrayList = new ArrayList<>();
         MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         MutableLiveData<User> userLiveData = viewModel.getUserLiveData();
         userLiveData.observe(this, new Observer<User>() {
             @Override
             public void onChanged(@android.support.annotation.Nullable User user) {
+                setHasOptionsMenu(true);
                 //adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, user);
 
                 // The "base query" is a query with no startAt/endAt/limit clauses that the adapter can use
                 // to form smaller queries for each page.  It should only include where() and orderBy() clauses
-                Query baseQuery = collectionReference.orderBy("tender_num", Query.Direction.DESCENDING);
+                Query baseQuery = tendersDbColRef.orderBy("tender_num", Query.Direction.DESCENDING);
 
                 PagedList.Config config = new PagedList.Config.Builder()
                         .setEnablePlaceholders(false)
@@ -77,7 +86,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                         .setQuery(baseQuery, config, Tender.class)
                         .build();
                 adapter = new TenderFirestorePagingAdapter(getContext(), tenderArrayList, user, options);
-                collectionReference
+                /*tendersDbColRef
                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
                             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -86,15 +95,61 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                                 tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
                                 adapter.notifyDataSetChanged();
                             }
+                        });*/
+                tendersDbColRef.orderBy("planSum", Query.Direction.DESCENDING)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (!task.getResult().isEmpty()) {
+                                        Log.v(TAG, "list size: " + task.getResult().size());
+                                        tenderArrayList.clear();
+                                        tenderArrayList.addAll(task.getResult().toObjects(Tender.class));
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                } else {
+                                    Log.v(TAG, task.getException().getMessage());
+                                }
+                            }
                         });
 
-                allTendersRecyclerView.setHasFixedSize(true);
                 allTendersRecyclerView.setAdapter(adapter);
                 allTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
         });
-
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.filter_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.v(TAG, "item clicked");
+        switch (item.getItemId()) {
+            case R.id.filter_menu_item:
+                tendersDbColRef.orderBy("planSum", Query.Direction.ASCENDING)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (!task.getResult().isEmpty()) {
+                                        Log.v(TAG, "list size: " + task.getResult().size());
+                                        tenderArrayList.clear();
+                                        tenderArrayList.addAll(task.getResult().toObjects(Tender.class));
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                } else {
+                                    Log.v(TAG, task.getException().getMessage());
+                                }
+                            }
+                        });
+        }
+        return true;
+    }
 }
