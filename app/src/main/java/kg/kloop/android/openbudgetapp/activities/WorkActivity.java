@@ -5,12 +5,14 @@ import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,7 @@ public class WorkActivity extends AppCompatActivity {
         controller = new WorkActivityController(model);
         workArrayList = new ArrayList<>();
         RecyclerView workRecyclerView = findViewById(R.id.work_activity_recycler_view);
+        FloatingActionButton fab = findViewById(R.id.do_work_fab);
         adapter = new WorkRecyclerViewAdapter(getApplicationContext(), workArrayList);
         workRecyclerView.setAdapter(adapter);
         workRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -58,24 +61,14 @@ public class WorkActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.work_activity_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.do_work_menu_item:
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Intent intent = new Intent(WorkActivity.this, DoTaskActivity.class);
                 intent.putExtra("tender_num", model.getTenderNum());
                 intent.putExtra("task_id", model.getTaskId());
                 startActivity(intent);
-                break;
-        }
-        return true;
+            }
+        });
     }
 }
