@@ -64,7 +64,7 @@ public class MyTendersFragment extends Fragment {
             public void onChanged(@android.support.annotation.Nullable User user) {
                 currentUser = user;
                 if (user != null) {
-                    CollectionReference usersTendersCollectionRef = db.collection("users/" + user.getId() + "/tenders_db");
+                    CollectionReference usersTendersCollectionRef = db.collection("users/" + user.getId() + "/tenders");
                     usersTendersCollectionRef.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
