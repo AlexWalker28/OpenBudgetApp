@@ -41,7 +41,9 @@ public class WorkActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.do_work_fab);
         adapter = new WorkRecyclerViewAdapter(getApplicationContext(), workArrayList);
         workRecyclerView.setAdapter(adapter);
-        workRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        ((LinearLayoutManager) layoutManager).setReverseLayout(true);
+        workRecyclerView.setLayoutManager(layoutManager);
         workRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         Intent intent = getIntent();
@@ -55,6 +57,7 @@ public class WorkActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable ArrayList<TenderTaskWork> tenderTaskWorks) {
                 if (tenderTaskWorks != null) {
+                    workArrayList.clear();
                     workArrayList.addAll(tenderTaskWorks);
                     adapter.notifyDataSetChanged();
                 }
