@@ -106,7 +106,6 @@ public class AddTaskActivity extends AppCompatActivity {
                     if (data != null) {
                         task.setLatitude(data.getDoubleExtra("lat", 0));
                         task.setLongitude(data.getDoubleExtra("lng", 0));
-                        Toast.makeText(getApplicationContext(), "lat: " + task.getLatitude(), Toast.LENGTH_SHORT).show();
                     }
                     break;
             }

@@ -56,7 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         uiSettings.setZoomControlsEnabled(true);
 
         LatLng kloop = new LatLng(42.856303, 74.620659);
-        mMap.addMarker(new MarkerOptions().position(kloop).title("Kloop"));
+        //mMap.addMarker(new MarkerOptions().position(kloop).title("Kloop"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(kloop, 17));
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {

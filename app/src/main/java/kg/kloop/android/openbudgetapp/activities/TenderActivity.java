@@ -80,6 +80,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
             public void onChanged(@Nullable ArrayList<TenderTask> tenderTasks) {
                 if (tenderTasks != null && !tenderTasks.isEmpty()) {
                     Log.v(TAG, "tasks: " + tenderTasks.size());
+                    tenderTaskArrayList.clear();
                     tenderTaskArrayList.addAll(tenderTasks);
                     taskAdapter.notifyDataSetChanged();
                 }
@@ -91,6 +92,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
             public void onChanged(@Nullable ArrayList<TenderTaskWork> tenderTaskWorks) {
                 if (tenderTaskWorks != null && !tenderTaskWorks.isEmpty()) {
                     Log.v(TAG, "works: " + tenderTaskWorks.size());
+                    tenderTaskWorkArrayList.clear();
                     tenderTaskWorkArrayList.addAll(tenderTaskWorks);
                     taskWorkAdapter.notifyDataSetChanged();
                 }
@@ -167,8 +169,8 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                         @Override
                         public void onChanged(@Nullable Boolean isTaskAdded) {
                             if (isTaskAdded) {
-                                tenderTaskArrayList.add(model.getAddedTask());
-                                taskAdapter.notifyDataSetChanged();
+                                /*tenderTaskArrayList.add(model.getAddedTask());
+                                taskAdapter.notifyDataSetChanged();*/
                             }
                         }
                     });
