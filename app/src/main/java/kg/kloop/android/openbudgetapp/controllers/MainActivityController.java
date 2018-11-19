@@ -71,6 +71,7 @@ public class MainActivityController {
                         newUser.setEmail(firebaseUser.getEmail());
                         newUser.setPhoneNumber(firebaseUser.getPhoneNumber());
                         newUser.setPhotoUrl(String.valueOf(firebaseUser.getPhotoUrl()));
+                        newUser.setRole(Constants.USER);
                         usersCollectionRef.document(newUser.getId()).set(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
