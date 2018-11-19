@@ -25,4 +25,6 @@
     <string name="yout_signed_out">Вы вышли из аккаунта</string>
     <string name="title_activity_maps">Map</string>
     <string name="filter">Фильтр</string>
+    <string name="map">Карта</string>
+    <string name="title_activity_maps_tasks">Map</string>
 </resources>

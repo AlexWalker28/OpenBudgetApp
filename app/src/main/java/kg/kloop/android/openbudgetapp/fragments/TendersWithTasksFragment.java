@@ -9,6 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -48,6 +51,7 @@ public class TendersWithTasksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tenders_with_tasks, container, false);
+        setHasOptionsMenu(true);
         final RecyclerView tendersWithTasksRecyclerView = view.findViewById(R.id.tenders_with_tasks_recycler_view);
         final CollectionReference collectionReference = db.collection("tenders_db");
         tenderArrayList = new ArrayList<>();
@@ -76,5 +80,20 @@ public class TendersWithTasksFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.tasks_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.map_task_menu_item:
+                
+        }
+        return true;
     }
 }
