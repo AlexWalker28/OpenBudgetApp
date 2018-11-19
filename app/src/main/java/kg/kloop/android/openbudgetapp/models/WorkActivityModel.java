@@ -10,6 +10,9 @@ public class WorkActivityModel {
 
     private String tenderNum;
     private String taskId;
+    private String taskDescription;
+    private double taskLat;
+    private double taskLng;
 
     public WorkActivityModel() {
         workArrayList = new MutableLiveData<>();
@@ -39,5 +42,29 @@ public class WorkActivityModel {
 
     public String getTaskId() {
         return taskId;
+    }
+
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
+    }
+
+    public String getTaskDescription() {
+        return taskDescription;
+    }
+
+    public void setTaskLat(double taskLat) {
+        this.taskLat = taskLat;
+    }
+
+    public double getTaskLat() {
+        return taskLat;
+    }
+
+    public void setTaskLng(double taskLng) {
+        this.taskLng = taskLng;
+    }
+
+    public double getTaskLng() {
+        return taskLng;
     }
 }
