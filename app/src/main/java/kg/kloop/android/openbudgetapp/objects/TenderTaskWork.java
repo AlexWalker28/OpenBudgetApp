@@ -4,6 +4,7 @@ public class TenderTaskWork {
     private String id;
     private String text;
     private String photoUrl;
+    private User author;
 
     public TenderTaskWork() {
     }
@@ -30,5 +31,13 @@ public class TenderTaskWork {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

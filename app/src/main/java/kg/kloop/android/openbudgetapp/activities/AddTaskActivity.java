@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
+import kg.kloop.android.openbudgetapp.objects.User;
 
 public class AddTaskActivity extends AppCompatActivity {
 
@@ -41,6 +41,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private CollectionReference tenderTasksColRef;
     private TenderTask task;
     private DocumentReference tenderDocRef;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class AddTaskActivity extends AppCompatActivity {
         Intent intent = getIntent();
         task = new TenderTask();
         tenderNum = intent.getStringExtra("tender_num");
+        user = (User) intent.getSerializableExtra("current_user");
         tenderTasksColRef = db.collection("tenders_db/" + tenderNum + "/tasks/");
         tenderDocRef = db.document("tenders_db/" + tenderNum);
 
@@ -122,6 +124,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setTenderId(tenderNum);
                 String taskId = tenderTasksColRef.document().getId();
                 task.setId(taskId);
+                task.setAuthor(user);
                 tenderTasksColRef.document(taskId).set(task);
                 tenderDocRef.update("hasTasks", true);
                 intent.putExtra("task_id", taskId);

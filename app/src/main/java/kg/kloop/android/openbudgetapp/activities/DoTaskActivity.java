@@ -48,6 +48,7 @@ import java.util.UUID;
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
+import kg.kloop.android.openbudgetapp.objects.User;
 
 public class DoTaskActivity extends AppCompatActivity {
 
@@ -65,6 +66,7 @@ public class DoTaskActivity extends AppCompatActivity {
     private ImageView imageView;
     private InputStream inputStream;
     private ProgressBar horizontalProgressBar;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class DoTaskActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String tenderNum = intent.getStringExtra("tender_num");
         String taskId = intent.getStringExtra("task_id");
+        currentUser = (User) intent.getSerializableExtra("user");
         taskDocRef = db.document("tenders_db/" + tenderNum + "/tasks/" + taskId);
 
         final TextView tasksTextView = findViewById(R.id.do_task_task_text_view);
@@ -323,6 +326,7 @@ public class DoTaskActivity extends AppCompatActivity {
         tenderTaskWork.setId(taskWorkCollectionRef.document().getId());
         tenderTaskWork.setText(doTaskEditText.getText().toString());
         tenderTaskWork.setPhotoUrl(photoUrl);
+        tenderTaskWork.setAuthor(currentUser);
         taskWorkCollectionRef.document(tenderTaskWork.getId()).set(tenderTaskWork);
         setResult(RESULT_OK);
         horizontalProgressBar.setVisibility(View.GONE);

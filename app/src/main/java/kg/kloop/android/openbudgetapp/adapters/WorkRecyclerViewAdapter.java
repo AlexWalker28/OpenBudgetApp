@@ -34,7 +34,11 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull WorkRecyclerViewAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.workTextView.setText(workArrayList.get(i).getText());
+        TenderTaskWork work = workArrayList.get(i);
+        viewHolder.workTextView.setText(work.getText());
+        if (work.getAuthor() != null) {
+            viewHolder.authorTextView.setText(work.getAuthor().getName());
+        }
         Glide.with(context)
                 .load(workArrayList.get(i).getPhotoUrl())
                 .into(viewHolder.workImageView);
@@ -47,10 +51,12 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView workTextView;
+        TextView authorTextView;
         ImageView workImageView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             workTextView = itemView.findViewById(R.id.work_activity_text_view);
+            authorTextView = itemView.findViewById(R.id.work_activity_item_author_text_view);
             workImageView = itemView.findViewById(R.id.work_activity_image_view);
         }
     }

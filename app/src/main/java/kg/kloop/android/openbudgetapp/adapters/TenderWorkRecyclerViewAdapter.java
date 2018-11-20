@@ -37,7 +37,11 @@ public class TenderWorkRecyclerViewAdapter extends RecyclerView.Adapter<TenderWo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.tenderWorkTextView.setText(tenderTaskWorkArrayList.get(i).getText());
+        TenderTaskWork work = tenderTaskWorkArrayList.get(i);
+        viewHolder.tenderWorkTextView.setText(work.getText());
+        if (work.getAuthor() != null) {
+            viewHolder.authorTextView.setText(work.getAuthor().getName());
+        }
         Glide.with(context)
                 .load(tenderTaskWorkArrayList.get(i).getPhotoUrl())
                 .into(viewHolder.tenderWorkImageView);
@@ -52,10 +56,12 @@ public class TenderWorkRecyclerViewAdapter extends RecyclerView.Adapter<TenderWo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tenderWorkTextView;
+        TextView authorTextView;
         ImageView tenderWorkImageView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tenderWorkTextView = itemView.findViewById(R.id.tender_work_item_text_view);
+            authorTextView = itemView.findViewById(R.id.tender_work_item_author_text_view);
             tenderWorkImageView = itemView.findViewById(R.id.tender_work_item_image_view);
         }
     }

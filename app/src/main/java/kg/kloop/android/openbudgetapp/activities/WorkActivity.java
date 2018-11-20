@@ -33,6 +33,7 @@ import kg.kloop.android.openbudgetapp.adapters.WorkRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.controllers.WorkActivityController;
 import kg.kloop.android.openbudgetapp.models.WorkActivityModel;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
+import kg.kloop.android.openbudgetapp.objects.User;
 
 public class WorkActivity extends AppCompatActivity {
 
@@ -67,6 +68,7 @@ public class WorkActivity extends AppCompatActivity {
         String taskId = intent.getStringExtra("task_id");
         String tenderNum = intent.getStringExtra("tender_num");
         String tenderDescription = intent.getStringExtra("task_description");
+        final User currentUser = (User) intent.getSerializableExtra("user");
         double taskLat = intent.getDoubleExtra("task_lat", 0);
         double taskLng = intent.getDoubleExtra("task_lng", 0);
 
@@ -95,6 +97,7 @@ public class WorkActivity extends AppCompatActivity {
                 Intent intent = new Intent(WorkActivity.this, DoTaskActivity.class);
                 intent.putExtra("tender_num", model.getTenderNum());
                 intent.putExtra("task_id", model.getTaskId());
+                intent.putExtra("user", currentUser);
                 startActivity(intent);
             }
         });

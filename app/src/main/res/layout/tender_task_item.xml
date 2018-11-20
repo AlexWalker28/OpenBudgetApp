@@ -24,6 +24,19 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Task description" />
 
+    <TextView
+        android:id="@+id/tender_task_item_author_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:paddingStart="@dimen/horizontal_padding"
+        android:paddingEnd="@dimen/horizontal_padding"
+        tools:text="Author name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tender_task_item_text_view" />
+
     <ImageView
         android:id="@+id/tender_task_photo_image_view"
         android:layout_width="wrap_content"

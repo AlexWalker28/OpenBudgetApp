@@ -12,6 +12,7 @@ public class TenderTask implements Serializable {
     private double latitude;
     private double longitude;
     private String tenderId;
+    private User author;
 
     public TenderTask() {
         isCompleted = false;
@@ -71,5 +72,13 @@ public class TenderTask implements Serializable {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

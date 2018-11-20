@@ -66,7 +66,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         purchaseTextView.setText(tender.getPurchase());
         plannedSumTextView.setText(model.getTenderSum());
         orgNameTextView.setText(tender.getOrgName());
-        taskAdapter = new TenderTaskRecyclerViewAdapter(getApplicationContext(), tenderTaskArrayList, tender);
+        taskAdapter = new TenderTaskRecyclerViewAdapter(getApplicationContext(), tenderTaskArrayList, tender, currentUser);
         taskWorkAdapter = new TenderWorkRecyclerViewAdapter(getApplicationContext(), tenderTaskWorkArrayList);
         workRecyclerView.setAdapter(taskWorkAdapter);
         workRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -127,6 +127,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         switch (item.getItemId()) {
             case R.id.add_task_menu_item:
                 Intent intent = new Intent(TenderActivity.this, AddTaskActivity.class);
+                intent.putExtra("current_user", currentUser);
                 intent.putExtra("tender_num", tender.getTender_num());
                 startActivityForResult(intent, ADD_TASK_REQUEST_CODE);
                 break;
