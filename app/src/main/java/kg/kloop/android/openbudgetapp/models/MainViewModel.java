@@ -14,13 +14,14 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<FirebaseUser> firebaseUserMutableLiveData;
     private MutableLiveData<String> userRoleMutableLiveData;
     private FirebaseFirestore db;
+    private MutableLiveData<String> tenderNum;
 
 
     public MainViewModel() {
         userLiveData = new MutableLiveData<>();
         firebaseUserMutableLiveData = new MutableLiveData<>();
         userRoleMutableLiveData = new MutableLiveData<>();
-
+        tenderNum = new MutableLiveData<>();
 
     }
 
@@ -50,5 +51,9 @@ public class MainViewModel extends ViewModel {
 
     public void setDb(FirebaseFirestore db) {
         this.db = db;
+    }
+
+    public MutableLiveData<String> getTenderNum() {
+        return tenderNum;
     }
 }

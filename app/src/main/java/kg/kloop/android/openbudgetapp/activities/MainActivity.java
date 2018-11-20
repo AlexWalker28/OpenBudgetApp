@@ -138,8 +138,9 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                                 }
                             }
                         });
+                return true;
         }
-        return true;
+        return false;
     }
 
     private void hideUi() {

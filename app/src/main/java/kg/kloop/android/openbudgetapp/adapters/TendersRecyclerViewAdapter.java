@@ -29,6 +29,10 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
         this.context = context;
         this.currentUser = currentUser;
     }
+    public TendersRecyclerViewAdapter(Context context, ArrayList<Tender> tenderArrayList) {
+        this.tenderArrayList = tenderArrayList;
+        this.context = context;
+    }
 
     @NonNull
     @Override

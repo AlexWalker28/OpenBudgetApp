@@ -27,4 +27,8 @@
     <string name="filter">Фильтр</string>
     <string name="map">Карта</string>
     <string name="title_activity_maps_tasks">Map</string>
+    <string name="search">Поиск</string>
+    <string name="enter_tender_number">Введите номер тендера</string>
+    <string name="cancel">Отменить</string>
+    <string name="no_such_tender">Тендер не найден</string>
 </resources>

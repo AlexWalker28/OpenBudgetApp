@@ -35,14 +35,18 @@ public class TenderFirestorePagingAdapter extends FirestorePagingAdapter<Tender,
 
     @Override
     protected void onBindViewHolder(@NonNull TenderViewHolder holder, int position, @NonNull Tender model) {
-        Tender tender = tenderArrayList.get(position);
-        TextView purchaseTextView = holder.purchaseTextView;
-        TextView orgNameTextView = holder.orgNameTextView;
-        TextView plannedSumTextView = holder.plannedSumTextView;
-        purchaseTextView.setText(tender.getPurchase());
-        orgNameTextView.setText(tender.getOrgName());
-        String sum = tender.getPlanSum() + " " + tender.getCurrency();
-        plannedSumTextView.setText(sum);
+        try {
+            Tender tender = tenderArrayList.get(position);
+            TextView purchaseTextView = holder.purchaseTextView;
+            TextView orgNameTextView = holder.orgNameTextView;
+            TextView plannedSumTextView = holder.plannedSumTextView;
+            purchaseTextView.setText(tender.getPurchase());
+            orgNameTextView.setText(tender.getOrgName());
+            String sum = tender.getPlanSum() + " " + tender.getCurrency();
+            plannedSumTextView.setText(sum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
