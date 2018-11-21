@@ -6,6 +6,11 @@
         android:title="@string/add_task"
         android:icon="@drawable/ic_note_add_white_24dp"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/open_tender_page_menu_item"
+        android:title="@string/open_tender_page"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/close_tender_menu_item"
         android:title="@string/close_tender"

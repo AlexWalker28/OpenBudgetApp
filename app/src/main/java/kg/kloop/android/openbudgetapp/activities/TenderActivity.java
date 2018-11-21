@@ -4,6 +4,7 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
@@ -56,6 +58,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         currentUser = model.getCurrentUser();
         tenderTaskWorkArrayList = new ArrayList<>();
         tenderTaskArrayList = new ArrayList<>();
+        getSupportActionBar().setTitle(tender.getTender_num());
 
         TextView purchaseTextView = findViewById(R.id.tender_purchase_text_view);
         TextView plannedSumTextView = findViewById(R.id.tender_planned_sum_text_view);
@@ -156,6 +159,10 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                     }
                 });
                 break;
+            case R.id.open_tender_page_menu_item:
+                Intent openTenderIntent = new Intent(Intent.ACTION_VIEW);
+                openTenderIntent.setData(Uri.parse("http://zakupki.gov.kg/popp/view/order/view.xhtml?id=" + tender.getTender_num().substring(6)));
+                startActivity(openTenderIntent);
         }
         return true;
     }

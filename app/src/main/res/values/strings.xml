@@ -31,4 +31,5 @@
     <string name="enter_tender_number">Введите номер тендера</string>
     <string name="cancel">Отменить</string>
     <string name="no_such_tender">Тендер не найден</string>
+    <string name="open_tender_page">Показать тендер</string>
 </resources>
