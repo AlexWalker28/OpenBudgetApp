@@ -59,13 +59,12 @@ public class SearchTenderDialogFragment extends DialogFragment {
                 String tenderNumber = searchEditText.getText().toString();
                 viewModel.getTenderNum().setValue(tenderNumber);
                 Log.i(TAG, "tenderNum: " + tenderNumber);
-
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().popBackStack();
+                dismiss();
             }
         });
     }

@@ -6,11 +6,13 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,6 +37,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import kg.kloop.android.openbudgetapp.activities.SearchResultActivity;
 import kg.kloop.android.openbudgetapp.adapters.TenderFirestorePagingAdapter;
 import kg.kloop.android.openbudgetapp.adapters.TendersRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.models.MainViewModel;
@@ -61,7 +64,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_all_tenders, container, false);
         final RecyclerView allTendersRecyclerView = view.findViewById(R.id.all_tenders_recycler_view);
@@ -130,11 +133,18 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            TendersRecyclerViewAdapter simpleAdapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, mUser);
+                            Intent intent = new Intent(getActivity(), SearchResultActivity.class);
+                            Tender tender = documentSnapshot.toObject(Tender.class);
+                            intent.putExtra("tender", tender);
+                            intent.putExtra("current_user", mUser);
+                            getActivity().startActivity(intent);
+
+
+                            /*TendersRecyclerViewAdapter simpleAdapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, mUser);
                             allTendersRecyclerView.setAdapter(simpleAdapter);
                             Tender tender = documentSnapshot.toObject(Tender.class);
                             tenderArrayList.add(0, tender);
-                            simpleAdapter.notifyDataSetChanged();
+                            simpleAdapter.notifyDataSetChanged();*/
                         } else Toast.makeText(getContext(), getString(R.string.no_such_tender), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -154,7 +164,6 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
         switch (item.getItemId()) {
             case R.id.search_menu_item:
                 showSearchDialog();
-
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -164,6 +173,5 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         SearchTenderDialogFragment searchTenderDialogFragment = SearchTenderDialogFragment.newInstance("Search");
         searchTenderDialogFragment.show(fm, "fragment_search");
-
     }
 }
