@@ -22,21 +22,20 @@ import kg.kloop.android.openbudgetapp.objects.User;
 
 public class TenderFirestorePagingAdapter extends FirestorePagingAdapter<Tender, TenderFirestorePagingAdapter.TenderViewHolder> {
     private static final String TAG = TendersRecyclerViewAdapter.class.getSimpleName();
-    private ArrayList<Tender> tenderArrayList;
     private Context context;
     private User currentUser;
 
-    public TenderFirestorePagingAdapter(Context context, ArrayList<Tender> tenderArrayList, User currentUser, @NonNull FirestorePagingOptions<Tender> options) {
+    public TenderFirestorePagingAdapter(Context context, User currentUser, @NonNull FirestorePagingOptions<Tender> options) {
         super(options);
-        this.tenderArrayList = tenderArrayList;
         this.context = context;
         this.currentUser = currentUser;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull TenderViewHolder holder, int position, @NonNull Tender model) {
+        Log.i(TAG, "onBindViewHolder: list size: " + getCurrentList().size());
         try {
-            Tender tender = tenderArrayList.get(position);
+            Tender tender = getItem(position).toObject(Tender.class);
             TextView purchaseTextView = holder.purchaseTextView;
             TextView orgNameTextView = holder.orgNameTextView;
             TextView plannedSumTextView = holder.plannedSumTextView;
@@ -45,13 +44,14 @@ public class TenderFirestorePagingAdapter extends FirestorePagingAdapter<Tender,
             String sum = tender.getPlanSum() + " " + tender.getCurrency();
             plannedSumTextView.setText(sum);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
     @NonNull
     @Override
     public TenderViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        Log.i(TAG, "onCreateViewHolder: item count: " + getItemCount());
         return new TenderViewHolder(LayoutInflater.from(context).inflate(R.layout.item_all_tenders, viewGroup, false));
     }
 
@@ -69,7 +69,7 @@ public class TenderFirestorePagingAdapter extends FirestorePagingAdapter<Tender,
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(context, TenderActivity.class);
-            intent.putExtra("tender", tenderArrayList.get(getAdapterPosition()));
+            intent.putExtra("tender", getItem(getAdapterPosition()).toObject(Tender.class));
             if (currentUser != null) {
                 intent.putExtra("current_user", currentUser);
                 Log.v(TAG, "current_user: " + currentUser.getName());

@@ -74,11 +74,9 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
             public void onChanged(@android.support.annotation.Nullable User user) {
                 setHasOptionsMenu(true);
                 mUser = user;
-                //adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, user);
-
                 // The "base query" is a query with no startAt/endAt/limit clauses that the adapter can use
                 // to form smaller queries for each page.  It should only include where() and orderBy() clauses
-                Query baseQuery = tendersDbColRef.orderBy("tender_num", Query.Direction.DESCENDING);
+                Query baseQuery = tendersDbColRef.orderBy("planSum", Query.Direction.DESCENDING);
 
                 PagedList.Config config = new PagedList.Config.Builder()
                         .setEnablePlaceholders(false)
@@ -90,7 +88,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                         .setLifecycleOwner(AllTendersFragment.this)
                         .setQuery(baseQuery, config, Tender.class)
                         .build();
-                adapter = new TenderFirestorePagingAdapter(getContext(), tenderArrayList, user, options);
+                adapter = new TenderFirestorePagingAdapter(getContext(), user, options);
                 /*tendersDbColRef
                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
@@ -101,7 +99,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                                 adapter.notifyDataSetChanged();
                             }
                         });*/
-                tendersDbColRef.orderBy("planSum", Query.Direction.DESCENDING)
+                /*tendersDbColRef.orderBy("planSum", Query.Direction.DESCENDING)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -117,7 +115,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                                     Log.v(TAG, task.getException().getMessage());
                                 }
                             }
-                        });
+                        });*/
 
                 allTendersRecyclerView.setAdapter(adapter);
                 allTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -132,12 +130,11 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            //TendersRecyclerViewAdapter simpleAdapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, mUser);
-                            //allTendersRecyclerView.setAdapter(simpleAdapter);
+                            TendersRecyclerViewAdapter simpleAdapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, mUser);
+                            allTendersRecyclerView.setAdapter(simpleAdapter);
                             Tender tender = documentSnapshot.toObject(Tender.class);
                             tenderArrayList.add(0, tender);
-                            adapter.notifyDataSetChanged();
-                            //simpleAdapter.notifyDataSetChanged();
+                            simpleAdapter.notifyDataSetChanged();
                         } else Toast.makeText(getContext(), getString(R.string.no_such_tender), Toast.LENGTH_SHORT).show();
                     }
                 });
