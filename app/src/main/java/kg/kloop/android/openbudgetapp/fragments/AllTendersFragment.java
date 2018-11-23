@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.activities.SearchResultActivity;
 import kg.kloop.android.openbudgetapp.adapters.TenderFirestorePagingAdapter;
+import kg.kloop.android.openbudgetapp.controllers.AllTendersController;
+import kg.kloop.android.openbudgetapp.models.AllTendersModel;
 import kg.kloop.android.openbudgetapp.models.MainViewModel;
 import kg.kloop.android.openbudgetapp.objects.Tender;
 import kg.kloop.android.openbudgetapp.objects.User;
@@ -46,6 +48,8 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
     private CollectionReference tendersDbColRef;
     private MainViewModel viewModel;
     private User mUser;
+    private AllTendersController allTendersController;
+    private AllTendersModel allTendersModel;
 
     public AllTendersFragment() {
     }
@@ -59,6 +63,8 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_all_tenders, container, false);
+        allTendersModel = new AllTendersModel();
+        allTendersController = new AllTendersController(allTendersModel);
         final RecyclerView allTendersRecyclerView = view.findViewById(R.id.all_tenders_recycler_view);
         tendersDbColRef = db.collection("tenders_db");
         viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
@@ -91,23 +97,38 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
 
         viewModel.getTenderNum().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                Log.i(TAG, "onChanged: tenderNum - " + s);
-                tendersDbColRef.document(s).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            Intent intent = new Intent(getActivity(), SearchResultActivity.class);
-                            Tender tender = documentSnapshot.toObject(Tender.class);
-                            intent.putExtra("tender", tender);
-                            intent.putExtra("current_user", mUser);
-                            getActivity().startActivity(intent);
-                        } else Toast.makeText(getContext(), getString(R.string.no_such_tender), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public void onChanged(@Nullable final String tenderNumber) {
+                Log.i(TAG, "onChanged: tenderNum - " + tenderNumber);
+                loadTender(tenderNumber);
             }
         });
         return view;
+    }
+
+    private void loadTender(final String tenderNumber) {
+        tendersDbColRef.document(tenderNumber).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    Intent intent = new Intent(getActivity(), SearchResultActivity.class);
+                    Tender tender = documentSnapshot.toObject(Tender.class);
+                    intent.putExtra("tender", tender);
+                    intent.putExtra("current_user", mUser);
+                    getActivity().startActivity(intent);
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.loading_tender), Toast.LENGTH_SHORT).show();
+                    allTendersController.getTenderFromDb(tenderNumber);
+                    allTendersModel.getIsTenderLoaded().observe(AllTendersFragment.this, new Observer<Boolean>() {
+                        @Override
+                        public void onChanged(@Nullable Boolean isLoaded) {
+                            if (isLoaded) {
+                                loadTender(tenderNumber);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
