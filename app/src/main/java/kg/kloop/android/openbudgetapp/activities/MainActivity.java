@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(getApplicationContext(), getString(R.string.yout_signed_out), Toast.LENGTH_SHORT).show();
                                             controller.signOut();
-                                            hideUi();
+                                            //hideUi();
                                             signIn();
                                         } else {
                                             Log.v(TAG, task.getException().getMessage());
