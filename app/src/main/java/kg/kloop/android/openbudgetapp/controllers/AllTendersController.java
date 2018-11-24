@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AllTendersController {
 
-    static final String BASE_URL = "https://us-central1-openbudgetapp.cloudfunctions.net/tenders_get/";
+    private static final String BASE_URL = "https://us-central1-openbudgetapp.cloudfunctions.net/";
     private static final String TAG = AllTendersController.class.getSimpleName();
     private DbApi dbApi;
     private AllTendersModel model;
