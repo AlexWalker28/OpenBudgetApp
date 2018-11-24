@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     private TabLayout tabLayout;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,21 +72,46 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 }
             }
         });
+        navigationView = findViewById(R.id.main_navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.log_out_nav_drawer_item:
+                        drawerLayout.closeDrawers();
+                        AuthUI.getInstance().signOut(MainActivity.this)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.yout_signed_out), Toast.LENGTH_SHORT).show();
+                                            controller.signOut();
+                                            hideUi();
+                                            signIn();
+                                        } else {
+                                            Log.v(TAG, task.getException().getMessage());
+                                        }
+                                    }
+                                });
+                        break;
 
+                }
+                return true;
+            }
+        });
     }
 
     private void updateLayout(final FirebaseUser firebaseUser) {
         mainViewModel.getUserRoleMutableLiveData().observe(MainActivity.this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String userRole) {
-                ((TextView)drawerLayout.findViewById(R.id.nav_email_text_view)).setText(firebaseUser.getEmail());
                 ((TextView)drawerLayout.findViewById(R.id.nav_name_text_view)).setText(firebaseUser.getDisplayName());
+                ((TextView)drawerLayout.findViewById(R.id.nav_email_text_view)).setText(firebaseUser.getEmail());
+                ((TextView)drawerLayout.findViewById(R.id.nav_role_text_view)).setText(userRole);
                 if (userRole.equals(Constants.USER)) {
                     viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
-                    ((TextView)drawerLayout.findViewById(R.id.nav_role_text_view)).setText(userRole);
                 } else if (userRole.equals(Constants.EDITOR)) {
                     viewPager.setAdapter(new TendersFragmentEditorsPageAdapter(getSupportFragmentManager()));
-                    ((TextView)drawerLayout.findViewById(R.id.nav_role_text_view)).setText(userRole);
                 } else {
                     viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
                     signIn();
@@ -124,35 +151,6 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 });
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sign_out_menu_item:
-                AuthUI.getInstance().signOut(this)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), getString(R.string.yout_signed_out), Toast.LENGTH_SHORT).show();
-                                    controller.signOut();
-                                    hideUi();
-                                    signIn();
-                                } else {
-                                    Log.v(TAG, task.getException().getMessage());
-                                }
-                            }
-                        });
-                return true;
-        }
-        return false;
     }
 
     private void hideUi() {
