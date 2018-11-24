@@ -6,5 +6,5 @@ import retrofit2.http.Query;
 
 public interface DbApi {
     @GET("tenders_get/")
-    Call<String> loadTender(@Query("tender_num") String tenderNumber);
+    Call<String> loadTender(@Query("words") String tenderNumber);
 }
