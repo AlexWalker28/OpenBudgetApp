@@ -98,8 +98,11 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
         viewModel.getTenderNum().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable final String tenderNumber) {
-                Log.i(TAG, "onChanged: tenderNum - " + tenderNumber);
-                loadTender(tenderNumber);
+                if (tenderNumber != null) {
+                    Log.i(TAG, "onChanged: tenderNum - " + tenderNumber);
+                    loadTender(tenderNumber);
+                    viewModel.getTenderNum().setValue(null);
+                }
             }
         });
         return view;
