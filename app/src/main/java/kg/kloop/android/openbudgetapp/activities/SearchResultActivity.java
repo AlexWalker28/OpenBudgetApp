@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ public class SearchResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
+        setSupportActionBar((Toolbar) findViewById(R.id.activity_search_toolbar));
         tenderArrayList = new ArrayList<>();
         Intent intent = getIntent();
         Tender tender = (Tender) intent.getSerializableExtra("tender");

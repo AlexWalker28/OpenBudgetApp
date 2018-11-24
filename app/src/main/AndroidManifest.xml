@@ -56,7 +56,8 @@
         <activity
             android:name=".activities.MapsTasksActivity"
             android:label="@string/title_activity_maps_tasks" />
-        <activity android:name=".activities.SearchResultActivity"></activity>
+        <activity android:name=".activities.SearchResultActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>
