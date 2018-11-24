@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">OpenBudgetApp</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_task">Добавить задание</string>
     <string name="photo">Фото</string>

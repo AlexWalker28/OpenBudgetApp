@@ -50,6 +50,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
     private User mUser;
     private AllTendersController allTendersController;
     private AllTendersModel allTendersModel;
+    private RecyclerView allTendersRecyclerView;
 
     public AllTendersFragment() {
     }
@@ -65,7 +66,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
         View view =  inflater.inflate(R.layout.fragment_all_tenders, container, false);
         allTendersModel = new AllTendersModel();
         allTendersController = new AllTendersController(allTendersModel);
-        final RecyclerView allTendersRecyclerView = view.findViewById(R.id.all_tenders_recycler_view);
+        allTendersRecyclerView = view.findViewById(R.id.all_tenders_recycler_view);
         tendersDbColRef = db.collection("tenders_db");
         viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         MutableLiveData<User> userLiveData = viewModel.getUserLiveData();

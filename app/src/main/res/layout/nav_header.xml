@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.constraint.ConstraintLayout
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/nav_name_text_view"
@@ -21,7 +24,6 @@
             android:paddingStart="@dimen/horizontal_padding"
             android:paddingTop="@dimen/horizontal_padding"
             android:paddingEnd="@dimen/horizontal_padding"
-            android:paddingBottom="@dimen/horizontal_padding"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,9 +39,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:paddingStart="@dimen/horizontal_padding"
-            android:paddingTop="@dimen/horizontal_padding"
             android:paddingEnd="@dimen/horizontal_padding"
-            android:paddingBottom="@dimen/horizontal_padding"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -55,9 +55,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:paddingStart="@dimen/horizontal_padding"
-            android:paddingTop="@dimen/horizontal_padding"
             android:paddingEnd="@dimen/horizontal_padding"
             android:paddingBottom="@dimen/horizontal_padding"
+            android:layout_marginBottom="@dimen/horizontal_padding"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -65,6 +65,10 @@
             app:layout_constraintTop_toBottomOf="@+id/nav_email_text_view"
             tools:text="Role" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorPrimary"/>
 
-    </android.support.constraint.ConstraintLayout>
-</android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
+</FrameLayout>
