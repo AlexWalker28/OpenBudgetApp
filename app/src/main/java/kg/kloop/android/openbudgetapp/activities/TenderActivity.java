@@ -11,13 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.URI;
 import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
@@ -58,6 +58,8 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         currentUser = model.getCurrentUser();
         tenderTaskWorkArrayList = new ArrayList<>();
         tenderTaskArrayList = new ArrayList<>();
+        Toolbar toolbar = findViewById(R.id.tender_toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(tender.getTender_num());
 
         TextView purchaseTextView = findViewById(R.id.tender_purchase_text_view);
@@ -116,7 +118,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                     public void onChanged(@Nullable Boolean isMyTender) {
                         if (isMyTender) {
                             MenuItem menuItem = menu.findItem(R.id.accept_tender_menu_item);
-                            menuItem.setIcon(R.drawable.ic_bookmark_white_24dp);
+                            menuItem.setIcon(R.drawable.ic_bookmark_black_24dp);
                         }
                     }
                 });

@@ -7,13 +7,9 @@
     android:orientation="vertical"
     android:theme="@style/AppTheme">
 
-    <Toolbar
+    <include
         android:id="@+id/maps_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:titleTextColor="@android:color/white"
-        android:elevation="1dp"/>
+        layout="@layout/toolbar"/>
 
     <fragment
         android:id="@+id/map"

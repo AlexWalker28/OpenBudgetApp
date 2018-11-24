@@ -9,11 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     private MainActivityController controller;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
         viewPager = findViewById(R.id.main_view_pager);
         tabLayout = findViewById(R.id.main_tab_layout);
+        toolbar = findViewById(R.id.toolbar);
+        drawerLayout = findViewById(R.id.main_drawer_layout);
+
+        setSupportActionBar(toolbar);
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         controller = new MainActivityController(mainViewModel);
@@ -57,22 +66,25 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 if (firebaseUser == null) {
                     signIn();
                 } else {
-                    updateLayout();
+                    updateLayout(firebaseUser);
                 }
             }
         });
 
     }
 
-    private void updateLayout() {
+    private void updateLayout(final FirebaseUser firebaseUser) {
         mainViewModel.getUserRoleMutableLiveData().observe(MainActivity.this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String userRole) {
-
+                ((TextView)drawerLayout.findViewById(R.id.nav_email_text_view)).setText(firebaseUser.getEmail());
+                ((TextView)drawerLayout.findViewById(R.id.nav_name_text_view)).setText(firebaseUser.getDisplayName());
                 if (userRole.equals(Constants.USER)) {
                     viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
+                    ((TextView)drawerLayout.findViewById(R.id.nav_role_text_view)).setText(userRole);
                 } else if (userRole.equals(Constants.EDITOR)) {
                     viewPager.setAdapter(new TendersFragmentEditorsPageAdapter(getSupportFragmentManager()));
+                    ((TextView)drawerLayout.findViewById(R.id.nav_role_text_view)).setText(userRole);
                 } else {
                     viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
                     signIn();
@@ -107,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                         if (firebaseUser != null) {
                             controller.saveUserToDb(firebaseUser);
                         }
-                        updateLayout();
+                        updateLayout(firebaseUser);
                     }
                 });
             }

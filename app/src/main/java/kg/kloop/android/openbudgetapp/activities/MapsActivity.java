@@ -3,9 +3,11 @@ package kg.kloop.android.openbudgetapp.activities;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toolbar;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,7 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import kg.kloop.android.openbudgetapp.R;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private LatLng location;
@@ -29,7 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         Toolbar toolbar = findViewById(R.id.maps_toolbar);
-        setActionBar(toolbar);
+        setSupportActionBar(toolbar);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -86,12 +88,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_map_menu_item:
-                Intent intent = new Intent();
-                intent.putExtra("lat", location.latitude);
-                intent.putExtra("lng", location.longitude);
-                setResult(RESULT_OK, intent);
-                finish();
-                break;
+                if (location != null) {
+                    Intent intent = new Intent();
+                    intent.putExtra("lat", location.latitude);
+                    intent.putExtra("lng", location.longitude);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                    break;
+                } else Toast.makeText(getApplicationContext(), R.string.choose_location, Toast.LENGTH_SHORT).show();
         }
         return true;
     }

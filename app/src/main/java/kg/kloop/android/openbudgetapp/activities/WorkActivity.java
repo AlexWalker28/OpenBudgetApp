@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ public class WorkActivity extends AppCompatActivity {
         model = new WorkActivityModel();
         controller = new WorkActivityController(model);
         workArrayList = new ArrayList<>();
+        setSupportActionBar((Toolbar) findViewById(R.id.work_toolbar));
         RecyclerView workRecyclerView = findViewById(R.id.work_activity_recycler_view);
         FloatingActionButton fab = findViewById(R.id.do_work_fab);
         TextView taskDescriptionTextView = findViewById(R.id.work_activity_task_description_text_view);

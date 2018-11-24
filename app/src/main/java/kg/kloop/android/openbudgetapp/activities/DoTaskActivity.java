@@ -13,6 +13,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,6 +83,7 @@ public class DoTaskActivity extends AppCompatActivity {
         currentUser = (User) intent.getSerializableExtra("user");
         taskDocRef = db.document("tenders_db/" + tenderNum + "/tasks/" + taskId);
 
+        setSupportActionBar((Toolbar) findViewById(R.id.do_task_toolbar));
         final TextView tasksTextView = findViewById(R.id.do_task_task_text_view);
         progressBar = findViewById(R.id.do_task_progress_bar);
         progressBar.setVisibility(View.GONE);

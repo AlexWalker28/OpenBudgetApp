@@ -5,7 +5,7 @@
     <item
         android:id="@+id/done_add_task_menu_item"
         android:title="@string/done"
-        android:icon="@drawable/ic_done_white_24dp"
+        android:icon="@drawable/ic_done_black_24dp"
         app:showAsAction="ifRoom"/>
 
 </menu>

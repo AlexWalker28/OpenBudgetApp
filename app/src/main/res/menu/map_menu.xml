@@ -6,6 +6,6 @@
         android:id="@+id/done_map_menu_item"
         android:title="@string/done"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_done_white_24dp"/>
+        android:icon="@drawable/ic_done_black_24dp"/>
 
 </menu>

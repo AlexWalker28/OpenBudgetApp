@@ -5,7 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.AddTaskActivity">
+    tools:context=".activities.AddTaskActivity"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <include
+        android:id="@+id/add_task_toolbar"
+        layout="@layout/toolbar"/>
+    </android.support.design.widget.AppBarLayout>
 
     <EditText
         android:id="@+id/add_task_edit_text"
