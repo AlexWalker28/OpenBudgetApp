@@ -22,6 +22,24 @@
             android:layout_height="wrap_content"/>
     </android.support.design.widget.AppBarLayout>
 
+        <ProgressBar
+            android:id="@+id/search_result_activity_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/horizontal_padding"
+            android:layout_marginBottom="@dimen/horizontal_padding"
+            android:indeterminate="true"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/search_result_activity_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/horizontal_padding"
+            android:layout_marginBottom="@dimen/horizontal_padding"
+            tools:text="Lorem ipsum"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_result_activity_recycler_view"
         android:layout_width="match_parent"

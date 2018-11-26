@@ -32,4 +32,5 @@
     <string name="no_such_tender">Тендер не найден</string>
     <string name="open_tender_page">Показать тендер</string>
     <string name="loading_tender">Загрузка тендера</string>
+    <string name="nothing_found">Ничего не найдно</string>
 </resources>

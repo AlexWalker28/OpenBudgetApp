@@ -1,25 +1,59 @@
 package kg.kloop.android.openbudgetapp.objects;
 
 import java.io.Serializable;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Tender implements Serializable {
-    private String id;
-    private String link_id;
-    private String tender_num;
-    private String orgName;
-    private String orgAddress;
-    private String orgPhone;
-    private String purchase;
-    private String procuringEntity;
-    private String format;
-    private String method;
-    private long planSum;
-    private String published;
+    @SerializedName("currency")
+    @Expose
     private String currency;
+    @SerializedName("deadline")
+    @Expose
     private String deadline;
+    @SerializedName("format")
+    @Expose
+    private String format;
+    @SerializedName("id")
+    @Expose
+    private String id;
+    @SerializedName("isCompleted")
+    @Expose
+    private Boolean isCompleted;
+    @SerializedName("link_id")
+    @Expose
+    private String link_id;
+    @SerializedName("method")
+    @Expose
+    private String method;
+    @SerializedName("orgAddress")
+    @Expose
+    private String orgAddress;
+    @SerializedName("orgName")
+    @Expose
+    private String orgName;
+    @SerializedName("orgPhone")
+    @Expose
+    private String orgPhone;
+    @SerializedName("planSum")
+    @Expose
+    private long planSum;
+    @SerializedName("procuringEntity")
+    @Expose
+    private String procuringEntity;
+    @SerializedName("published")
+    @Expose
+    private String published;
+    @SerializedName("purchase")
+    @Expose
+    private String purchase;
+    @SerializedName("tender_num")
+    @Expose
+    private String tender_num;
+    @SerializedName("validPeriod")
+    @Expose
     private String validPeriod;
     private Boolean hasTasks;
-    private boolean isCompleted;
 
     public Tender() {
 

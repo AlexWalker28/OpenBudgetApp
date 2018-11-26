@@ -46,7 +46,7 @@ public class SearchTenderDialogFragment extends DialogFragment {
         searchEditText = view.findViewById(R.id.search_dialog_edit_text);
         submitButton = view.findViewById(R.id.search_dialog_submit_button);
         cancelButton = view.findViewById(R.id.search_dialog_cancel_button);
-        searchEditText.setText("16121331333387");
+        searchEditText.setText("Бишкек, 87, мини");
 
         // Show soft keyboard automatically and request focus to field
         searchEditText.requestFocus();
@@ -56,9 +56,9 @@ public class SearchTenderDialogFragment extends DialogFragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tenderNumber = searchEditText.getText().toString();
-                viewModel.getTenderNum().setValue(tenderNumber);
-                Log.i(TAG, "tenderNum: " + tenderNumber);
+                String searchWords = searchEditText.getText().toString();
+                viewModel.getSearchWords().setValue(searchWords);
+                Log.i(TAG, "searchWords: " + searchWords);
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {

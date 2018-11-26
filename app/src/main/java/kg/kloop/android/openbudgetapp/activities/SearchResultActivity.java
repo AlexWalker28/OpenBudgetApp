@@ -1,41 +1,74 @@
 package kg.kloop.android.openbudgetapp.activities;
 
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.adapters.TendersRecyclerViewAdapter;
+import kg.kloop.android.openbudgetapp.controllers.SearchResultActivityController;
+import kg.kloop.android.openbudgetapp.models.SearchResultActivityModel;
 import kg.kloop.android.openbudgetapp.objects.Tender;
 import kg.kloop.android.openbudgetapp.objects.User;
 
-public class SearchResultActivity extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity implements LifecycleOwner {
 
+    private static final String TAG = SearchResultActivity.class.getSimpleName();
     private ArrayList<Tender> tenderArrayList;
+    private ProgressBar searchProgressBar;
+    private TendersRecyclerViewAdapter simpleAdapter;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
+        SearchResultActivityModel model = new SearchResultActivityModel();
+        SearchResultActivityController controller = new SearchResultActivityController(model);
         setSupportActionBar((Toolbar) findViewById(R.id.activity_search_toolbar));
-        tenderArrayList = new ArrayList<>();
+        searchProgressBar = findViewById(R.id.search_result_activity_progress_bar);
+        textView = findViewById(R.id.search_result_activity_text_view);
+        textView.setVisibility(View.GONE);
         Intent intent = getIntent();
-        Tender tender = (Tender) intent.getSerializableExtra("tender");
+        String searchWords = intent.getStringExtra("search_words");
         User user = (User) intent.getSerializableExtra("current_user");
-
-
+        tenderArrayList = new ArrayList<>();
         RecyclerView searchResultRecyclerView = findViewById(R.id.search_result_activity_recycler_view);
-        TendersRecyclerViewAdapter simpleAdapter = new TendersRecyclerViewAdapter(getApplicationContext(), tenderArrayList, user);
+        simpleAdapter = new TendersRecyclerViewAdapter(getApplicationContext(), tenderArrayList, user);
         searchResultRecyclerView.setAdapter(simpleAdapter);
         searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        tenderArrayList.add(0, tender);
-        simpleAdapter.notifyDataSetChanged();
-
+        model.setSearchWords(searchWords);
+        controller.getTenderFromDb(model.getSearchWords());
+        model.getTendersFromDb().observe(SearchResultActivity.this, new Observer<List<Tender>>() {
+            @Override
+            public void onChanged(@Nullable List<Tender> tenders) {
+                if (tenders != null) {
+                    if (tenders.size() == 0) {
+                        searchProgressBar.setVisibility(View.GONE);
+                        textView.setText(getString(R.string.nothing_found));
+                    } else {
+                        tenderArrayList.clear();
+                        tenderArrayList.addAll(tenders);
+                        simpleAdapter.notifyDataSetChanged();
+                        searchProgressBar.setVisibility(View.GONE);
+                    }
+                } else Log.i(TAG, "onChanged: tenders are null");
+            }
+        });
     }
 }
