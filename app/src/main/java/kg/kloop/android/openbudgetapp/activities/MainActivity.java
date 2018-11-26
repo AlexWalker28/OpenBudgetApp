@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 ((TextView)drawerLayout.findViewById(R.id.nav_name_text_view)).setText(firebaseUser.getDisplayName());
                 ((TextView)drawerLayout.findViewById(R.id.nav_email_text_view)).setText(firebaseUser.getEmail());
                 ((TextView)drawerLayout.findViewById(R.id.nav_role_text_view)).setText(userRole);
+                viewPager.setOffscreenPageLimit(3);
                 if (userRole.equals(Constants.USER)) {
                     viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
                 } else if (userRole.equals(Constants.EDITOR)) {
