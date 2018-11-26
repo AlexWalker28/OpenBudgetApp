@@ -94,6 +94,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                     intent.putExtra("search_words", searchWords);
                     intent.putExtra("current_user", mUser);
                     getActivity().startActivity(intent);
+                    viewModel.getSearchWords().setValue(null); //otherwise SearchResultActivity will launch
                 }
             }
         });
