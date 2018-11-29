@@ -1,6 +1,5 @@
 package kg.kloop.android.openbudgetapp.controllers;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.google.firebase.firestore.CollectionReference;

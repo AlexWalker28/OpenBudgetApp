@@ -1,13 +1,13 @@
 package kg.kloop.android.openbudgetapp.fragments;
 
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,7 +59,7 @@ public class TendersWithTasksFragment extends Fragment {
         MutableLiveData<User> userLiveData = viewModel.getUserLiveData();
         userLiveData.observe(this, new Observer<User>() {
             @Override
-            public void onChanged(@android.support.annotation.Nullable User user) {
+            public void onChanged(@androidx.annotation.Nullable User user) {
                 adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, user);
                 collectionReference
                         .whereEqualTo("hasTasks", true)

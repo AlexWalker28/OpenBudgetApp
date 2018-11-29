@@ -7,16 +7,16 @@
     android:orientation="vertical"
     tools:context=".activities.TenderActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     <include
         android:id="@+id/tender_toolbar"
         layout="@layout/toolbar"/>
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tender_task_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,7 +38,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tender_constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -89,9 +89,9 @@
                 app:layout_constraintStart_toStartOf="@+id/tender_planned_sum_text_view"
                 app:layout_constraintTop_toBottomOf="@+id/tender_planned_sum_text_view"
                 tools:text="Org name" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tender_work_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -104,5 +104,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tender_constraint_layout" />
     </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -1,26 +1,24 @@
 package kg.kloop.android.openbudgetapp.activities;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.Observer;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.adapters.SearchResultActivityRecyclerViewAdapter;
-import kg.kloop.android.openbudgetapp.adapters.TendersRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.controllers.SearchResultActivityController;
 import kg.kloop.android.openbudgetapp.models.SearchResultActivityModel;
 import kg.kloop.android.openbudgetapp.objects.Tender;

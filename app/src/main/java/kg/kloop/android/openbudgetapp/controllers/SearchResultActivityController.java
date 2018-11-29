@@ -1,10 +1,9 @@
 package kg.kloop.android.openbudgetapp.controllers;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -12,7 +11,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
-import kg.kloop.android.openbudgetapp.activities.SearchResultActivity;
 import kg.kloop.android.openbudgetapp.interfaces.DbApi;
 import kg.kloop.android.openbudgetapp.models.SearchResultActivityModel;
 import kg.kloop.android.openbudgetapp.objects.Tender;

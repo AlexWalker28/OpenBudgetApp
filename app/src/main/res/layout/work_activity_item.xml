@@ -10,7 +10,7 @@
     android:layout_marginBottom="@dimen/horizontal_padding"
     android:orientation="vertical">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -60,5 +60,5 @@
             app:layout_constraintStart_toStartOf="@id/work_activity_text_view"
             app:layout_constraintTop_toBottomOf="@+id/work_activity_item_author_text_view"
             tools:src="@drawable/ic_photo_black_24dp" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

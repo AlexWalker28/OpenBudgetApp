@@ -2,8 +2,8 @@ package kg.kloop.android.openbudgetapp.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
-
-import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.activities.TenderActivity;

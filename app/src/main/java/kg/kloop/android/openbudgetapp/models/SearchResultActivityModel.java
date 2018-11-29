@@ -1,6 +1,6 @@
 package kg.kloop.android.openbudgetapp.models;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 

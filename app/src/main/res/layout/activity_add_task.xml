@@ -8,13 +8,13 @@
     tools:context=".activities.AddTaskActivity"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <include
         android:id="@+id/add_task_toolbar"
         layout="@layout/toolbar"/>
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <EditText
         android:id="@+id/add_task_edit_text"

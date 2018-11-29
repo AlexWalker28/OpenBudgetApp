@@ -1,15 +1,15 @@
 package kg.kloop.android.openbudgetapp.fragments;
 
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +61,7 @@ public class MyTendersFragment extends Fragment {
         tenderArrayList = new ArrayList<>();
         userLiveData.observe(this, new Observer<User>() {
             @Override
-            public void onChanged(@android.support.annotation.Nullable User user) {
+            public void onChanged(@androidx.annotation.Nullable User user) {
                 currentUser = user;
                 if (user != null) {
                     CollectionReference usersTendersCollectionRef = db.collection("users/" + user.getId() + "/tenders");
