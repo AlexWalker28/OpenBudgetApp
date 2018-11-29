@@ -1,9 +1,12 @@
 package kg.kloop.android.openbudgetapp.objects;
 
-public class TenderTaskWork {
+import java.io.Serializable;
+import java.util.List;
+
+public class TenderTaskWork implements Serializable {
     private String id;
     private String text;
-    private String photoUrl;
+    private List<String> photoUrlList;
     private User author;
 
     public TenderTaskWork() {
@@ -25,12 +28,12 @@ public class TenderTaskWork {
         this.text = text;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public List<String> getPhotoUrlList() {
+        return photoUrlList;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setPhotoUrlList(List<String> photoUrlList) {
+        this.photoUrlList = photoUrlList;
     }
 
     public User getAuthor() {

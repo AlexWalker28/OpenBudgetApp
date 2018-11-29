@@ -27,7 +27,7 @@
     <string name="map">Карта</string>
     <string name="title_activity_maps_tasks">Map</string>
     <string name="search">Поиск</string>
-    <string name="enter_tender_number">Введите номер тендера</string>
+    <string name="enter_words_to_search">Введите слова для поиска через запятую</string>
     <string name="cancel">Отменить</string>
     <string name="no_such_tender">Тендер не найден</string>
     <string name="open_tender_page">Показать тендер</string>

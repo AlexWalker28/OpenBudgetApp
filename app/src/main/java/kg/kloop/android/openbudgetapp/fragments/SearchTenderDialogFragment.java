@@ -46,7 +46,7 @@ public class SearchTenderDialogFragment extends DialogFragment {
         searchEditText = view.findViewById(R.id.search_dialog_edit_text);
         submitButton = view.findViewById(R.id.search_dialog_submit_button);
         cancelButton = view.findViewById(R.id.search_dialog_cancel_button);
-        searchEditText.setText("Бишкек, 87, мини");
+        searchEditText.setText("16121331333387");
 
         // Show soft keyboard automatically and request focus to field
         searchEditText.requestFocus();

@@ -40,7 +40,7 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
             viewHolder.authorTextView.setText(work.getAuthor().getName());
         }
         Glide.with(context)
-                .load(workArrayList.get(i).getPhotoUrl())
+                .load(workArrayList.get(i).getPhotoUrlList())
                 .into(viewHolder.workImageView);
     }
 
