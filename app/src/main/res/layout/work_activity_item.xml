@@ -46,19 +46,35 @@
             tools:text="Some text of work" />
 
         <ImageView
-            android:id="@+id/work_activity_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/horizontal_padding"
+            android:id="@+id/work_activity_item_image_view"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="@dimen/horizontal_padding"
+            android:layout_marginEnd="8dp"
             android:paddingStart="@dimen/horizontal_padding"
             android:paddingTop="@dimen/horizontal_padding"
             android:paddingEnd="@dimen/horizontal_padding"
             android:paddingBottom="@dimen/horizontal_padding"
-            app:layout_constraintEnd_toEndOf="@id/work_activity_text_view"
-            app:layout_constraintStart_toStartOf="@id/work_activity_text_view"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/work_activity_item_author_text_view"
             tools:src="@drawable/ic_photo_black_24dp" />
+
+        <TextView
+            android:id="@+id/work_activity_item_photos_counter_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            app:layout_constraintBottom_toBottomOf="@+id/work_activity_item_image_view"
+            app:layout_constraintEnd_toEndOf="@+id/work_activity_text_view"
+            app:layout_constraintStart_toEndOf="@+id/work_activity_item_image_view"
+            app:layout_constraintTop_toTopOf="@+id/work_activity_item_image_view"
+            tools:text="+3" />
+        tools:src="@drawable/ic_photo_black_24dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -47,6 +47,11 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
             Glide.with(context)
                     .load(work.getPhotoUrlList().get(0))
                     .into(viewHolder.workImageView);
+            int photosCount = work.getPhotoUrlList().size();
+            if (photosCount > 1) {
+                viewHolder.counterTextView.setVisibility(View.VISIBLE);
+                viewHolder.counterTextView.setText("+" + (photosCount - 1));
+            }
         }
     }
 
@@ -58,12 +63,15 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView workTextView;
         TextView authorTextView;
+        TextView counterTextView;
         ImageView workImageView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             workTextView = itemView.findViewById(R.id.work_activity_text_view);
             authorTextView = itemView.findViewById(R.id.work_activity_item_author_text_view);
-            workImageView = itemView.findViewById(R.id.work_activity_image_view);
+            workImageView = itemView.findViewById(R.id.work_activity_item_image_view);
+            counterTextView = itemView.findViewById(R.id.work_activity_item_photos_counter_text_view);
+            counterTextView.setVisibility(View.GONE);
             itemView.setOnClickListener(this);
         }
 

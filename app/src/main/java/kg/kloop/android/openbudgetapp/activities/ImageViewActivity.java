@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.adapters.ImageAdapter;
+import kg.kloop.android.openbudgetapp.utils.ImageViewPager;
 
 public class ImageViewActivity extends AppCompatActivity {
 
@@ -20,7 +21,7 @@ public class ImageViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_view);
 
-        ViewPager viewPager = findViewById(R.id.image_activity_view_pager);
+        ImageViewPager viewPager = findViewById(R.id.image_activity_view_pager);
 
         Intent intent = getIntent();
         ArrayList<String> urls = intent.getStringArrayListExtra("urls");
