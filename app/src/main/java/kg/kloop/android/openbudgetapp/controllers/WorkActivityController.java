@@ -26,8 +26,8 @@ public class WorkActivityController {
         firebaseFirestore = FirebaseFirestore.getInstance();
     }
 
-    public void getWorkForTask(String tenderId, String taskId) {
-        CollectionReference workCollectionRef = firebaseFirestore.collection("tenders_db/" + tenderId + "/tasks/" + taskId + "/work");
+    public void getWorkForTask(String taskId) {
+        CollectionReference workCollectionRef = firebaseFirestore.collection("tasks/" + taskId + "/work");
         workCollectionRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {

@@ -62,7 +62,6 @@ public class DoTaskActivity extends AppCompatActivity {
     private static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST = 300;
     private static final String TAG = DoTaskActivity.class.getSimpleName();
     private FirebaseFirestore db;
-    private ArrayList<TenderTask> tasks;
     private DocumentReference taskDocRef;
     private EditText doTaskEditText;
     private FirebaseStorage firebaseStorage;
@@ -89,7 +88,7 @@ public class DoTaskActivity extends AppCompatActivity {
         String tenderNum = intent.getStringExtra("tender_num");
         String taskId = intent.getStringExtra("task_id");
         currentUser = (User) intent.getSerializableExtra("user");
-        taskDocRef = db.document("tenders_db/" + tenderNum + "/tasks/" + taskId);
+        taskDocRef = db.document("/tasks/" + taskId);
         inputStreamArrayList = new ArrayList<>();
         photoUrls = new MutableLiveData<>();
         isUploadFinished = new MutableLiveData<>();
@@ -108,7 +107,6 @@ public class DoTaskActivity extends AppCompatActivity {
         horizontalProgressBar = findViewById(R.id.do_task_horizontal_progress_bar);
         horizontalProgressBar.setIndeterminate(true);
         horizontalProgressBar.setVisibility(View.GONE);
-        tasks = new ArrayList<>();
 
         taskDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

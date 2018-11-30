@@ -13,6 +13,7 @@ public class TenderTask implements Serializable {
     private double longitude;
     private String tenderId;
     private User author;
+    private boolean needModeration;
 
     public TenderTask() {
         isCompleted = false;
@@ -80,5 +81,13 @@ public class TenderTask implements Serializable {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public boolean isNeedModeration() {
+        return needModeration;
+    }
+
+    public void setNeedModeration(boolean needModeration) {
+        this.needModeration = needModeration;
     }
 }

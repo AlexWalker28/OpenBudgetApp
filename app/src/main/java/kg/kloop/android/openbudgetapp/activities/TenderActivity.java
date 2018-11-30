@@ -97,7 +97,6 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
             public void onChanged(@Nullable ArrayList<TenderTaskWork> tenderTaskWorks) {
                 if (tenderTaskWorks != null && !tenderTaskWorks.isEmpty()) {
                     Log.v(TAG, "works: " + tenderTaskWorks.size());
-                    tenderTaskWorkArrayList.clear();
                     tenderTaskWorkArrayList.addAll(tenderTaskWorks);
                     taskWorkAdapter.notifyDataSetChanged();
                 }

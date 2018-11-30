@@ -44,26 +44,27 @@ public class TenderActivityController {
         model.setCurrentUser(currentUser);
         tender = (Tender) intent.getSerializableExtra("tender");
         model.setTender(tender);
-        tasksCollectionReference = db.collection("tenders_db/" + tender.getTender_num() + "/tasks/");
+        tasksCollectionReference = db.collection("tasks/");
         tenderDocumentReference = db.document("tenders_db/" + tender.getTender_num());
         userDocRef = db.document("users/" + currentUser.getId());
         taskArrayList = new ArrayList<>();
 
-        tasksCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        tasksCollectionReference.whereEqualTo("tenderId", tender.getTender_num()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                    Log.d(TAG, "tasks: " + queryDocumentSnapshots.size());
                     taskArrayList.addAll(queryDocumentSnapshots.toObjects(TenderTask.class));
                     model.getTenderTaskArrayListMutableLiveData().setValue(taskArrayList);
 
                     for (TenderTask task : taskArrayList) { //TODO: there is probably better solution on db level
-                        workCollectionReference = tasksCollectionReference.document(task.getId()).collection("work");
+                        workCollectionReference = db.collection("tasks/").document(task.getId()).collection("work");
                         workCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     model.getTenderTaskWorkArrayList().setValue((ArrayList<TenderTaskWork>) task.getResult().toObjects(TenderTaskWork.class));
-                                    Log.v(TAG, "tender works: " + model.getTenderTaskWorkArrayList().getValue().size());
+                                    //Log.v(TAG, "tender works: " + model.getTenderTaskWorkArrayList().getValue().size());
                                     //updateWorkViews(task.getResult().getDocuments(), linearLayout);
                                 } else Log.v(TAG, task.getException().getMessage());
                             }

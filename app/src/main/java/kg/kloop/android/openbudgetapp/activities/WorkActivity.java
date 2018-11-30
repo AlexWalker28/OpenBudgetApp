@@ -73,7 +73,7 @@ public class WorkActivity extends AppCompatActivity {
         model.setTaskDescription(tenderDescription);
         model.setTaskLat(taskLat);
         model.setTaskLng(taskLng);
-        controller.getWorkForTask(tenderNum, taskId);
+        controller.getWorkForTask(taskId);
         taskDescriptionTextView.setText(model.getTaskDescription());
         MutableLiveData<ArrayList<TenderTaskWork>> liveData = model.getWorkArrayList();
         liveData.observe(this, new Observer<ArrayList<TenderTaskWork>>() {

@@ -59,7 +59,7 @@ public class AddTaskActivity extends AppCompatActivity {
         task = new TenderTask();
         tenderNum = intent.getStringExtra("tender_num");
         user = (User) intent.getSerializableExtra("current_user");
-        tenderTasksColRef = db.collection("tenders_db/" + tenderNum + "/tasks/");
+        tenderTasksColRef = db.collection("tasks/");
         tenderDocRef = db.document("tenders_db/" + tenderNum);
 
         locationImageView.setOnClickListener(new View.OnClickListener() {
