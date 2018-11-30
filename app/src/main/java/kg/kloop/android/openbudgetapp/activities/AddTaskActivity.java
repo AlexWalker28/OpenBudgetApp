@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.User;
+import kg.kloop.android.openbudgetapp.utils.Constants;
 
 public class AddTaskActivity extends AppCompatActivity {
 
@@ -127,6 +128,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 String taskId = tenderTasksColRef.document().getId();
                 task.setId(taskId);
                 task.setAuthor(user);
+                if (!user.getRole().equals(Constants.MODERATOR)) task.setNeedModeration(true);
                 tenderTasksColRef.document(taskId).set(task);
                 tenderDocRef.update("hasTasks", true);
                 intent.putExtra("task_id", taskId);

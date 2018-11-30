@@ -47,10 +47,16 @@ public class MainActivityController {
                     user = documentSnapshot.toObject(User.class);
                     if (user != null) {
                         mainViewModel.getUserLiveData().setValue(user);
-                        if (user.getRole().equals(Constants.USER)) {
-                            mainViewModel.getUserRoleMutableLiveData().setValue(Constants.USER);
-                        } else if (user.getRole().equals(Constants.EDITOR)) {
-                            mainViewModel.getUserRoleMutableLiveData().setValue(Constants.EDITOR);
+                        switch (user.getRole()) {
+                            case Constants.USER:
+                                mainViewModel.getUserRoleMutableLiveData().setValue(Constants.USER);
+                                break;
+                            case Constants.EDITOR:
+                                mainViewModel.getUserRoleMutableLiveData().setValue(Constants.EDITOR);
+                                break;
+                            case Constants.MODERATOR:
+                                mainViewModel.getUserRoleMutableLiveData().setValue(Constants.MODERATOR);
+                                break;
                         }
                     }
                 }

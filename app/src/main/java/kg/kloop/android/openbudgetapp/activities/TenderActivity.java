@@ -108,7 +108,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         if (currentUser != null) {
-            if (currentUser.getRole().equals(Constants.EDITOR)) {
+            if (currentUser.getRole().equals(Constants.EDITOR) || currentUser.getRole().equals(Constants.MODERATOR)) {
                 getMenuInflater().inflate(R.menu.editor_menu, menu);
             } else if (currentUser.getRole().equals(Constants.USER)) {
                 getMenuInflater().inflate(R.menu.user_tender_menu, menu);

@@ -13,6 +13,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import kg.kloop.android.openbudgetapp.objects.Tender;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 import kg.kloop.android.openbudgetapp.objects.User;
+import kg.kloop.android.openbudgetapp.utils.Constants;
 
 public class TenderActivityController {
     private static final String TAG = TenderActivityController.class.getSimpleName();
@@ -36,6 +39,7 @@ public class TenderActivityController {
     private ArrayList<TenderTask> taskArrayList;
     private TenderActivityModel model;
     private CollectionReference workCollectionReference;
+    private Query query;
 
     public TenderActivityController(final TenderActivityModel model, Intent intent) {
         this.model = model;
@@ -49,7 +53,11 @@ public class TenderActivityController {
         userDocRef = db.document("users/" + currentUser.getId());
         taskArrayList = new ArrayList<>();
 
-        tasksCollectionReference.whereEqualTo("tenderId", tender.getTender_num()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        if (currentUser.getRole().equals(Constants.MODERATOR)) {
+            query = tasksCollectionReference.whereEqualTo("tenderId", tender.getTender_num());
+        } else query = tasksCollectionReference.whereEqualTo("tenderId", tender.getTender_num()).whereEqualTo("needModeration", false);
+
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {

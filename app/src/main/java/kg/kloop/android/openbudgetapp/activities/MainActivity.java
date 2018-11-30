@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 viewPager.setOffscreenPageLimit(3);
                 if (userRole.equals(Constants.USER)) {
                     viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
-                } else if (userRole.equals(Constants.EDITOR)) {
+                } else if (userRole.equals(Constants.EDITOR) || userRole.equals(Constants.MODERATOR)) {
                     viewPager.setAdapter(new TendersFragmentEditorsPageAdapter(getSupportFragmentManager()));
                 } else {
                     viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
