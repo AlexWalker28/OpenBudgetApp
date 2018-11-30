@@ -303,7 +303,7 @@ public class DoTaskActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.do_task_send_menu_item:
                 if (doTaskEditText.getText().toString().length() > 0) {
-                    if (inputStreamArrayList != null) {
+                    if (inputStreamArrayList != null && !inputStreamArrayList.isEmpty()) {
                         //item.setEnabled(false);
                         saveWithFiles(inputStreamArrayList);
                     } else {

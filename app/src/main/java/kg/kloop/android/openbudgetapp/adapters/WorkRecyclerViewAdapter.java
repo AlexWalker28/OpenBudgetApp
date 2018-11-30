@@ -43,7 +43,7 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
         if (work.getAuthor() != null) {
             viewHolder.authorTextView.setText(work.getAuthor().getName());
         }
-        if (!work.getPhotoUrlList().isEmpty()) {
+        if (work.getPhotoUrlList() != null && !work.getPhotoUrlList().isEmpty()) {
             Glide.with(context)
                     .load(work.getPhotoUrlList().get(0))
                     .into(viewHolder.workImageView);
@@ -52,6 +52,9 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
                 viewHolder.counterTextView.setVisibility(View.VISIBLE);
                 viewHolder.counterTextView.setText("+" + (photosCount - 1));
             }
+        } else {
+            viewHolder.counterTextView.setVisibility(View.GONE);
+            viewHolder.workImageView.setVisibility(View.GONE);
         }
     }
 
@@ -77,11 +80,14 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(context, ImageViewActivity.class);
-            ArrayList<String> urls = new ArrayList<>(workArrayList.get(getAdapterPosition()).getPhotoUrlList());
-            intent.putStringArrayListExtra("urls", urls);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            TenderTaskWork work = workArrayList.get(getAdapterPosition());
+            if (work.getPhotoUrlList() != null && !work.getPhotoUrlList().isEmpty()) {
+                Intent intent = new Intent(context, ImageViewActivity.class);
+                ArrayList<String> urls = new ArrayList<>(work.getPhotoUrlList());
+                intent.putStringArrayListExtra("urls", urls);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
         }
     }
 }

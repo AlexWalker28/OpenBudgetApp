@@ -40,9 +40,11 @@ public class TenderWorkRecyclerViewAdapter extends RecyclerView.Adapter<TenderWo
         if (work.getAuthor() != null) {
             viewHolder.authorTextView.setText(work.getAuthor().getName());
         }
-        Glide.with(context)
-                .load(tenderTaskWorkArrayList.get(i).getPhotoUrlList())
-                .into(viewHolder.tenderWorkImageView);
+        if (work.getPhotoUrlList() != null && !work.getPhotoUrlList().isEmpty()) {
+            Glide.with(context)
+                    .load(work.getPhotoUrlList().get(0))
+                    .into(viewHolder.tenderWorkImageView);
+        } else viewHolder.tenderWorkImageView.setVisibility(View.GONE);
 
     }
 
