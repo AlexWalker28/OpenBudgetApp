@@ -71,6 +71,7 @@ public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<TenderTa
             intent.putExtra("task_id", task.getId());
             intent.putExtra("tender_num", tender.getTender_num());
             intent.putExtra("user", currentUser);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
     }

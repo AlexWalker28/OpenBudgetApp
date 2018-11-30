@@ -80,6 +80,7 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
             Intent intent = new Intent(context, ImageViewActivity.class);
             ArrayList<String> urls = new ArrayList<>(workArrayList.get(getAdapterPosition()).getPhotoUrlList());
             intent.putStringArrayListExtra("urls", urls);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
     }

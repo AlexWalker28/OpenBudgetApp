@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.DoTaskActivity">
+    tools:context=".activities.DoTaskActivity"
+    android:background="@android:color/white">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

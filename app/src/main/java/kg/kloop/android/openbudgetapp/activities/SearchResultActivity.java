@@ -48,7 +48,7 @@ public class SearchResultActivity extends AppCompatActivity implements Lifecycle
         User user = (User) intent.getSerializableExtra("current_user");
         tenderArrayList = new ArrayList<>();
         RecyclerView searchResultRecyclerView = findViewById(R.id.search_result_activity_recycler_view);
-        simpleAdapter = new SearchResultActivityRecyclerViewAdapter(getApplicationContext(), tenderArrayList, user, controller);
+        simpleAdapter = new SearchResultActivityRecyclerViewAdapter(this, tenderArrayList, user, controller);
         searchResultRecyclerView.setAdapter(simpleAdapter);
         searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         model.setSearchWords(searchWords);
