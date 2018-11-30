@@ -51,9 +51,9 @@
 
         <ImageView
             android:id="@+id/tender_work_item_image_view"
-            android:layout_width="200dp"
+            android:layout_width="280dp"
             android:scaleType="centerCrop"
-            android:layout_height="wrap_content"
+            android:layout_height="280dp"
             android:layout_marginStart="@dimen/horizontal_padding"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"

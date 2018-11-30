@@ -3,6 +3,8 @@ package kg.kloop.android.openbudgetapp.activities;
 import android.content.Intent;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -25,8 +27,14 @@ public class ImageViewActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         ArrayList<String> urls = intent.getStringArrayListExtra("urls");
-        Log.i(TAG, "onCreate: urls size - " + urls.size());
-        viewPager.setAdapter(new ImageAdapter(this, urls));
+        if (urls != null) {
+            Log.i(TAG, "onCreate: urls size - " + urls.size());
+            viewPager.setAdapter(new ImageAdapter(this, urls));
+        } else {
+            ArrayList<Uri> uris = intent.getParcelableArrayListExtra("uris");
+            Log.i(TAG, "onCreate: uris size - " + uris.size());
+            viewPager.setAdapter(new ImageAdapter(this, uris, true));
+        }
     }
 
 }

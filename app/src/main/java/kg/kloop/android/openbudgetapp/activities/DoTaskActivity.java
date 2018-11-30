@@ -72,7 +72,7 @@ public class DoTaskActivity extends AppCompatActivity {
     private ProgressBar horizontalProgressBar;
     private User currentUser;
     private TextView imageCounterTextView;
-    private List<Uri> mSelected;
+    private List<Uri> selectedPhotosUris;
     private MutableLiveData<ArrayList<String>> photoUrls;
     private MutableLiveData<Boolean> isUploadFinished;
 
@@ -84,7 +84,7 @@ public class DoTaskActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("images");
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         String tenderNum = intent.getStringExtra("tender_num");
         String taskId = intent.getStringExtra("task_id");
         currentUser = (User) intent.getSerializableExtra("user");
@@ -137,18 +137,17 @@ public class DoTaskActivity extends AppCompatActivity {
             }
         });
 
-        /*photoUrls.observe(this, new Observer<ArrayList<String>>() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(@Nullable ArrayList<String> strings) {
-                if (strings != null) {
-                    Log.d(TAG, "photos urls: " + strings.size());
-                    Log.d(TAG, "input stream size: " + inputStreamArrayList.size());
-                    if (strings.size() == inputStreamArrayList.size()) {
-                        saveTender(strings);
-                    }
-                }
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: click");
+                Intent showPhotosIntent = new Intent(DoTaskActivity.this, ImageViewActivity.class);
+                ArrayList<Uri> selectedPhotos = new ArrayList<>(selectedPhotosUris);
+                showPhotosIntent.putParcelableArrayListExtra("uris", selectedPhotos);
+                startActivity(showPhotosIntent);
+
             }
-        });*/
+        });
 
     }
 
@@ -202,10 +201,10 @@ public class DoTaskActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == PICK_IMAGE) {
             if (resultCode == RESULT_OK) {
-                mSelected = Matisse.obtainResult(data);
-                Log.d("Matisse", "mSelected: " + mSelected);
-                showImage(imageView, mSelected.get(0));
-                for (Uri uri : mSelected) {
+                selectedPhotosUris = Matisse.obtainResult(data);
+                Log.d("Matisse", "selectedPhotosUris: " + selectedPhotosUris);
+                showImage(imageView, selectedPhotosUris.get(0));
+                for (Uri uri : selectedPhotosUris) {
                     try {
 
                         inputStreamArrayList.add(new FileInputStream(getRealPath(uri)));
@@ -214,9 +213,9 @@ public class DoTaskActivity extends AppCompatActivity {
                     }
 
                 }
-                if (mSelected.size() > 1) {
+                if (selectedPhotosUris.size() > 1) {
                     imageCounterTextView.setVisibility(View.VISIBLE);
-                    imageCounterTextView.setText("+" + (mSelected.size() - 1));
+                    imageCounterTextView.setText("+" + (selectedPhotosUris.size() - 1));
                 } else {
                     imageCounterTextView.setVisibility(View.GONE);
                 }
@@ -269,7 +268,7 @@ public class DoTaskActivity extends AppCompatActivity {
                             Log.v(TAG, "photo url: " + uri);
                             photoUrls.getValue().add(uri.toString());
                             Log.i(TAG, "photoUrls size: " + photoUrls.getValue().size());
-                            if (photoUrls.getValue().size() == mSelected.size()) {
+                            if (photoUrls.getValue().size() == selectedPhotosUris.size()) {
                                 isUploadFinished.setValue(true);
                             }
                             //saveTender(photoUrl, item);

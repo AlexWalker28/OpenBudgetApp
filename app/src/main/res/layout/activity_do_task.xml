@@ -87,7 +87,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_attachment_image_button"
-            tools:src="@drawable/ic_attach_file_black_24dp" />
+            tools:src="@drawable/ic_photo_black_24dp" />
 
     <ProgressBar
         android:id="@+id/do_task_progress_bar"
