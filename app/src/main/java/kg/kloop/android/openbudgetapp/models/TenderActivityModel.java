@@ -17,8 +17,6 @@ public class TenderActivityModel {
     private MutableLiveData<Boolean> tenderAccepted;
     private MutableLiveData<ArrayList<TenderTask>> tenderTaskArrayListMutableLiveData;
     private MutableLiveData<ArrayList<TenderTaskWork>> tenderTaskWorkArrayList;
-    private MutableLiveData<Boolean> taskAdded;
-    private TenderTask addedTask;
 
     public TenderActivityModel() {
         tenderTaskArrayListMutableLiveData = new MutableLiveData<>();
@@ -26,7 +24,6 @@ public class TenderActivityModel {
         myTender = new MutableLiveData<>();
         tenderClosed = new MutableLiveData<>();
         tenderAccepted = new MutableLiveData<>();
-        taskAdded = new MutableLiveData<>();
     }
 
     public Tender getTender() {
@@ -69,17 +66,6 @@ public class TenderActivityModel {
         return tenderAccepted;
     }
 
-    public void setTenderAccepted(MutableLiveData<Boolean> tenderAccepted) {
-        this.tenderAccepted = tenderAccepted;
-    }
-
-    public MutableLiveData<Boolean> getTaskAdded() {
-        return taskAdded;
-    }
-
-    public void setTaskAdded(MutableLiveData<Boolean> taskAdded) {
-        this.taskAdded = taskAdded;
-    }
 
     public void setTenderTaskArrayListMutableLiveData(MutableLiveData<ArrayList<TenderTask>> tenderTaskArrayListMutableLiveData) {
         this.tenderTaskArrayListMutableLiveData = tenderTaskArrayListMutableLiveData;
@@ -95,13 +81,5 @@ public class TenderActivityModel {
 
     public void setTenderTaskWorkArrayList(MutableLiveData<ArrayList<TenderTaskWork>> tenderTaskWorkArrayList) {
         this.tenderTaskWorkArrayList = tenderTaskWorkArrayList;
-    }
-
-    public void setAddedTask(TenderTask addedTask) {
-        this.addedTask = addedTask;
-    }
-
-    public TenderTask getAddedTask() {
-        return addedTask;
     }
 }

@@ -119,20 +119,4 @@ public class TenderActivityController {
             }
         });
     }
-
-    public void addTask(Intent data) {
-        String taskId = data.getStringExtra("task_id");
-        tasksCollectionReference.document(taskId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot snapshot = task.getResult();
-                    if (snapshot.exists()) {
-                        model.setAddedTask(snapshot.toObject(TenderTask.class));
-                        model.getTaskAdded().setValue(true);
-                    }
-                }
-            }
-        });
-    }
 }
