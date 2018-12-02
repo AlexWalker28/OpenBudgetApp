@@ -45,6 +45,7 @@ import kg.kloop.android.openbudgetapp.utils.Constants;
 public class WorkActivity extends AppCompatActivity {
 
     private static final String TAG = WorkActivity.class.getSimpleName();
+    private static final int EDIT_TASK = 100;
     private WorkActivityController controller;
     private WorkActivityModel model;
     private WorkRecyclerViewAdapter adapter;
@@ -53,6 +54,7 @@ public class WorkActivity extends AppCompatActivity {
     private User currentUser;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference taskDocRef;
+    private TextView taskDescriptionTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class WorkActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.work_toolbar));
         RecyclerView workRecyclerView = findViewById(R.id.work_activity_recycler_view);
         FloatingActionButton fab = findViewById(R.id.do_work_fab);
-        TextView taskDescriptionTextView = findViewById(R.id.work_activity_task_description_text_view);
+        taskDescriptionTextView = findViewById(R.id.work_activity_task_description_text_view);
         adapter = new WorkRecyclerViewAdapter(getApplicationContext(), workArrayList);
         workRecyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -138,6 +140,16 @@ public class WorkActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == EDIT_TASK) {
+                taskDescriptionTextView.setText(data.getStringExtra("task_description"));
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.publish_task_moderator_menu_item:
@@ -162,6 +174,23 @@ public class WorkActivity extends AppCompatActivity {
                 Intent openTenderIntent = new Intent(Intent.ACTION_VIEW);
                 openTenderIntent.setData(Uri.parse("http://zakupki.gov.kg/popp/view/order/view.xhtml?id=" + model.getTask().getTenderId().substring(6)));
                 startActivity(openTenderIntent);
+                break;
+
+            case R.id.remove_task_moderator_menu_item:
+                if (currentUser.getRole().equals(Constants.MODERATOR)) {
+                    taskDocRef.delete().addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(), R.string.task_removed, Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+                } else Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.edit_task_moderator_menu_item:
+                Intent intent = new Intent(WorkActivity.this, EditTaskActivity.class);
+                intent.putExtra("task", model.getTask());
+                startActivityForResult(intent, EDIT_TASK);
         }
         return true;
     }

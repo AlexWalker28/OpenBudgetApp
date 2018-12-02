@@ -38,4 +38,9 @@
     <string name="task_is_published">Задание опубликовано</string>
     <string name="moderate">Отозвать</string>
     <string name="task_sent_to_moderator">Задание отправлено на модерацию</string>
+    <string name="remove_task">Удалить задание</string>
+    <string name="task_removed">Задание удалено</string>
+    <string name="edit">Редактировать</string>
+    <string name="ready">Готово</string>
+    <string name="changes_applied">Изменения сохранены</string>
 </resources>
