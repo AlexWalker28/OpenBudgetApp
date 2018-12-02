@@ -40,15 +40,18 @@ public class AddTaskActivity extends AppCompatActivity {
     private RadioButton audioRadioButton;
     private ImageView locationImageView;
     private String tenderNum;
-    private CollectionReference tenderTasksColRef;
     private TenderTask task;
-    private DocumentReference tenderDocRef;
     private User user;
+    private CollectionReference tasksCollectionReference;
+    private DocumentReference tenderDocRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
+        tasksCollectionReference = db.collection("tasks/");
+        tenderDocRef = db.document("tenders_db/" + tenderNum);
 
         taskEditText = findViewById(R.id.add_task_edit_text);
         photoRadioButton = findViewById(R.id.photo_radio_button);
@@ -60,8 +63,6 @@ public class AddTaskActivity extends AppCompatActivity {
         task = new TenderTask();
         tenderNum = intent.getStringExtra("tender_num");
         user = (User) intent.getSerializableExtra("current_user");
-        tenderTasksColRef = db.collection("tasks/");
-        tenderDocRef = db.document("tenders_db/" + tenderNum);
 
         locationImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,18 +122,15 @@ public class AddTaskActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_add_task_menu_item:
-                Intent intent = new Intent();
                 task.setDescription(taskEditText.getText().toString());
                 task.setAttachmentTypes(getAttachmentTypes());
                 task.setTenderId(tenderNum);
-                String taskId = tenderTasksColRef.document().getId();
+                String taskId = tasksCollectionReference.document().getId();
                 task.setId(taskId);
                 task.setAuthor(user);
                 if (!user.getRole().equals(Constants.MODERATOR)) task.setNeedModeration(true);
-                tenderTasksColRef.document(taskId).set(task);
+                tasksCollectionReference.document(task.getId()).set(task);
                 tenderDocRef.update("hasTasks", true);
-                intent.putExtra("task_id", taskId);
-                setResult(RESULT_OK, intent);
                 finish();
         }
         return true;

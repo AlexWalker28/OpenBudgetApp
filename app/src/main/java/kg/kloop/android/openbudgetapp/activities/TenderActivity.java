@@ -33,8 +33,6 @@ import kg.kloop.android.openbudgetapp.utils.Constants;
 
 public class TenderActivity extends AppCompatActivity implements LifecycleOwner {
 
-    private static final int ADD_TASK_REQUEST_CODE = 100;
-    private static final int DO_TASK_REQUEST_CODE = 101;
     private static final String TAG = TenderActivity.class.getSimpleName();
     private TenderActivityController controller;
     private TenderActivityModel model;
@@ -133,7 +131,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                 Intent intent = new Intent(TenderActivity.this, AddTaskActivity.class);
                 intent.putExtra("current_user", currentUser);
                 intent.putExtra("tender_num", tender.getTender_num());
-                startActivityForResult(intent, ADD_TASK_REQUEST_CODE);
+                startActivity(intent);
                 break;
             case R.id.close_tender_menu_item:
                 controller.closeTender();
@@ -166,38 +164,6 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                 startActivity(openTenderIntent);
         }
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (data != null) {
-            switch (requestCode) {
-                case ADD_TASK_REQUEST_CODE:
-                    controller.addTask(data);
-                    model.getTaskAdded().observe(this, new Observer<Boolean>() {
-                        @Override
-                        public void onChanged(@Nullable Boolean isTaskAdded) {
-                            if (isTaskAdded) {
-                                /*tenderTaskArrayList.add(model.getAddedTask());
-                                taskAdapter.notifyDataSetChanged();*/
-                            }
-                        }
-                    });
-                    break;
-
-            }
-        }
-        if (requestCode == DO_TASK_REQUEST_CODE) {
-            controller.updateTenderWork();
-            model.getTenderTaskWorkArrayList().observe(this, new Observer<ArrayList<TenderTaskWork>>() {
-                @Override
-                public void onChanged(@Nullable ArrayList<TenderTaskWork> tenderTasks) {
-                    //showTenderWork(tenderTasks);
-                }
-            });
-        }
-
-
     }
 
 }

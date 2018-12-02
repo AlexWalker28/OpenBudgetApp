@@ -53,15 +53,14 @@ public class TenderActivityController {
         userDocRef = db.document("users/" + currentUser.getId());
         taskArrayList = new ArrayList<>();
 
-        if (currentUser.getRole().equals(Constants.MODERATOR)) {
-            query = tasksCollectionReference.whereEqualTo("tenderId", tender.getTender_num());
-        } else query = tasksCollectionReference.whereEqualTo("tenderId", tender.getTender_num()).whereEqualTo("needModeration", false);
+        query = tasksCollectionReference.whereEqualTo("tenderId", tender.getTender_num());
 
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
                     Log.d(TAG, "tasks: " + queryDocumentSnapshots.size());
+                    taskArrayList.clear();
                     taskArrayList.addAll(queryDocumentSnapshots.toObjects(TenderTask.class));
                     model.getTenderTaskArrayListMutableLiveData().setValue(taskArrayList);
 
@@ -135,9 +134,5 @@ public class TenderActivityController {
                 }
             }
         });
-    }
-
-    public void updateTenderWork() {
-        //TODO: updateTenderWork()
     }
 }
