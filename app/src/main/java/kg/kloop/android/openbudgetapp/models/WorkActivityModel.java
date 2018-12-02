@@ -4,15 +4,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 
+import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 
 public class WorkActivityModel {
 
     private String tenderNum;
-    private String taskId;
-    private String taskDescription;
-    private double taskLat;
-    private double taskLng;
+    private TenderTask task;
 
     public WorkActivityModel() {
         workArrayList = new MutableLiveData<>();
@@ -36,35 +34,11 @@ public class WorkActivityModel {
         return tenderNum;
     }
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
+    public void setTask(TenderTask task) {
+        this.task = task;
     }
 
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskDescription(String taskDescription) {
-        this.taskDescription = taskDescription;
-    }
-
-    public String getTaskDescription() {
-        return taskDescription;
-    }
-
-    public void setTaskLat(double taskLat) {
-        this.taskLat = taskLat;
-    }
-
-    public double getTaskLat() {
-        return taskLat;
-    }
-
-    public void setTaskLng(double taskLng) {
-        this.taskLng = taskLng;
-    }
-
-    public double getTaskLng() {
-        return taskLng;
+    public TenderTask getTask() {
+        return task;
     }
 }

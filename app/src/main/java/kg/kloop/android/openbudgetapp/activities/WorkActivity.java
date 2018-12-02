@@ -5,6 +5,8 @@ import androidx.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -12,8 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +27,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -29,8 +36,10 @@ import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.adapters.WorkRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.controllers.WorkActivityController;
 import kg.kloop.android.openbudgetapp.models.WorkActivityModel;
+import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 import kg.kloop.android.openbudgetapp.objects.User;
+import kg.kloop.android.openbudgetapp.utils.Constants;
 
 public class WorkActivity extends AppCompatActivity {
 
@@ -40,6 +49,9 @@ public class WorkActivity extends AppCompatActivity {
     private WorkRecyclerViewAdapter adapter;
     private ArrayList<TenderTaskWork> workArrayList;
     private SupportMapFragment mMapFragment;
+    private User currentUser;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference taskDocRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,20 +73,13 @@ public class WorkActivity extends AppCompatActivity {
         workRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         Intent intent = getIntent();
-        String taskId = intent.getStringExtra("task_id");
-        String tenderNum = intent.getStringExtra("tender_num");
-        String tenderDescription = intent.getStringExtra("task_description");
-        final User currentUser = (User) intent.getSerializableExtra("user");
-        double taskLat = intent.getDoubleExtra("task_lat", 0);
-        double taskLng = intent.getDoubleExtra("task_lng", 0);
+        TenderTask task = (TenderTask) intent.getSerializableExtra("task");
+        model.setTask(task);
+        currentUser = (User) intent.getSerializableExtra("user");
+        taskDocRef = db.document("tasks/" + model.getTask().getId());
 
-        model.setTenderNum(tenderNum);
-        model.setTaskId(taskId);
-        model.setTaskDescription(tenderDescription);
-        model.setTaskLat(taskLat);
-        model.setTaskLng(taskLng);
-        controller.getWorkForTask(taskId);
-        taskDescriptionTextView.setText(model.getTaskDescription());
+        controller.getWorkForTask(model.getTask().getId());
+        taskDescriptionTextView.setText(model.getTask().getDescription());
         MutableLiveData<ArrayList<TenderTaskWork>> liveData = model.getWorkArrayList();
         liveData.observe(this, new Observer<ArrayList<TenderTaskWork>>() {
             @Override
@@ -92,14 +97,14 @@ public class WorkActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(WorkActivity.this, DoTaskActivity.class);
                 intent.putExtra("tender_num", model.getTenderNum());
-                intent.putExtra("task_id", model.getTaskId());
+                intent.putExtra("task_id", model.getTask().getId());
                 intent.putExtra("user", currentUser);
                 startActivity(intent);
             }
         });
-        Log.v(TAG, "lat: " + model.getTaskLat());
-        if (model.getTaskLat() != 0) {
-            final LatLng taskLatLng = new LatLng(model.getTaskLat(), model.getTaskLng());
+        Log.v(TAG, "lat: " + model.getTask().getLatitude());
+        if (model.getTask().getLatitude() != 0) {
+            final LatLng taskLatLng = new LatLng(model.getTask().getLatitude(), model.getTask().getLongitude());
             mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
             mMapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -117,5 +122,40 @@ public class WorkActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (currentUser.getRole().equals(Constants.MODERATOR) && model.getTask().isNeedModeration()) {
+            getMenuInflater().inflate(R.menu.task_moderator_publish_menu, menu);
+        } else if (currentUser.getRole().equals(Constants.MODERATOR) && !model.getTask().isNeedModeration()) {
+            getMenuInflater().inflate(R.menu.task_moderate_menu, menu);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.publish_task_moderator_menu_item:
+                taskDocRef.update("needModeration", false).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), R.string.task_is_published, Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+                break;
+            case R.id.task_moderate_menu_item:
+                taskDocRef.update("needModeration", true).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), R.string.task_sent_to_moderator, Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+                break;
+        }
+        return true;
     }
 }

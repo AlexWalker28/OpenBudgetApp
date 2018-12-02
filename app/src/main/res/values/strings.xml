@@ -33,4 +33,9 @@
     <string name="open_tender_page">Показать тендер</string>
     <string name="loading_tender">Загрузка тендера</string>
     <string name="nothing_found">Ничего не найдно</string>
+    <string name="task_for_moderator">Задание на модерации</string>
+    <string name="publish">Опубликовать</string>
+    <string name="task_is_published">Задание опубликовано</string>
+    <string name="moderate">Отозвать</string>
+    <string name="task_sent_to_moderator">Задание отправлено на модерацию</string>
 </resources>
