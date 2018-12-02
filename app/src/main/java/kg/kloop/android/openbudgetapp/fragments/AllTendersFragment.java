@@ -62,7 +62,6 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
         userLiveData.observe(this, new Observer<User>() {
             @Override
             public void onChanged(@androidx.annotation.Nullable User user) {
-                setHasOptionsMenu(true);
                 mUser = user;
                 // The "base query" is a query with no startAt/endAt/limit clauses that the adapter can use
                 // to form smaller queries for each page.  It should only include where() and orderBy() clauses
@@ -84,37 +83,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                 allTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
         });
-
-        viewModel.getSearchWords().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable final String searchWords) {
-                if (searchWords != null) {
-                    Log.i(TAG, "onChanged: searchWords - " + searchWords);
-                    Intent intent = new Intent(getActivity(), SearchResultActivity.class);
-                    intent.putExtra("search_words", searchWords);
-                    intent.putExtra("current_user", mUser);
-                    getActivity().startActivity(intent);
-                    viewModel.getSearchWords().setValue(null); //otherwise SearchResultActivity will launch
-                }
-            }
-        });
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.search_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.search_menu_item:
-                showSearchDialog();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void showSearchDialog() {

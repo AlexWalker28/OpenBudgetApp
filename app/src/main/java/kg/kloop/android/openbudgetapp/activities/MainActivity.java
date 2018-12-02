@@ -1,5 +1,6 @@
 package kg.kloop.android.openbudgetapp.activities;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -14,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import java.util.List;
 
 import kg.kloop.android.openbudgetapp.adapters.TenderFragmentModeratorPageAdapter;
 import kg.kloop.android.openbudgetapp.controllers.MainActivityController;
+import kg.kloop.android.openbudgetapp.fragments.SearchTenderDialogFragment;
 import kg.kloop.android.openbudgetapp.utils.Constants;
 import kg.kloop.android.openbudgetapp.models.MainViewModel;
 import kg.kloop.android.openbudgetapp.R;
@@ -99,6 +102,20 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 return true;
             }
         });
+
+        mainViewModel.getSearchWords().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable final String searchWords) {
+                if (searchWords != null) {
+                    Log.i(TAG, "onChanged: searchWords - " + searchWords);
+                    Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
+                    intent.putExtra("search_words", searchWords);
+                    intent.putExtra("current_user", mainViewModel.getUserLiveData().getValue());
+                    startActivity(intent);
+                    mainViewModel.getSearchWords().setValue(null);
+                }
+            }
+        });
     }
 
     private void updateLayout(final FirebaseUser firebaseUser) {
@@ -135,6 +152,27 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                         .setAvailableProviders(providers)
                         .build(),
                 RC_SIGN_IN);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search_menu_item:
+                showSearchDialog();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showSearchDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        SearchTenderDialogFragment searchTenderDialogFragment = SearchTenderDialogFragment.newInstance("Search");
+        searchTenderDialogFragment.show(fm, "fragment_search");
     }
 
     @Override
