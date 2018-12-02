@@ -6,4 +6,9 @@
         android:title="@string/moderate"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/open_tender_page_menu_item"
+        android:title="@string/open_tender_page"
+        app:showAsAction="never" />
+
 </menu>

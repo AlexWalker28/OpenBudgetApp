@@ -24,15 +24,13 @@ public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
 
     private Context context;
     private ArrayList<TenderTask> tenderTaskArrayList;
-    private Tender tender;
     private User currentUser;
     public static final int BASIC_TYPE = 1;
     public static final int MODERATOR_TYPE = 2;
 
-    public TenderTaskRecyclerViewAdapter(Context context, ArrayList<TenderTask> tenderTaskArrayList, Tender tender, User currentUser) {
+    public TenderTaskRecyclerViewAdapter(Context context, ArrayList<TenderTask> tenderTaskArrayList, User currentUser) {
         this.context = context;
         this.tenderTaskArrayList = tenderTaskArrayList;
-        this.tender = tender;
         this.currentUser = currentUser;
     }
 
@@ -111,7 +109,6 @@ public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         Intent intent = new Intent(context.getApplicationContext(), WorkActivity.class);
         TenderTask task = tenderTaskArrayList.get(adapterPosition);
         intent.putExtra("task", task);
-        intent.putExtra("tender_num", tender.getTender_num());
         intent.putExtra("user", currentUser);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);

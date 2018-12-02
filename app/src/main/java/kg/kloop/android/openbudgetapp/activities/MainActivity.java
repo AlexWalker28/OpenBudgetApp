@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Arrays;
 import java.util.List;
 
+import kg.kloop.android.openbudgetapp.adapters.TenderFragmentModeratorPageAdapter;
 import kg.kloop.android.openbudgetapp.controllers.MainActivityController;
 import kg.kloop.android.openbudgetapp.utils.Constants;
 import kg.kloop.android.openbudgetapp.models.MainViewModel;
@@ -110,8 +111,11 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 viewPager.setOffscreenPageLimit(3);
                 if (userRole.equals(Constants.USER)) {
                     viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
-                } else if (userRole.equals(Constants.EDITOR) || userRole.equals(Constants.MODERATOR)) {
+                } else if (userRole.equals(Constants.EDITOR)) {
                     viewPager.setAdapter(new TendersFragmentEditorsPageAdapter(getSupportFragmentManager()));
+                } else if (userRole.equals(Constants.MODERATOR)) {
+                    viewPager.setAdapter(new TenderFragmentModeratorPageAdapter(getSupportFragmentManager()));
+                    tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
                 } else {
                     viewPager.setAdapter(new TenderFragmentSimpleUsersPageAdapter(getSupportFragmentManager()));
                     signIn();

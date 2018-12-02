@@ -3,6 +3,7 @@ package kg.kloop.android.openbudgetapp.activities;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
@@ -92,16 +93,18 @@ public class WorkActivity extends AppCompatActivity {
 
             }
         });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(WorkActivity.this, DoTaskActivity.class);
-                intent.putExtra("tender_num", model.getTenderNum());
+                intent.putExtra("tender_num", model.getTask().getTenderId());
                 intent.putExtra("task_id", model.getTask().getId());
                 intent.putExtra("user", currentUser);
                 startActivity(intent);
             }
         });
+
         Log.v(TAG, "lat: " + model.getTask().getLatitude());
         if (model.getTask().getLatitude() != 0) {
             final LatLng taskLatLng = new LatLng(model.getTask().getLatitude(), model.getTask().getLongitude());
@@ -155,6 +158,10 @@ public class WorkActivity extends AppCompatActivity {
                     }
                 });
                 break;
+            case R.id.open_tender_page_menu_item:
+                Intent openTenderIntent = new Intent(Intent.ACTION_VIEW);
+                openTenderIntent.setData(Uri.parse("http://zakupki.gov.kg/popp/view/order/view.xhtml?id=" + model.getTask().getTenderId().substring(6)));
+                startActivity(openTenderIntent);
         }
         return true;
     }

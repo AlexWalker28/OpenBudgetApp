@@ -9,7 +9,6 @@ import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 
 public class WorkActivityModel {
 
-    private String tenderNum;
     private TenderTask task;
 
     public WorkActivityModel() {
@@ -24,14 +23,6 @@ public class WorkActivityModel {
 
     public void setWorkArrayList(MutableLiveData<ArrayList<TenderTaskWork>> workArrayList) {
         this.workArrayList = workArrayList;
-    }
-
-    public void setTenderNum(String tenderNum) {
-        this.tenderNum = tenderNum;
-    }
-
-    public String getTenderNum() {
-        return tenderNum;
     }
 
     public void setTask(TenderTask task) {
