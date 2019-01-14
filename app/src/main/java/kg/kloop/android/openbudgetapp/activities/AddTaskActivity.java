@@ -9,6 +9,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,8 +55,6 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
-        tasksCollectionReference = db.collection("tasks/");
-        tenderDocRef = db.document("tenders_db/" + tenderNum);
 
         taskEditText = findViewById(R.id.add_task_edit_text);
         photoRadioButton = findViewById(R.id.photo_radio_button);
@@ -62,6 +65,8 @@ public class AddTaskActivity extends AppCompatActivity {
         Intent intent = getIntent();
         task = new TenderTask();
         tenderNum = intent.getStringExtra("tender_num");
+        tasksCollectionReference = db.collection("tasks/");
+        tenderDocRef = db.document("tenders_db/" + tenderNum);
         user = (User) intent.getSerializableExtra("current_user");
 
         locationImageView.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +136,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 if (!user.getRole().equals(Constants.MODERATOR)) task.setNeedModeration(true);
                 tasksCollectionReference.document(task.getId()).set(task);
                 tenderDocRef.update("hasTasks", true);
+                tenderDocRef.update("isCompleted", false);
                 finish();
         }
         return true;

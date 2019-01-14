@@ -56,7 +56,8 @@ public class Tender implements Serializable {
     private Boolean hasTasks;
 
     public Tender() {
-
+        isCompleted = false;
+        hasTasks = false;
     }
 
     public String getId() {

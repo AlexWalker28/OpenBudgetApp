@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.firebase.ui.firestore.paging.LoadingState;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.activities.TenderActivity;
@@ -44,6 +45,11 @@ public class TenderFirestorePagingAdapter extends FirestorePagingAdapter<Tender,
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
+    }
+
+    @Override
+    protected void onLoadingStateChanged(LoadingState state) {
+        super.onLoadingStateChanged(state);
     }
 
     @NonNull
