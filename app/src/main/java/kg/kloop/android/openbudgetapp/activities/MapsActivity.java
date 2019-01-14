@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,8 +61,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         uiSettings.setZoomControlsEnabled(true);
 
         LatLng kloop = new LatLng(42.856303, 74.620659);
-        //mMap.addMarker(new MarkerOptions().position(kloop).title("Kloop"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(kloop, 17));
+
+        Intent intent = getIntent();
+        double lat = intent.getDoubleExtra("lat", 0);
+        double lng = intent.getDoubleExtra("lng", 0);
+        LatLng taskCoordinates = new LatLng(lat, lng);
+
+        if (lat != 0) {
+            location = taskCoordinates;
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(taskCoordinates, 17));
+            mMap.addMarker(new MarkerOptions().position(taskCoordinates));
+        } else {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(kloop, 17));
+        }
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -74,6 +86,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                location = null;
                 marker.remove();
                 return true;
             }

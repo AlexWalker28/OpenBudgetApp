@@ -81,7 +81,14 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void openMapsActivity() {
-        startActivityForResult(new Intent(AddTaskActivity.this, MapsActivity.class), LOCATION_REQUEST_CODE);
+        if (task.getLatitude() != 0) {
+            Intent intent = new Intent(AddTaskActivity.this, MapsActivity.class);
+            intent.putExtra("lat", task.getLatitude());
+            intent.putExtra("lng", task.getLongitude());
+            startActivityForResult(intent, LOCATION_REQUEST_CODE);
+        } else {
+            startActivityForResult(new Intent(AddTaskActivity.this, MapsActivity.class), LOCATION_REQUEST_CODE);
+        }
     }
 
     private void requestGPSPermission(){
