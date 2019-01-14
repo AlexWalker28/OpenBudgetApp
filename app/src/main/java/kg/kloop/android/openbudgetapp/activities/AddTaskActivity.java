@@ -17,15 +17,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
@@ -49,6 +53,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private User user;
     private CollectionReference tasksCollectionReference;
     private DocumentReference tenderDocRef;
+    private DocumentReference taskDocRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +68,32 @@ public class AddTaskActivity extends AppCompatActivity {
         locationImageView = findViewById(R.id.add_task_location_image_view);
         setSupportActionBar((Toolbar) findViewById(R.id.add_task_toolbar));
         Intent intent = getIntent();
-        task = new TenderTask();
-        tenderNum = intent.getStringExtra("tender_num");
-        tasksCollectionReference = db.collection("tasks/");
-        tenderDocRef = db.document("tenders_db/" + tenderNum);
+
+        // edit path
+        if (intent.getSerializableExtra("task") != null) {
+            getSupportActionBar().setTitle(R.string.edit);
+            task = (TenderTask) intent.getSerializableExtra("task");
+            taskEditText.setText(task.getDescription());
+            taskDocRef = db.document("tasks/" + task.getId());
+            taskDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        if (task.getResult() != null && task.getResult().exists()) {
+                            TenderTask task1 = task.getResult().toObject(TenderTask.class);
+                            taskEditText.setText(task1.getDescription());
+                        }
+                    }
+                }
+            });
+        } else { // add path
+            getSupportActionBar().setTitle(R.string.add_task);
+            task = new TenderTask();
+            tenderNum = intent.getStringExtra("tender_num");
+            tasksCollectionReference = db.collection("tasks/");
+            tenderDocRef = db.document("tenders_db/" + tenderNum);
+        }
+
         user = (User) intent.getSerializableExtra("current_user");
 
         locationImageView.setOnClickListener(new View.OnClickListener() {
@@ -134,17 +161,35 @@ public class AddTaskActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_add_task_menu_item:
-                task.setDescription(taskEditText.getText().toString());
-                task.setAttachmentTypes(getAttachmentTypes());
-                task.setTenderId(tenderNum);
-                String taskId = tasksCollectionReference.document().getId();
-                task.setId(taskId);
-                task.setAuthor(user);
-                if (!user.getRole().equals(Constants.MODERATOR)) task.setNeedModeration(true);
-                tasksCollectionReference.document(task.getId()).set(task);
-                tenderDocRef.update("hasTasks", true);
-                tenderDocRef.update("isCompleted", false);
-                finish();
+                // update path
+                if (getIntent().getBooleanExtra("isEdit", false)) {
+                    Map<String, Object> updatedTask = new HashMap<>();
+                    updatedTask.put("description", taskEditText.getText().toString());
+                    updatedTask.put("latitude", task.getLatitude());
+                    updatedTask.put("longitude", task.getLongitude());
+                    taskDocRef.update(updatedTask).addOnSuccessListener(AddTaskActivity.this, new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(), R.string.changes_applied, Toast.LENGTH_SHORT).show();
+                            Intent editDataIntent = new Intent();
+                            editDataIntent.putExtra("task_description", taskEditText.getText().toString());
+                            setResult(RESULT_OK, editDataIntent);
+                            finish();
+                        }
+                    });
+                } else { // add path
+                    task.setDescription(taskEditText.getText().toString());
+                    task.setAttachmentTypes(getAttachmentTypes());
+                    task.setTenderId(tenderNum);
+                    String taskId = tasksCollectionReference.document().getId();
+                    task.setId(taskId);
+                    task.setAuthor(user);
+                    if (!user.getRole().equals(Constants.MODERATOR)) task.setNeedModeration(true);
+                    tasksCollectionReference.document(task.getId()).set(task);
+                    tenderDocRef.update("hasTasks", true);
+                    tenderDocRef.update("isCompleted", false);
+                    finish();
+                }
         }
         return true;
     }

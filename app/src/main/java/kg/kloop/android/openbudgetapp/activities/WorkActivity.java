@@ -45,7 +45,7 @@ import kg.kloop.android.openbudgetapp.utils.Constants;
 public class WorkActivity extends AppCompatActivity {
 
     private static final String TAG = WorkActivity.class.getSimpleName();
-    private static final int EDIT_TASK = 100;
+    public static final int EDIT_TASK = 100;
     private WorkActivityController controller;
     private WorkActivityModel model;
     private WorkRecyclerViewAdapter adapter;
@@ -188,8 +188,9 @@ public class WorkActivity extends AppCompatActivity {
                 } else Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.edit_task_moderator_menu_item:
-                Intent intent = new Intent(WorkActivity.this, EditTaskActivity.class);
+                Intent intent = new Intent(WorkActivity.this, AddTaskActivity.class);
                 intent.putExtra("task", model.getTask());
+                intent.putExtra("isEdit", true);
                 startActivityForResult(intent, EDIT_TASK);
         }
         return true;
