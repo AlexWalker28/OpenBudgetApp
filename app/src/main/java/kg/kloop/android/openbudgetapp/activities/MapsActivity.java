@@ -17,6 +17,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 import kg.kloop.android.openbudgetapp.R;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -61,10 +63,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //mMap.addMarker(new MarkerOptions().position(kloop).title("Kloop"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(kloop, 17));
 
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
-            public void onMapLongClick(LatLng latLng) {
+            public void onMapClick(LatLng latLng) {
                 location = latLng;
+                mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(latLng));
             }
         });
