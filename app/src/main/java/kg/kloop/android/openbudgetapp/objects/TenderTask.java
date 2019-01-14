@@ -14,6 +14,7 @@ public class TenderTask implements Serializable {
     private String tenderId;
     private User author;
     private boolean needModeration;
+    private String placeName;
 
     public TenderTask() {
         isCompleted = false;
@@ -89,5 +90,13 @@ public class TenderTask implements Serializable {
 
     public void setNeedModeration(boolean needModeration) {
         this.needModeration = needModeration;
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 }

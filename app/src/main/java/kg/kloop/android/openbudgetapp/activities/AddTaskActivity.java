@@ -3,22 +3,20 @@ package kg.kloop.android.openbudgetapp.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
-
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -31,16 +29,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.User;
 import kg.kloop.android.openbudgetapp.utils.Constants;
+
 
 public class AddTaskActivity extends AppCompatActivity {
 
     private static final String TAG = AddTaskActivity.class.getSimpleName();
     private static final int LOCATION_REQUEST_CODE = 123;
     private static final int GPS_PERMISSION_REQUEST_CODE = 1;
+    private static final int PLACE_PICKER_REQUEST = 234;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private EditText taskEditText;
@@ -48,6 +53,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private RadioButton videoRadioButton;
     private RadioButton audioRadioButton;
     private ImageView locationImageView;
+    private TextView placeTextView;
     private String tenderNum;
     private TenderTask task;
     private User user;
@@ -66,6 +72,7 @@ public class AddTaskActivity extends AppCompatActivity {
         videoRadioButton = findViewById(R.id.video_radio_button);
         audioRadioButton = findViewById(R.id.audion_radio_button);
         locationImageView = findViewById(R.id.add_task_location_image_view);
+        placeTextView = findViewById(R.id.add_task_place_text_view);
         setSupportActionBar((Toolbar) findViewById(R.id.add_task_toolbar));
         Intent intent = getIntent();
 
@@ -73,7 +80,7 @@ public class AddTaskActivity extends AppCompatActivity {
         if (intent.getSerializableExtra("task") != null) {
             getSupportActionBar().setTitle(R.string.edit);
             task = (TenderTask) intent.getSerializableExtra("task");
-            taskEditText.setText(task.getDescription());
+            placeTextView.setText(task.getPlaceName());
             taskDocRef = db.document("tasks/" + task.getId());
             taskDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -81,6 +88,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         if (task.getResult() != null && task.getResult().exists()) {
                             TenderTask task1 = task.getResult().toObject(TenderTask.class);
+                            taskEditText.setText(task1.getDescription());
                             taskEditText.setText(task1.getDescription());
                         }
                     }
@@ -100,22 +108,19 @@ public class AddTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (hasGPSPermission()) {
-                    openMapsActivity();
+                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                    try {
+                        startActivityForResult(builder.build(AddTaskActivity.this), PLACE_PICKER_REQUEST);
+                    } catch (GooglePlayServicesRepairableException e) {
+                        e.printStackTrace();
+                    } catch (GooglePlayServicesNotAvailableException e) {
+                        e.printStackTrace();
+                    }
+                    //openMapsActivity();
                 } else requestGPSPermission();
             }
         });
 
-    }
-
-    private void openMapsActivity() {
-        if (task.getLatitude() != 0) {
-            Intent intent = new Intent(AddTaskActivity.this, MapsActivity.class);
-            intent.putExtra("lat", task.getLatitude());
-            intent.putExtra("lng", task.getLongitude());
-            startActivityForResult(intent, LOCATION_REQUEST_CODE);
-        } else {
-            startActivityForResult(new Intent(AddTaskActivity.this, MapsActivity.class), LOCATION_REQUEST_CODE);
-        }
     }
 
     private void requestGPSPermission(){
@@ -147,12 +152,18 @@ public class AddTaskActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case LOCATION_REQUEST_CODE:
+                /*case LOCATION_REQUEST_CODE:
                     if (data != null) {
                         task.setLatitude(data.getDoubleExtra("lat", 0));
                         task.setLongitude(data.getDoubleExtra("lng", 0));
                     }
-                    break;
+                    break;*/
+                case  PLACE_PICKER_REQUEST:
+                    Place place = PlacePicker.getPlace(this, data);
+                    task.setPlaceName(place.getName().toString());
+                    placeTextView.setText(task.getPlaceName());
+                    task.setLatitude(place.getLatLng().latitude);
+                    task.setLongitude(place.getLatLng().longitude);
             }
         }
     }
@@ -167,6 +178,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     updatedTask.put("description", taskEditText.getText().toString());
                     updatedTask.put("latitude", task.getLatitude());
                     updatedTask.put("longitude", task.getLongitude());
+                    updatedTask.put("placeName", task.getPlaceName());
                     taskDocRef.update(updatedTask).addOnSuccessListener(AddTaskActivity.this, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

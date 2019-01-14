@@ -122,7 +122,7 @@ public class WorkActivity extends AppCompatActivity {
                     uiSettings.setZoomControlsEnabled(true);
                     googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(taskLatLng, 14));
-                    googleMap.addMarker(new MarkerOptions().position(taskLatLng).title("Kloop"));
+                    googleMap.addMarker(new MarkerOptions().position(taskLatLng).title(model.getTask().getPlaceName()));
                 }
             });
         }
