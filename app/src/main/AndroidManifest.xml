@@ -77,8 +77,6 @@
         <activity
             android:name=".activities.ImageViewActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activities.EditTaskActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>
