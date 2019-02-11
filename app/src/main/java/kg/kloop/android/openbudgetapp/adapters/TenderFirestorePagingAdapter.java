@@ -50,6 +50,10 @@ public class TenderFirestorePagingAdapter extends FirestorePagingAdapter<Tender,
     @Override
     protected void onLoadingStateChanged(LoadingState state) {
         super.onLoadingStateChanged(state);
+        switch (state) {
+            case LOADING_INITIAL:
+                //TODO: implement progress bar
+        }
     }
 
     @NonNull
