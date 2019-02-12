@@ -75,6 +75,7 @@ public class DoTaskActivity extends AppCompatActivity {
     private List<Uri> selectedPhotosUris;
     private MutableLiveData<ArrayList<String>> photoUrls;
     private MutableLiveData<Boolean> isUploadFinished;
+    private String tenderNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class DoTaskActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("images");
         final Intent intent = getIntent();
-        String tenderNum = intent.getStringExtra("tender_num");
+        tenderNum = intent.getStringExtra("tender_num");
         String taskId = intent.getStringExtra("task_id");
         currentUser = (User) intent.getSerializableExtra("user");
         taskDocRef = db.document("/tasks/" + taskId);
@@ -325,6 +326,8 @@ public class DoTaskActivity extends AppCompatActivity {
         horizontalProgressBar.setVisibility(View.VISIBLE);
         //item.setEnabled(false);
         CollectionReference taskWorkCollectionRef = taskDocRef.collection("work");
+        CollectionReference tendersColRef = db.collection("tenders_db");
+        tendersColRef.document(tenderNum).update("hasWork", true);
         TenderTaskWork tenderTaskWork = new TenderTaskWork();
         tenderTaskWork.setId(taskWorkCollectionRef.document().getId());
         tenderTaskWork.setText(doTaskEditText.getText().toString());

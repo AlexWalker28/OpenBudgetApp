@@ -111,6 +111,7 @@ public class TendersWithTasksFragment extends Fragment {
                 if (!isFiltered) {
                     tendersColRef
                             .whereEqualTo("hasWork", true)
+                            .whereEqualTo("isCompleted", false)
                             .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                 @Override
                                 public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
