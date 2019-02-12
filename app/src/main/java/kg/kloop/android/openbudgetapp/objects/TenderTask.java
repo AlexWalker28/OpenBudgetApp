@@ -15,6 +15,7 @@ public class TenderTask implements Serializable {
     private User author;
     private boolean needModeration;
     private String placeName;
+    private boolean hasWork;
 
     public TenderTask() {
         isCompleted = false;
@@ -98,5 +99,13 @@ public class TenderTask implements Serializable {
 
     public void setPlaceName(String placeName) {
         this.placeName = placeName;
+    }
+
+    public boolean isHasWork() {
+        return hasWork;
+    }
+
+    public void setHasWork(boolean hasWork) {
+        this.hasWork = hasWork;
     }
 }

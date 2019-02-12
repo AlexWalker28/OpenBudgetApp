@@ -4,10 +4,14 @@ package kg.kloop.android.openbudgetapp.fragments;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +33,7 @@ import kg.kloop.android.openbudgetapp.models.MainViewModel;
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.Tender;
 import kg.kloop.android.openbudgetapp.adapters.TendersRecyclerViewAdapter;
+import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.User;
 
 public class TendersWithTasksFragment extends Fragment {
@@ -37,6 +42,10 @@ public class TendersWithTasksFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TendersRecyclerViewAdapter adapter;
     private ArrayList<Tender> tenderArrayList;
+    private MutableLiveData<User> userLiveData;
+    private RecyclerView tendersWithTasksRecyclerView;
+    private CollectionReference tendersColRef;
+    private boolean isFiltered = false;
 
 
     public TendersWithTasksFragment() {
@@ -52,16 +61,22 @@ public class TendersWithTasksFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tenders_with_tasks, container, false);
         setHasOptionsMenu(true);
-        final RecyclerView tendersWithTasksRecyclerView = view.findViewById(R.id.tenders_with_tasks_recycler_view);
-        final CollectionReference collectionReference = db.collection("tenders_db");
+        tendersWithTasksRecyclerView = view.findViewById(R.id.tenders_with_tasks_recycler_view);
+        tendersColRef = db.collection("tenders_db");
         tenderArrayList = new ArrayList<>();
         MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
-        MutableLiveData<User> userLiveData = viewModel.getUserLiveData();
+        userLiveData = viewModel.getUserLiveData();
+        updateContent();
+
+        return view;
+    }
+
+    private void updateContent() {
         userLiveData.observe(this, new Observer<User>() {
             @Override
             public void onChanged(@androidx.annotation.Nullable User user) {
                 adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, user);
-                collectionReference
+                tendersColRef
                         .whereEqualTo("hasTasks", true)
                         .whereEqualTo("isCompleted", false)
                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -79,7 +94,6 @@ public class TendersWithTasksFragment extends Fragment {
                 tendersWithTasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
         });
-        return view;
     }
 
     @Override
@@ -92,7 +106,25 @@ public class TendersWithTasksFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.map_task_menu_item:
-                
+                break;
+            case R.id.filter_task_menu_item:
+                if (!isFiltered) {
+                    tendersColRef
+                            .whereEqualTo("hasWork", true)
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                    //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
+                                    tenderArrayList.clear();
+                                    tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                isFiltered = true;
+                } else {
+                    updateContent();
+                    isFiltered = false;
+                }
         }
         return true;
     }
