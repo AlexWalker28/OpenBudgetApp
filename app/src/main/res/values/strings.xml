@@ -43,4 +43,5 @@
     <string name="edit">Редактировать</string>
     <string name="ready">Готово</string>
     <string name="changes_applied">Изменения сохранены</string>
+    <string name="title_activity_tasks_map">Map</string>
 </resources>

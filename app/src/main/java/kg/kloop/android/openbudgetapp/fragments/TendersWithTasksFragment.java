@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import kg.kloop.android.openbudgetapp.activities.TasksMapActivity;
 import kg.kloop.android.openbudgetapp.models.MainViewModel;
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.Tender;
@@ -106,6 +108,14 @@ public class TendersWithTasksFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.map_task_menu_item:
+                userLiveData.observe(this, new Observer<User>() {
+                    @Override
+                    public void onChanged(User user) {
+                        Intent intent = new Intent(getActivity(), TasksMapActivity.class);
+                        intent.putExtra("user", user);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.filter_task_menu_item:
                 if (!isFiltered) {
@@ -126,6 +136,7 @@ public class TendersWithTasksFragment extends Fragment {
                     updateContent();
                     isFiltered = false;
                 }
+                break;
         }
         return true;
     }
