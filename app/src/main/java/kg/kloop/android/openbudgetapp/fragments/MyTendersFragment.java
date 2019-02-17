@@ -59,7 +59,7 @@ public class MyTendersFragment extends Fragment {
         ViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         MutableLiveData<User> userLiveData = ((MainViewModel) viewModel).getUserLiveData();
         tenderArrayList = new ArrayList<>();
-        userLiveData.observe(this, new Observer<User>() {
+        /*userLiveData.observe(this, new Observer<User>() {
             @Override
             public void onChanged(@androidx.annotation.Nullable User user) {
                 currentUser = user;
@@ -93,7 +93,7 @@ public class MyTendersFragment extends Fragment {
                     myTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
             }
-        });
+        });*/
         return view;
     }
 
