@@ -1,7 +1,12 @@
 package kg.kloop.android.openbudgetapp.activities;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.fragments.TasksMapFragment;
+import kg.kloop.android.openbudgetapp.models.TasksMapActivityViewModel;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.User;
 
@@ -29,6 +34,7 @@ public class TasksMapActivity extends FragmentActivity implements OnMapReadyCall
     private GoogleMap mMap;
     private CollectionReference tasksColRef;
     private User user;
+    private TasksMapActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,8 @@ public class TasksMapActivity extends FragmentActivity implements OnMapReadyCall
         mapFragment.getMapAsync(this);
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
+        viewModel = ViewModelProviders.of(this).get(TasksMapActivityViewModel.class);
+        viewModel.getUser().setValue(user);
     }
 
 
@@ -84,6 +92,25 @@ public class TasksMapActivity extends FragmentActivity implements OnMapReadyCall
                 } catch (NullPointerException npe) {
                     npe.printStackTrace();
                 }
+            }
+        });
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                ArrayList<TenderTask> samePlaceTasks = new ArrayList<>();
+                for (TenderTask task : tasks) {
+                    if (task.getLatitude() == marker.getPosition().latitude && task.getLongitude() == marker.getPosition().longitude) {
+                        samePlaceTasks.add(task);
+                    }
+                }
+                if (samePlaceTasks.size() > 1) {
+                    viewModel.getSamePlaceTasks().setValue(samePlaceTasks);
+                    Fragment fragment = TasksMapFragment.newInstance();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.add(R.id.tasks_map_frame_layout, fragment).addToBackStack("tasks");
+                    ft.commit();
+                } else marker.showInfoWindow();
+                return true;
             }
         });
     }

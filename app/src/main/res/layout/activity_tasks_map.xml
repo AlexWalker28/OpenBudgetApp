@@ -18,10 +18,15 @@
             layout="@layout/toolbar" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <FrameLayout
+        android:id="@+id/tasks_map_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <fragment
         android:id="@+id/task_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activities.TasksMapActivity" />
+    </FrameLayout>
 </LinearLayout>
