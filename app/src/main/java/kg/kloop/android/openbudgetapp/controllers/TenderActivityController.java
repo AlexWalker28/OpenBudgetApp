@@ -107,6 +107,18 @@ public class TenderActivityController {
                 });
     }
 
+    public void openTender() {
+        tenderDocumentReference.update("isCompleted", false)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            model.getTenderClosed().postValue(false);
+                        } else Log.v(TAG, task.getException().getMessage());
+                    }
+                });
+    }
+
     public void acceptTender() {
         Map<String, String> tenderIdMap = new HashMap<>();
         tenderIdMap.put("id", tender.getId());

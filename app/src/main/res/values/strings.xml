@@ -45,4 +45,6 @@
     <string name="changes_applied">Изменения сохранены</string>
     <string name="title_activity_tasks_map">Map</string>
     <string name="added">Добавлено</string>
+    <string name="open_tender">Открыть тендер</string>
+    <string name="tender_opened">Тендер открыт</string>
 </resources>

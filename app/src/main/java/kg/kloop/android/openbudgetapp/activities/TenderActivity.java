@@ -42,6 +42,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
     private TenderWorkRecyclerViewAdapter taskWorkAdapter;
     private TenderTaskRecyclerViewAdapter taskAdapter;
     private ArrayList<TenderTask> tenderTaskArrayList;
+    private boolean mIsTenderClosed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,16 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                 }
             }
         });
+        model.getTenderClosed().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isTenderClosed) {
+                try {
+                    mIsTenderClosed = isTenderClosed;
+                } catch (NullPointerException npe) {
+                    npe.printStackTrace();
+                }
+            }
+        });
 
     }
 
@@ -108,6 +119,13 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         if (currentUser != null) {
             if (currentUser.getRole().equals(Constants.EDITOR) || currentUser.getRole().equals(Constants.MODERATOR)) {
                 getMenuInflater().inflate(R.menu.editor_menu, menu);
+                final MenuItem item = menu.findItem(R.id.close_tender_menu_item);
+                if (mIsTenderClosed) {
+                    item.setTitle(getString(R.string.open_tender));
+                } else {
+                    item.setTitle(getString(R.string.close_tender));
+                }
+
             } else if (currentUser.getRole().equals(Constants.USER)) {
                 getMenuInflater().inflate(R.menu.user_tender_menu, menu);
                 model.getMyTender().observe(this, new Observer<Boolean>() {
@@ -125,7 +143,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_task_menu_item:
                 Intent intent = new Intent(TenderActivity.this, AddTaskActivity.class);
@@ -134,18 +152,16 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                 startActivity(intent);
                 break;
             case R.id.close_tender_menu_item:
-                controller.closeTender();
-                model.getTenderClosed().observe(this, new Observer<Boolean>() {
-                    @Override
-                    public void onChanged(@Nullable Boolean isTenderClosed) {
-                        if (isTenderClosed) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.tender_closed), Toast.LENGTH_SHORT).show();
-                            //TODO: add snackbar to cancel this
-                            finish();
-                        }
-                    }
-                });
-
+                if (mIsTenderClosed) {
+                    controller.openTender();
+                    item.setTitle(getString(R.string.close_tender));
+                    Toast.makeText(getApplicationContext(), getString(R.string.tender_opened), Toast.LENGTH_SHORT).show();
+                    //TODO: add snackbar to cancel this
+                } else {
+                    controller.closeTender();
+                    item.setTitle(getString(R.string.open_tender));
+                    Toast.makeText(getApplicationContext(), getString(R.string.tender_closed), Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.accept_tender_menu_item:
                 controller.acceptTender();
