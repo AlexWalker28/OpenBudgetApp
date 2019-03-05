@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
+import kg.kloop.android.openbudgetapp.utils.DateConverter;
 
 public class TenderWorkRecyclerViewAdapter extends RecyclerView.Adapter<TenderWorkRecyclerViewAdapter.ViewHolder> {
 
@@ -36,9 +37,15 @@ public class TenderWorkRecyclerViewAdapter extends RecyclerView.Adapter<TenderWo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         TenderTaskWork work = tenderTaskWorkArrayList.get(i);
+        viewHolder.timeTextView.setVisibility(View.GONE);
         viewHolder.tenderWorkTextView.setText(work.getText());
         if (work.getAuthor() != null) {
             viewHolder.authorTextView.setText(work.getAuthor().getName());
+        }
+        if (work.getCreateTime() > 0) {
+            viewHolder.timeTextView.setVisibility(View.VISIBLE);
+            String time = DateConverter.getRelativeDateTimeString(context, work.getCreateTime());
+            viewHolder.timeTextView.setText(time);
         }
         if (work.getPhotoUrlList() != null && !work.getPhotoUrlList().isEmpty()) {
             Glide.with(context)
@@ -57,11 +64,13 @@ public class TenderWorkRecyclerViewAdapter extends RecyclerView.Adapter<TenderWo
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tenderWorkTextView;
         TextView authorTextView;
+        TextView timeTextView;
         ImageView tenderWorkImageView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tenderWorkTextView = itemView.findViewById(R.id.tender_work_item_text_view);
             authorTextView = itemView.findViewById(R.id.tender_work_item_author_text_view);
+            timeTextView = itemView.findViewById(R.id.tender_work_item_time_stamp_text_view);
             tenderWorkImageView = itemView.findViewById(R.id.tender_work_item_image_view);
         }
     }

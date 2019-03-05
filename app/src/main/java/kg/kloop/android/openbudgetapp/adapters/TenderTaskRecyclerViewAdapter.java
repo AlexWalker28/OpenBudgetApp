@@ -19,6 +19,7 @@ import kg.kloop.android.openbudgetapp.objects.Tender;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.User;
 import kg.kloop.android.openbudgetapp.utils.Constants;
+import kg.kloop.android.openbudgetapp.utils.DateConverter;
 
 public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -46,11 +47,23 @@ public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         TenderTask task = tenderTaskArrayList.get(i);
         if (viewHolder instanceof BasicViewHolder) {
+            ((BasicViewHolder) viewHolder).timeTextView.setVisibility(View.GONE);
             ((BasicViewHolder)viewHolder).taskTextView.setText(task.getDescription());
+            if (task.getCreateTime() > 0) {
+                ((BasicViewHolder) viewHolder).timeTextView.setVisibility(View.VISIBLE);
+                String time = DateConverter.getRelativeDateTimeString(context, task.getCreateTime());
+                ((BasicViewHolder) viewHolder).timeTextView.setText(time);
+            }
             if (task.getAuthor() != null) ((BasicViewHolder)viewHolder).taskAuthorTextView.setText(task.getAuthor().getName());
 
         } else if (viewHolder instanceof ModeratorViewHolder) {
             ((ModeratorViewHolder) viewHolder).taskTextView.setText(task.getDescription());
+            ((ModeratorViewHolder) viewHolder).timeTextView.setVisibility(View.GONE);
+            if (task.getCreateTime() > 0) {
+                ((ModeratorViewHolder) viewHolder).timeTextView.setVisibility(View.VISIBLE);
+                String time = DateConverter.getRelativeDateTimeString(context, task.getCreateTime());
+                ((ModeratorViewHolder) viewHolder).timeTextView.setText(time);
+            }
             if (task.getAuthor() != null) ((ModeratorViewHolder)viewHolder).taskAuthorTextView.setText(task.getAuthor().getName());
 
         }
@@ -72,10 +85,12 @@ public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     public class BasicViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView taskTextView;
         TextView taskAuthorTextView;
+        TextView timeTextView;
         public BasicViewHolder(@NonNull View itemView) {
             super(itemView);
             taskTextView = itemView.findViewById(R.id.tender_task_item_text_view);
             taskAuthorTextView = itemView.findViewById(R.id.tender_task_item_author_text_view);
+            timeTextView = itemView.findViewById(R.id.tender_task_item_time_stamp_text_view);
             itemView.setOnClickListener(this);
         }
 
@@ -88,10 +103,12 @@ public class TenderTaskRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     public class ModeratorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView taskTextView;
         TextView taskAuthorTextView;
+        TextView timeTextView;
         public ModeratorViewHolder(@NonNull View itemView) {
             super(itemView);
             taskTextView = itemView.findViewById(R.id.tender_task_moderator_item_text_view);
             taskAuthorTextView = itemView.findViewById(R.id.tender_task_moderator_item_author_text_view);
+            timeTextView = itemView.findViewById(R.id.tender_task_moderator_item_time_stamp_text_view);
             itemView.setOnClickListener(this);
         }
 

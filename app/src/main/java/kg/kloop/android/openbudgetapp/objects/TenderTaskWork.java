@@ -8,6 +8,8 @@ public class TenderTaskWork implements Serializable {
     private String text;
     private List<String> photoUrlList;
     private User author;
+    private long createTime;
+    private long editTime;
 
     public TenderTaskWork() {
     }
@@ -42,5 +44,21 @@ public class TenderTaskWork implements Serializable {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(long editTime) {
+        this.editTime = editTime;
     }
 }

@@ -333,6 +333,7 @@ public class DoTaskActivity extends AppCompatActivity {
         tenderTaskWork.setText(doTaskEditText.getText().toString());
         tenderTaskWork.setPhotoUrlList(photoUrls);
         tenderTaskWork.setAuthor(currentUser);
+        tenderTaskWork.setCreateTime(System.currentTimeMillis());
         taskWorkCollectionRef.document(tenderTaskWork.getId()).set(tenderTaskWork);
         setResult(RESULT_OK);
         horizontalProgressBar.setVisibility(View.GONE);

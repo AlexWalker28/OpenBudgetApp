@@ -179,6 +179,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     updatedTask.put("latitude", task.getLatitude());
                     updatedTask.put("longitude", task.getLongitude());
                     updatedTask.put("placeName", task.getPlaceName());
+                    updatedTask.put("editTime", System.currentTimeMillis());
                     taskDocRef.update(updatedTask).addOnSuccessListener(AddTaskActivity.this, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -196,6 +197,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     String taskId = tasksCollectionReference.document().getId();
                     task.setId(taskId);
                     task.setAuthor(user);
+                    task.setCreateTime(System.currentTimeMillis());
                     if (!user.getRole().equals(Constants.MODERATOR)) task.setNeedModeration(true);
                     tasksCollectionReference.document(task.getId()).set(task);
                     tenderDocRef.update("hasTasks", true);

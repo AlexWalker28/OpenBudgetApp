@@ -53,11 +53,23 @@ public class Tender implements Serializable {
     @SerializedName("validPeriod")
     @Expose
     private String validPeriod;
+    @SerializedName("hasTasks")
+    @Expose
     private Boolean hasTasks;
+    @SerializedName("hasWork")
+    @Expose
+    private Boolean hasWork;
+    @SerializedName("createTime")
+    @Expose
+    private long createTime;
+    @SerializedName("editTime")
+    @Expose
+    private long editTime;
 
     public Tender() {
         isCompleted = false;
         hasTasks = false;
+        hasWork = false;
     }
 
     public String getId() {
@@ -194,5 +206,29 @@ public class Tender implements Serializable {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public Boolean getHasWork() {
+        return hasWork;
+    }
+
+    public void setHasWork(Boolean hasWork) {
+        this.hasWork = hasWork;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(long editTime) {
+        this.editTime = editTime;
     }
 }

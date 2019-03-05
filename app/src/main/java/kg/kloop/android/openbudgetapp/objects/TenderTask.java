@@ -16,6 +16,8 @@ public class TenderTask implements Serializable {
     private boolean needModeration;
     private String placeName;
     private boolean hasWork;
+    private long createTime;
+    private long editTime;
 
     public TenderTask() {
         isCompleted = false;
@@ -107,5 +109,21 @@ public class TenderTask implements Serializable {
 
     public void setHasWork(boolean hasWork) {
         this.hasWork = hasWork;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(long editTime) {
+        this.editTime = editTime;
     }
 }
