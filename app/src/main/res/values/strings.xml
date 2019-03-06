@@ -47,4 +47,6 @@
     <string name="added">Добавлено</string>
     <string name="open_tender">Открыть тендер</string>
     <string name="tender_opened">Тендер открыт</string>
+    <string name="delete_tender_work">Удалить работу</string>
+    <string name="are_you_sure">Вы уверены, что хотите удалить работу? Это действие нельзя отменить</string>
 </resources>

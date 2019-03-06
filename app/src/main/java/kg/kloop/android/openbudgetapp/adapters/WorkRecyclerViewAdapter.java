@@ -1,11 +1,13 @@
 package kg.kloop.android.openbudgetapp.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,11 @@ import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.activities.ImageViewActivity;
+import kg.kloop.android.openbudgetapp.controllers.WorkActivityController;
+import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
+import kg.kloop.android.openbudgetapp.objects.User;
+import kg.kloop.android.openbudgetapp.utils.Constants;
 import kg.kloop.android.openbudgetapp.utils.DateConverter;
 
 public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerViewAdapter.ViewHolder> {
@@ -26,10 +32,16 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
     private static final String TAG = WorkRecyclerViewAdapter.class.getSimpleName();
     private ArrayList<TenderTaskWork> workArrayList;
     private Context context;
+    private TenderTask task;
+    private WorkActivityController controller;
+    private User currentUser;
 
-    public WorkRecyclerViewAdapter(Context context, ArrayList<TenderTaskWork> workArrayList) {
+    public WorkRecyclerViewAdapter(Context context, ArrayList<TenderTaskWork> workArrayList, TenderTask task, WorkActivityController controller, User currentUser) {
         this.context = context;
         this.workArrayList = workArrayList;
+        this.task = task;
+        this.controller = controller;
+        this.currentUser = currentUser;
     }
 
     @NonNull
@@ -72,7 +84,7 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
         return workArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView workTextView;
         TextView authorTextView;
         TextView counterTextView;
@@ -87,6 +99,9 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
             counterTextView = itemView.findViewById(R.id.work_activity_item_photos_counter_text_view);
             counterTextView.setVisibility(View.GONE);
             itemView.setOnClickListener(this);
+            if (currentUser.getRole().equals(Constants.MODERATOR)) {
+                itemView.setOnLongClickListener(this);
+            }
         }
 
         @Override
@@ -100,5 +115,15 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
                 context.startActivity(intent);
             }
         }
+
+        @Override
+        public boolean onLongClick(View view) {
+            TenderTaskWork work = workArrayList.get(getAdapterPosition());
+            if (currentUser.getRole().equals(Constants.MODERATOR)) {
+                controller.removeWork(work, task);
+            }
+            return true;
+        }
     }
 }
+
