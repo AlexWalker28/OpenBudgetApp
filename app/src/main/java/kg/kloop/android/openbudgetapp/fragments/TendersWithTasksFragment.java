@@ -95,7 +95,8 @@ public class TendersWithTasksFragment extends Fragment {
                 tendersColRef
                         .whereEqualTo("hasTasks", true)
                         .whereEqualTo("isCompleted", false)
-                        .orderBy("updateTime", Query.Direction.DESCENDING)
+                        // doesn't work yet
+                        //.orderBy("updateTime", Query.Direction.DESCENDING)
                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
                             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
