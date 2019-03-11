@@ -62,9 +62,9 @@ public class Tender implements Serializable {
     @SerializedName("createTime")
     @Expose
     private long createTime;
-    @SerializedName("editTime")
+    @SerializedName("updateTime")
     @Expose
-    private long editTime;
+    private long updateTime;
 
     public Tender() {
         isCompleted = false;
@@ -224,11 +224,11 @@ public class Tender implements Serializable {
         this.createTime = createTime;
     }
 
-    public long getEditTime() {
-        return editTime;
+    public long getUpdateTime() {
+        return updateTime;
     }
 
-    public void setEditTime(long editTime) {
-        this.editTime = editTime;
+    public void setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
     }
 }

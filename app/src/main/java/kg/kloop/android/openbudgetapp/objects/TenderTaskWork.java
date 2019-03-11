@@ -9,7 +9,7 @@ public class TenderTaskWork implements Serializable {
     private List<String> photoUrlList;
     private User author;
     private long createTime;
-    private long editTime;
+    private long updateTime;
 
     public TenderTaskWork() {
     }
@@ -54,11 +54,11 @@ public class TenderTaskWork implements Serializable {
         this.createTime = createTime;
     }
 
-    public long getEditTime() {
-        return editTime;
+    public long getUpdateTime() {
+        return updateTime;
     }
 
-    public void setEditTime(long editTime) {
-        this.editTime = editTime;
+    public void setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
     }
 }

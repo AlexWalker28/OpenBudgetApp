@@ -17,7 +17,7 @@ public class TenderTask implements Serializable {
     private String placeName;
     private boolean hasWork;
     private long createTime;
-    private long editTime;
+    private long updateTime;
 
     public TenderTask() {
         isCompleted = false;
@@ -119,11 +119,11 @@ public class TenderTask implements Serializable {
         this.createTime = createTime;
     }
 
-    public long getEditTime() {
-        return editTime;
+    public long getUpdateTime() {
+        return updateTime;
     }
 
-    public void setEditTime(long editTime) {
-        this.editTime = editTime;
+    public void setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
     }
 }
