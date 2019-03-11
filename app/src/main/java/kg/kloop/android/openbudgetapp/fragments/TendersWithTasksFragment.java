@@ -20,10 +20,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -78,16 +81,33 @@ public class TendersWithTasksFragment extends Fragment {
             @Override
             public void onChanged(@androidx.annotation.Nullable User user) {
                 adapter = new TendersRecyclerViewAdapter(getContext(), tenderArrayList, user);
+                /*tendersColRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        long time = 0;
+                        for (Tender tender : queryDocumentSnapshots.toObjects(Tender.class)) {
+                            DocumentReference tenderDocRef = tendersColRef.document(tender.getTender_num());
+                            tenderDocRef.update("updateTime", time += 1);
+                            Log.i(TAG, "onSuccess: update time");
+                        }
+                    }
+                });*/
                 tendersColRef
                         .whereEqualTo("hasTasks", true)
                         .whereEqualTo("isCompleted", false)
+                        .orderBy("updateTime", Query.Direction.DESCENDING)
                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
                             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                                 //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
-                                tenderArrayList.clear();
-                                tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
-                                adapter.notifyDataSetChanged();
+                                try {
+                                    tenderArrayList.clear();
+                                    tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
+                                    adapter.notifyDataSetChanged();
+
+                                } catch (NullPointerException npe) {
+                                    npe.printStackTrace();
+                                }
                             }
                         });
 

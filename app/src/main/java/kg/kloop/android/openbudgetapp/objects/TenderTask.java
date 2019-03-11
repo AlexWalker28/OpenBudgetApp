@@ -21,6 +21,8 @@ public class TenderTask implements Serializable {
 
     public TenderTask() {
         isCompleted = false;
+        createTime = 0;
+        updateTime = 0;
     }
 
     public String getId() {

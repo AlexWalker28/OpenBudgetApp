@@ -70,6 +70,8 @@ public class Tender implements Serializable {
         isCompleted = false;
         hasTasks = false;
         hasWork = false;
+        createTime = 0;
+        updateTime = 0;
     }
 
     public String getId() {

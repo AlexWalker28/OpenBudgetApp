@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,7 +77,7 @@ public class AddTaskActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.add_task_toolbar));
         Intent intent = getIntent();
 
-        // edit path
+        // edit task
         if (intent.getSerializableExtra("task") != null) {
             getSupportActionBar().setTitle(R.string.edit);
             task = (TenderTask) intent.getSerializableExtra("task");
@@ -94,7 +95,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     }
                 }
             });
-        } else { // add path
+        } else { // add new task
             getSupportActionBar().setTitle(R.string.add_task);
             task = new TenderTask();
             tenderNum = intent.getStringExtra("tender_num");
@@ -172,14 +173,16 @@ public class AddTaskActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_add_task_menu_item:
-                // update path
+                // update task
                 if (getIntent().getBooleanExtra("isEdit", false)) {
                     Map<String, Object> updatedTask = new HashMap<>();
+                    long time = System.currentTimeMillis();
                     updatedTask.put("description", taskEditText.getText().toString());
                     updatedTask.put("latitude", task.getLatitude());
                     updatedTask.put("longitude", task.getLongitude());
                     updatedTask.put("placeName", task.getPlaceName());
-                    updatedTask.put("editTime", System.currentTimeMillis());
+                    updatedTask.put("editTime", time);
+                    tenderDocRef.update("updateTime", time);
                     taskDocRef.update(updatedTask).addOnSuccessListener(AddTaskActivity.this, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -190,7 +193,8 @@ public class AddTaskActivity extends AppCompatActivity {
                             finish();
                         }
                     });
-                } else { // add path
+                } else { // add new task
+                    long time = System.currentTimeMillis();
                     task.setDescription(taskEditText.getText().toString());
                     task.setAttachmentTypes(getAttachmentTypes());
                     task.setTenderId(tenderNum);
@@ -202,6 +206,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     tasksCollectionReference.document(task.getId()).set(task);
                     tenderDocRef.update("hasTasks", true);
                     tenderDocRef.update("isCompleted", false);
+                    tenderDocRef.update("updateTime", time);
                     finish();
                 }
         }

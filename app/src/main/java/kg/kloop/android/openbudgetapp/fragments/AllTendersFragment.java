@@ -22,9 +22,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.activities.SearchResultActivity;
