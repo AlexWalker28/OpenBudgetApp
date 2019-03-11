@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -50,6 +51,7 @@ public class TendersWithTasksFragment extends Fragment {
     private MutableLiveData<User> userLiveData;
     private RecyclerView tendersWithTasksRecyclerView;
     private CollectionReference tendersColRef;
+    private TextView infoTextView;
     private boolean isFiltered = false;
 
 
@@ -66,6 +68,8 @@ public class TendersWithTasksFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tenders_with_tasks, container, false);
         setHasOptionsMenu(true);
+        infoTextView = view.findViewById(R.id.tenders_with_tasks_info_text_view);
+        infoTextView.setVisibility(View.GONE);
         tendersWithTasksRecyclerView = view.findViewById(R.id.tenders_with_tasks_recycler_view);
         tendersColRef = db.collection("tenders_db");
         tenderArrayList = new ArrayList<>();
@@ -152,9 +156,14 @@ public class TendersWithTasksFragment extends Fragment {
                                     adapter.notifyDataSetChanged();
                                 }
                             });
+
+                infoTextView.setVisibility(View.VISIBLE);
+                infoTextView.setText(getString(R.string.sorted_by_work_presence));
                 isFiltered = true;
                 } else {
                     updateContent();
+                    infoTextView.setVisibility(View.GONE);
+                    infoTextView.setText("");
                     isFiltered = false;
                 }
                 break;
