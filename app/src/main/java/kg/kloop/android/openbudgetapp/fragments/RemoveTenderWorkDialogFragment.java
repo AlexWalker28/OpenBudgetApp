@@ -81,35 +81,40 @@ public class RemoveTenderWorkDialogFragment extends DialogFragment {
     }
 
     private void removeWork(TenderTaskWork work, final TenderTask task) {
-        DocumentReference workDocRef = firebaseFirestore.collection("tasks").document(task.getId()).collection("work").document(work.getId());
+        final DocumentReference workDocRef = firebaseFirestore.collection("tasks").document(task.getId()).collection("work").document(work.getId());
         // delete photos
-        Log.i(TAG, "removeWork");
         workDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.i(TAG, "onSuccess: success");
                 if (documentSnapshot.exists()) {
                     TenderTaskWork taskWork = documentSnapshot.toObject(TenderTaskWork.class);
-                    if (!taskWork.getPhotoUrlList().isEmpty()) {
+                    if (taskWork.getPhotoUrlList() != null && !taskWork.getPhotoUrlList().isEmpty()) {
                         for (String url : taskWork.getPhotoUrlList()) {
-                            Log.i(TAG, "onSuccess: url:" + url);
-                            Log.i(TAG, "onSuccess: name:" + getChildName(url));
+                            Log.i(TAG, "onSuccess: url: " + url);
+                            Log.i(TAG, "onSuccess: file name: " + getChildName(url));
                             storageReference.child(getChildName(url)).delete();
                         }
 
                     }
+                    // delete work itself
+                    workDocRef.delete();
+                    //check if any work left and update tender info
+                    updateTenderStatus();
                 }
             }
         });
-        // delete work itself
-        workDocRef.delete();
-        // check if any work left
+
+    }
+
+    private void updateTenderStatus() {
         CollectionReference workColRef = firebaseFirestore.collection("tasks").document(task.getId()).collection("work");
         workColRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if (queryDocumentSnapshots.getDocuments().isEmpty()) {
                     // set hasWork of tender to false if no work left
+                    Log.i(TAG, "onSuccess: no work left");
                     DocumentReference tenderDocRef = firebaseFirestore.collection("tenders_db").document(task.getTenderId());
                     tenderDocRef.update("hasWork", false);
                     Toast.makeText(getContext(), getString(R.string.work_removed), Toast.LENGTH_SHORT).show();
