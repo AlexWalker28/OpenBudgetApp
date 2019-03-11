@@ -1,13 +1,7 @@
 package kg.kloop.android.openbudgetapp.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +12,13 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.activities.ImageViewActivity;
 import kg.kloop.android.openbudgetapp.controllers.WorkActivityController;
+import kg.kloop.android.openbudgetapp.fragments.RemoveTenderWorkDialogFragment;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 import kg.kloop.android.openbudgetapp.objects.User;
@@ -35,13 +33,15 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
     private TenderTask task;
     private WorkActivityController controller;
     private User currentUser;
+    private FragmentManager fragmentManager;
 
-    public WorkRecyclerViewAdapter(Context context, ArrayList<TenderTaskWork> workArrayList, TenderTask task, WorkActivityController controller, User currentUser) {
+    public WorkRecyclerViewAdapter(Context context, ArrayList<TenderTaskWork> workArrayList, TenderTask task, WorkActivityController controller, User currentUser, FragmentManager supportFragmentManager) {
         this.context = context;
         this.workArrayList = workArrayList;
         this.task = task;
         this.controller = controller;
         this.currentUser = currentUser;
+        this.fragmentManager = supportFragmentManager;
     }
 
     @NonNull
@@ -120,7 +120,8 @@ public class WorkRecyclerViewAdapter extends RecyclerView.Adapter<WorkRecyclerVi
         public boolean onLongClick(View view) {
             TenderTaskWork work = workArrayList.get(getAdapterPosition());
             if (currentUser.getRole().equals(Constants.MODERATOR)) {
-                controller.removeWork(work, task);
+                RemoveTenderWorkDialogFragment removeTenderWorkDialogFragment = RemoveTenderWorkDialogFragment.newInstance(task, work);
+                removeTenderWorkDialogFragment.show(fragmentManager, "fragment_search");
             }
             return true;
         }

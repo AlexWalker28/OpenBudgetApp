@@ -28,7 +28,7 @@
     <string name="title_activity_maps_tasks">Map</string>
     <string name="search">Поиск</string>
     <string name="enter_words_to_search">Введите слова для поиска через запятую</string>
-    <string name="cancel">Отменить</string>
+    <string name="cancel">Отмена</string>
     <string name="no_such_tender">Тендер не найден</string>
     <string name="open_tender_page">Показать тендер</string>
     <string name="loading_tender">Загрузка тендера</string>
@@ -49,4 +49,6 @@
     <string name="tender_opened">Тендер открыт</string>
     <string name="delete_tender_work">Удалить работу</string>
     <string name="are_you_sure">Вы уверены, что хотите удалить работу? Это действие нельзя отменить</string>
+    <string name="work_removed">Работа удалена</string>
+    <string name="delete">Удалить</string>
 </resources>

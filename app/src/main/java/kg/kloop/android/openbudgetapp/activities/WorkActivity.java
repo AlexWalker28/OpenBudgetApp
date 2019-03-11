@@ -65,6 +65,7 @@ public class WorkActivity extends AppCompatActivity {
         model = new WorkActivityModel();
         controller = new WorkActivityController(model);
         Intent intent = getIntent();
+        currentUser = (User) intent.getSerializableExtra("user");
         TenderTask task = (TenderTask) intent.getSerializableExtra("task");
         model.setTask(task);
         workArrayList = new ArrayList<>();
@@ -72,14 +73,13 @@ public class WorkActivity extends AppCompatActivity {
         RecyclerView workRecyclerView = findViewById(R.id.work_activity_recycler_view);
         FloatingActionButton fab = findViewById(R.id.do_work_fab);
         taskDescriptionTextView = findViewById(R.id.work_activity_task_description_text_view);
-        adapter = new WorkRecyclerViewAdapter(getApplicationContext(), workArrayList, model.getTask(), controller, currentUser);
+        adapter = new WorkRecyclerViewAdapter(getApplicationContext(), workArrayList, model.getTask(), controller, currentUser, getSupportFragmentManager());
         workRecyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         ((LinearLayoutManager) layoutManager).setReverseLayout(true);
         workRecyclerView.setLayoutManager(layoutManager);
         workRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        currentUser = (User) intent.getSerializableExtra("user");
         taskDocRef = db.document("tasks/" + model.getTask().getId());
 
         controller.getWorkForTask(model.getTask().getId());

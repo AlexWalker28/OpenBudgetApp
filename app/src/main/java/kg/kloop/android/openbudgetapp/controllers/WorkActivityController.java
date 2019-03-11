@@ -45,21 +45,4 @@ public class WorkActivityController {
             }
         });
     }
-
-    public void removeWork(TenderTaskWork work, final TenderTask task) {
-        DocumentReference workDocRef = firebaseFirestore.collection("tasks").document(task.getId()).collection("work").document(work.getId());
-        workDocRef.delete();
-        // check if any work left
-        CollectionReference workColRef = firebaseFirestore.collection("tasks").document(task.getId()).collection("work");
-        workColRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if (queryDocumentSnapshots.getDocuments().isEmpty()) {
-                    // set hasWork of tender to false if no work left
-                    DocumentReference tenderDocRef = firebaseFirestore.collection("tenders_db").document(task.getTenderId());
-                    tenderDocRef.update("hasWork", false);
-                }
-            }
-        });
-    }
 }
