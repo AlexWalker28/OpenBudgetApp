@@ -76,6 +76,8 @@ public class AddTaskActivity extends AppCompatActivity {
         placeTextView = findViewById(R.id.add_task_place_text_view);
         setSupportActionBar((Toolbar) findViewById(R.id.add_task_toolbar));
         Intent intent = getIntent();
+        tenderNum = intent.getStringExtra("tender_num");
+        tenderDocRef = db.document("tenders_db/" + tenderNum);
 
         // edit task
         if (intent.getSerializableExtra("task") != null) {
@@ -98,9 +100,7 @@ public class AddTaskActivity extends AppCompatActivity {
         } else { // add new task
             getSupportActionBar().setTitle(R.string.add_task);
             task = new TenderTask();
-            tenderNum = intent.getStringExtra("tender_num");
             tasksCollectionReference = db.collection("tasks/");
-            tenderDocRef = db.document("tenders_db/" + tenderNum);
         }
 
         user = (User) intent.getSerializableExtra("current_user");
