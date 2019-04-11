@@ -52,4 +52,5 @@
     <string name="work_removed">Работа удалена</string>
     <string name="delete">Удалить</string>
     <string name="sorted_by_work_presence">Сортировка по наличию работ</string>
+    <string name="tasks">Задания</string>
 </resources>

@@ -1,5 +1,6 @@
 package kg.kloop.android.openbudgetapp.activities;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,6 +14,8 @@ import kg.kloop.android.openbudgetapp.objects.User;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -50,6 +53,10 @@ public class TasksMapActivity extends FragmentActivity implements OnMapReadyCall
         user = (User) intent.getSerializableExtra("user");
         viewModel = ViewModelProviders.of(this).get(TasksMapActivityViewModel.class);
         viewModel.getUser().setValue(user);
+
+        setActionBar((Toolbar) findViewById(R.id.tasks_map_toolbar));
+        getActionBar().setTitle(R.string.tasks);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -125,4 +132,13 @@ public class TasksMapActivity extends FragmentActivity implements OnMapReadyCall
         }
     }
 
+    @Override
+    public boolean onMenuItemSelected(int featureId, @NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return super.onMenuItemSelected(featureId, item);
+    }
 }
+

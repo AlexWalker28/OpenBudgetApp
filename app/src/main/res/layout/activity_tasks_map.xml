@@ -13,20 +13,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include
+        <Toolbar
             android:id="@+id/tasks_map_toolbar"
-            layout="@layout/toolbar" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:theme="@style/AppTheme"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/tasks_map_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <fragment
-        android:id="@+id/task_map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".activities.TasksMapActivity" />
+        <fragment
+            android:id="@+id/task_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".activities.TasksMapActivity" />
     </FrameLayout>
 </LinearLayout>
