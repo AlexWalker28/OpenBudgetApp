@@ -28,8 +28,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,7 @@ import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.adapters.WorkRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.controllers.WorkActivityController;
 import kg.kloop.android.openbudgetapp.models.WorkActivityModel;
+import kg.kloop.android.openbudgetapp.objects.Tender;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 import kg.kloop.android.openbudgetapp.objects.User;
@@ -136,6 +139,8 @@ public class WorkActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.task_moderator_publish_menu, menu);
         } else if (currentUser.getRole().equals(Constants.MODERATOR) && !model.getTask().isNeedModeration()) {
             getMenuInflater().inflate(R.menu.task_moderate_menu, menu);
+        } else if (currentUser.getRole().equals(Constants.USER)) {
+            getMenuInflater().inflate(R.menu.user_work_activity_menu, menu);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -193,7 +198,27 @@ public class WorkActivity extends AppCompatActivity {
                 intent.putExtra("task", model.getTask());
                 intent.putExtra("isEdit", true);
                 startActivityForResult(intent, EDIT_TASK);
+
+            case R.id.user_work_activity_open_tender_page_menu_item:
+                CollectionReference tenderColRef = db.collection("tenders_db");
+                tenderColRef.whereEqualTo("tender_num", model.getTask().getTenderId())
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                if (!queryDocumentSnapshots.isEmpty()) {
+                                    Tender tender = queryDocumentSnapshots.toObjects(Tender.class).get(0);
+                                    openTenderPage(tender);
+                                }
+                            }
+                        });
         }
         return true;
+    }
+
+    private void openTenderPage(Tender tender) {
+        Intent openTenderIntent = new Intent(Intent.ACTION_VIEW);
+        openTenderIntent.setData(Uri.parse("http://zakupki.gov.kg/popp/view/order/view.xhtml?id=" + tender.getTender_num().substring(6)));
+        startActivity(openTenderIntent);
     }
 }
