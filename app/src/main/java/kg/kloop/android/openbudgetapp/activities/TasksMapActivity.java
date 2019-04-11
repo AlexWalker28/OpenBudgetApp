@@ -73,6 +73,9 @@ public class TasksMapActivity extends FragmentActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        LatLng country = new LatLng(41.4313021, 72.6613778);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(country, 7.14f));
+
         final ArrayList<TenderTask> tasks = new ArrayList<>();
         tasksColRef
                 .whereEqualTo("completed", false)
