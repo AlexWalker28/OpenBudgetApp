@@ -82,7 +82,7 @@ public class TenderActivityController {
         });
 
 
-        DocumentReference tendersDocRef = db.document("users/" + currentUser.getId() + "/tenders/" + tender.getId());
+        DocumentReference tendersDocRef = db.document("users/" + currentUser.getId() + "/tenders/" + tender.getTender_num());
 
         tendersDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -120,14 +120,24 @@ public class TenderActivityController {
     }
 
     public void acceptTender() {
-        Map<String, String> tenderIdMap = new HashMap<>();
-        tenderIdMap.put("id", tender.getId());
-        userDocRef.collection("tenders").document(tender.getId()).set(tenderIdMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        //saving the whole tender to user's collection
+        final DocumentReference tenderRef = userDocRef.collection("tenders").document(tender.getTender_num());
+        tenderRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    model.getTenderAccepted().postValue(true);
-                } else Log.v(TAG, task.getException().getMessage());
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    tenderRef.delete();
+                    model.getTenderAccepted().postValue(false);
+                } else {
+                    tenderRef.set(tender).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                model.getTenderAccepted().postValue(true);
+                            } else Log.v(TAG, task.getException().getMessage());
+                        }
+                    });
+                }
             }
         });
     }

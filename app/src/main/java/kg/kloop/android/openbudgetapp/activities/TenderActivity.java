@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentReference;
+
 import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
@@ -169,7 +171,11 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                     @Override
                     public void onChanged(@Nullable Boolean isTenderAccepted) {
                         if (isTenderAccepted) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.tender_accepted), Toast.LENGTH_SHORT).show();
+                            item.setIcon(R.drawable.ic_bookmark_black_24dp);
+                            Toast.makeText(getApplicationContext(), getString(R.string.tender_added_to_favorites), Toast.LENGTH_SHORT).show();
+                        } else {
+                            item.setIcon(R.drawable.ic_bookmark_border_black_24dp);
+                            Toast.makeText(getApplicationContext(), getString(R.string.tender_removed_from_favorites), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

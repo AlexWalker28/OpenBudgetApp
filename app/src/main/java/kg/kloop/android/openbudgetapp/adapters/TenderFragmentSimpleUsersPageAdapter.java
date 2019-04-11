@@ -11,7 +11,7 @@ import kg.kloop.android.openbudgetapp.fragments.TendersWithTasksFragment;
 
 public class TenderFragmentSimpleUsersPageAdapter extends FragmentPagerAdapter {
     private final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] {"Задания", "Готовые", "Мои"};
+    private String tabTitles[] = new String[] {"Задания", "Готовые", "Избранные"};
 
     public TenderFragmentSimpleUsersPageAdapter(FragmentManager fm) {
         super(fm);

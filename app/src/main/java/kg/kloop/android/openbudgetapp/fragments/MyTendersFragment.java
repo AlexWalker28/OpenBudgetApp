@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -55,35 +56,23 @@ public class MyTendersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_my_tenders, container, false);
         final RecyclerView myTendersRecyclerView = view.findViewById(R.id.my_tenders_recycler_view);
-        final CollectionReference tendersCollectionReference = db.collection("tenders_db");
-        ViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
-        MutableLiveData<User> userLiveData = ((MainViewModel) viewModel).getUserLiveData();
+        //final CollectionReference tendersCollectionReference = db.collection("tenders_db");
+        MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        MutableLiveData<User> userLiveData = viewModel.getUserLiveData();
         tenderArrayList = new ArrayList<>();
-        /*userLiveData.observe(this, new Observer<User>() {
+        userLiveData.observe(this, new Observer<User>() {
             @Override
             public void onChanged(@androidx.annotation.Nullable User user) {
                 currentUser = user;
                 if (user != null) {
-                    CollectionReference usersTendersCollectionRef = db.collection("users/" + user.getId() + "/tenders");
-                    usersTendersCollectionRef.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+                    CollectionReference usersTendersCollectionRef = db.collection("users/" + currentUser.getId() + "/tenders");
+                    usersTendersCollectionRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                             if (!queryDocumentSnapshots.isEmpty()) {
-                                for (DocumentSnapshot tenderId : queryDocumentSnapshots) {
-                                    tenderArrayList.clear();
-                                    if (tenderId.exists()) {
-                                        tendersCollectionReference.whereEqualTo("id", tenderId.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
-                                                    tenderArrayList.add(task.getResult().toObjects(Tender.class).get(0)); //there must be only one tender with correct id
-                                                    adapter.notifyDataSetChanged();
-                                                } else Log.d(TAG, task.getException().getMessage());
-                                            }
-                                        });
-                                    }
-                                }
+                                tenderArrayList.clear();
+                                tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
+                                adapter.notifyDataSetChanged();
                             }
                         }
                     });
@@ -93,7 +82,7 @@ public class MyTendersFragment extends Fragment {
                     myTendersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
             }
-        });*/
+        });
         return view;
     }
 

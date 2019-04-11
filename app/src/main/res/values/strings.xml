@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OpenBudgetApp</string>
+    <string name="app_name">Бюджетный мониторинг</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_task">Добавить задание</string>
@@ -53,4 +53,7 @@
     <string name="delete">Удалить</string>
     <string name="sorted_by_work_presence">Сортировка по наличию работ</string>
     <string name="tasks">Задания</string>
+    <string name="tender_saved">Тендер сохранен</string>
+    <string name="tender_added_to_favorites">Тендер добавлен в избранные</string>
+    <string name="tender_removed_from_favorites">Тендер удален из избранных</string>
 </resources>
