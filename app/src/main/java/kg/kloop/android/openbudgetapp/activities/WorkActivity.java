@@ -76,7 +76,7 @@ public class WorkActivity extends AppCompatActivity {
         RecyclerView workRecyclerView = findViewById(R.id.work_activity_recycler_view);
         FloatingActionButton fab = findViewById(R.id.do_work_fab);
         taskDescriptionTextView = findViewById(R.id.work_activity_task_description_text_view);
-        adapter = new WorkRecyclerViewAdapter(getApplicationContext(), workArrayList, model.getTask(), controller, currentUser, getSupportFragmentManager());
+        adapter = new WorkRecyclerViewAdapter(WorkActivity.this, workArrayList, model.getTask(), controller, currentUser, getSupportFragmentManager());
         workRecyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         ((LinearLayoutManager) layoutManager).setReverseLayout(true);
