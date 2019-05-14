@@ -9,6 +9,7 @@ import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.fragments.TasksMapFragment;
 import kg.kloop.android.openbudgetapp.models.TasksMapActivityViewModel;
 import kg.kloop.android.openbudgetapp.objects.TenderTask;
+import kg.kloop.android.openbudgetapp.objects.TenderTaskWork;
 import kg.kloop.android.openbudgetapp.objects.User;
 
 import android.content.Intent;
@@ -87,8 +88,10 @@ public class TasksMapActivity extends FragmentActivity implements OnMapReadyCall
                         tasks.clear();
                         tasks.addAll(queryDocumentSnapshots.toObjects(TenderTask.class));
                         displayMarkers(tasks);
+                        // countTasksWithPhotos(tasks);
                     }
                 });
+
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
@@ -124,6 +127,33 @@ public class TasksMapActivity extends FragmentActivity implements OnMapReadyCall
             }
         });
     }
+
+/*    private void countTasksWithPhotos(ArrayList<TenderTask> tasks) {
+        final ArrayList<TenderTask> tasksWithPhotos = new ArrayList<>();
+        final ArrayList<TenderTaskWork> works = new ArrayList<>();
+        for (final TenderTask task : tasks) {
+            tasksColRef.document(task.getId()).collection("work").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    works.clear();
+                    works.addAll(queryDocumentSnapshots.toObjects(TenderTaskWork.class));
+                    for (TenderTaskWork work : works) {
+                        try {
+                            if (work.getPhotoUrlList() != null && work.getPhotoUrlList().size() > 0) {
+                                if (!tasksWithPhotos.contains(task)) {
+                                    tasksWithPhotos.add(task);
+                                }
+                            }
+                        } catch (NullPointerException npe) {
+                            npe.printStackTrace();
+                        }
+                    }
+                    Log.i(TAG, "tasks with photos: " + tasksWithPhotos.size());
+
+                }
+            });
+        }
+    }*/
 
     private void displayMarkers(ArrayList<TenderTask> tasks) {
         LatLng country = new LatLng(41.4313021, 72.6613778);

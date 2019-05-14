@@ -58,6 +58,7 @@ public class WorkActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference taskDocRef;
     private TextView taskDescriptionTextView;
+    private TextView tenderNumberTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,8 @@ public class WorkActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.work_toolbar));
         RecyclerView workRecyclerView = findViewById(R.id.work_activity_recycler_view);
         FloatingActionButton fab = findViewById(R.id.do_work_fab);
+        tenderNumberTextView = findViewById(R.id.tender_number_text_view);
+        tenderNumberTextView.setText(String.valueOf(model.getTask().getTenderId()));
         taskDescriptionTextView = findViewById(R.id.work_activity_task_description_text_view);
         adapter = new WorkRecyclerViewAdapter(WorkActivity.this, workArrayList, model.getTask(), controller, currentUser, getSupportFragmentManager());
         workRecyclerView.setAdapter(adapter);

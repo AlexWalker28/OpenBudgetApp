@@ -57,4 +57,5 @@
     <string name="tender_added_to_favorites">Тендер добавлен в избранные</string>
     <string name="tender_removed_from_favorites">Тендер удален из избранных</string>
     <string name="loading_failed">Загрузка не удалась</string>
+    <string name="task_for_tender">Задание к тендеру №:</string>
 </resources>
