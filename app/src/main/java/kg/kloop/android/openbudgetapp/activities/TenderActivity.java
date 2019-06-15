@@ -18,8 +18,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.firestore.DocumentReference;
-
 import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
@@ -61,7 +59,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         tenderTaskArrayList = new ArrayList<>();
         Toolbar toolbar = findViewById(R.id.tender_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(tender.getTender_num());
+        getSupportActionBar().setTitle(tender.getNumber());
 
         TextView purchaseTextView = findViewById(R.id.tender_purchase_text_view);
         TextView plannedSumTextView = findViewById(R.id.tender_planned_sum_text_view);
@@ -69,9 +67,9 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         RecyclerView tasksRecyclerView = findViewById(R.id.tender_task_recycler_view);
         RecyclerView workRecyclerView = findViewById(R.id.tender_work_recycler_view);
 
-        purchaseTextView.setText(tender.getPurchase());
-        plannedSumTextView.setText(model.getTenderSum());
-        orgNameTextView.setText(tender.getOrgName());
+        purchaseTextView.setText(tender.getProcurementObject());
+        plannedSumTextView.setText(model.getPlannedSum());
+        orgNameTextView.setText(tender.getProcuringEntity());
         taskAdapter = new TenderTaskRecyclerViewAdapter(getApplicationContext(), tenderTaskArrayList, currentUser);
         taskWorkAdapter = new TenderWorkRecyclerViewAdapter(getApplicationContext(), tenderTaskWorkArrayList);
         workRecyclerView.setAdapter(taskWorkAdapter);
@@ -150,7 +148,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
             case R.id.add_task_menu_item:
                 Intent intent = new Intent(TenderActivity.this, AddTaskActivity.class);
                 intent.putExtra("current_user", currentUser);
-                intent.putExtra("tender_num", tender.getTender_num());
+                intent.putExtra("number", tender.getNumber());
                 startActivity(intent);
                 break;
             case R.id.close_tender_menu_item:
@@ -182,7 +180,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                 break;
             case R.id.open_tender_page_menu_item:
                 Intent openTenderIntent = new Intent(Intent.ACTION_VIEW);
-                openTenderIntent.setData(Uri.parse("http://zakupki.gov.kg/popp/view/order/view.xhtml?id=" + tender.getTender_num().substring(6)));
+                openTenderIntent.setData(Uri.parse(tender.getUrl()));
                 startActivity(openTenderIntent);
         }
         return true;

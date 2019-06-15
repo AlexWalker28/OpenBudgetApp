@@ -42,8 +42,8 @@ public class TenderActivityModel {
         this.currentUser = currentUser;
     }
 
-    public String getTenderSum() {
-        return tender.getPlanSum() + " " + tender.getCurrency();
+    public String getPlannedSum() {
+        return tender.getPlannedSumLong() + " " + tender.getCurrency();
     }
 
     public MutableLiveData<Boolean> getMyTender() {

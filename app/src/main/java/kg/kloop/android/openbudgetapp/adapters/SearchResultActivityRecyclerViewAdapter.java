@@ -45,9 +45,9 @@ public class SearchResultActivityRecyclerViewAdapter extends RecyclerView.Adapte
         TextView purchaseTextView = viewHolder.purchaseTextView;
         TextView orgNameTextView = viewHolder.orgNameTextView;
         TextView plannedSumTextView = viewHolder.plannedSumTextView;
-        purchaseTextView.setText(tender.getPurchase());
-        orgNameTextView.setText(tender.getOrgName());
-        String sum = tender.getPlanSum() + " " + tender.getCurrency();
+        purchaseTextView.setText(tender.getProcurementObject());
+        orgNameTextView.setText(tender.getProcuringEntity());
+        String sum = tender.getPlannedSumLong() + " " + tender.getCurrency();
         plannedSumTextView.setText(sum);
     }
 

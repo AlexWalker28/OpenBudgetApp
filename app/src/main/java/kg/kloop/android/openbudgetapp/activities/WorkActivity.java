@@ -221,7 +221,7 @@ public class WorkActivity extends AppCompatActivity {
 
     private void openTenderPage(Tender tender) {
         Intent openTenderIntent = new Intent(Intent.ACTION_VIEW);
-        openTenderIntent.setData(Uri.parse("http://zakupki.gov.kg/popp/view/order/view.xhtml?id=" + tender.getTender_num().substring(6)));
+        openTenderIntent.setData(Uri.parse(tender.getUrl()));
         startActivity(openTenderIntent);
     }
 }

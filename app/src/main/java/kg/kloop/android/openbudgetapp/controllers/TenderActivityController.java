@@ -49,11 +49,11 @@ public class TenderActivityController {
         tender = (Tender) intent.getSerializableExtra("tender");
         model.setTender(tender);
         tasksCollectionReference = db.collection("tasks/");
-        tenderDocumentReference = db.document("tenders_db/" + tender.getTender_num());
+        tenderDocumentReference = db.document("tenders_db/" + tender.getNumber());
         userDocRef = db.document("users/" + currentUser.getId());
         taskArrayList = new ArrayList<>();
 
-        query = tasksCollectionReference.whereEqualTo("tenderId", tender.getTender_num());
+        query = tasksCollectionReference.whereEqualTo("tenderId", tender.getNumber());
 
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -82,7 +82,7 @@ public class TenderActivityController {
         });
 
 
-        DocumentReference tendersDocRef = db.document("users/" + currentUser.getId() + "/tenders/" + tender.getTender_num());
+        DocumentReference tendersDocRef = db.document("users/" + currentUser.getId() + "/tenders/" + tender.getNumber());
 
         tendersDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -121,7 +121,7 @@ public class TenderActivityController {
 
     public void acceptTender() {
         //saving the whole tender to user's collection
-        final DocumentReference tenderRef = userDocRef.collection("tenders").document(tender.getTender_num());
+        final DocumentReference tenderRef = userDocRef.collection("tenders").document(tender.getNumber());
         tenderRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

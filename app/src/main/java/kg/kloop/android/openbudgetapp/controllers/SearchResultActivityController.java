@@ -65,11 +65,11 @@ public class SearchResultActivityController {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && task.getResult() != null) {
                     if (task.getResult().isEmpty()) { //no such tender in Firestore
-                        tendersDbColRef.document(tender.getTender_num()).set(tender); //save it to Firestore
+                        tendersDbColRef.document(tender.getNumber()).set(tender); //save it to Firestore
                     }
                 } else Log.d(TAG, "onComplete() returned: " + task.getException().getMessage());
             }
         };
-        tendersDbColRef.whereEqualTo("tender_num", tender.getTender_num()).get().addOnCompleteListener(onCompleteListener);
+        tendersDbColRef.whereEqualTo("number", tender.getNumber()).get().addOnCompleteListener(onCompleteListener);
     }
 }

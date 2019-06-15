@@ -76,7 +76,7 @@ public class AddTaskActivity extends AppCompatActivity {
         placeTextView = findViewById(R.id.add_task_place_text_view);
         setSupportActionBar((Toolbar) findViewById(R.id.add_task_toolbar));
         Intent intent = getIntent();
-        tenderNum = intent.getStringExtra("tender_num");
+        tenderNum = intent.getStringExtra("number");
         tenderDocRef = db.document("tenders_db/" + tenderNum);
 
         // edit task

@@ -38,9 +38,9 @@ public class TenderFirestorePagingAdapter extends FirestorePagingAdapter<Tender,
             TextView purchaseTextView = holder.purchaseTextView;
             TextView orgNameTextView = holder.orgNameTextView;
             TextView plannedSumTextView = holder.plannedSumTextView;
-            purchaseTextView.setText(tender.getPurchase());
-            orgNameTextView.setText(tender.getOrgName());
-            String sum = tender.getPlanSum() + " " + tender.getCurrency();
+            purchaseTextView.setText(tender.getProcurementObject());
+            orgNameTextView.setText(tender.getProcuringEntity());
+            String sum = tender.getPlannedSumLong() + " " + tender.getCurrency();
             plannedSumTextView.setText(sum);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
