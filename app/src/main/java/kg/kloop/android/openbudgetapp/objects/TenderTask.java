@@ -11,7 +11,7 @@ public class TenderTask implements Serializable {
     private ArrayList<String> attachmentTypes;
     private double latitude;
     private double longitude;
-    private String tenderId;
+    private String tenderNumber;
     private User author;
     private boolean needModeration;
     private String placeName;
@@ -57,12 +57,12 @@ public class TenderTask implements Serializable {
         this.attachmentTypes = attachmentTypes;
     }
 
-    public String getTenderId() {
-        return tenderId;
+    public String getTenderNumber() {
+        return tenderNumber;
     }
 
-    public void setTenderId(String tenderId) {
-        this.tenderId = tenderId;
+    public void setTenderNumber(String tenderNumber) {
+        this.tenderNumber = tenderNumber;
     }
 
     public double getLatitude() {

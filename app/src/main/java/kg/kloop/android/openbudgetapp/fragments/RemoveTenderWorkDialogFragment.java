@@ -115,7 +115,7 @@ public class RemoveTenderWorkDialogFragment extends DialogFragment {
                 if (queryDocumentSnapshots.getDocuments().isEmpty()) {
                     // set hasWork of tender to false if no work left
                     Log.i(TAG, "onSuccess: no work left");
-                    DocumentReference tenderDocRef = firebaseFirestore.collection("tenders_db").document(task.getTenderId());
+                    DocumentReference tenderDocRef = firebaseFirestore.collection("tenders").document(task.getTenderNumber());
                     tenderDocRef.update("hasWork", false);
                     Toast.makeText(getContext(), getString(R.string.work_removed), Toast.LENGTH_SHORT).show();
                     dismiss();

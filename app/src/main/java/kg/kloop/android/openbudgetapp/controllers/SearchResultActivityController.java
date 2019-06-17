@@ -59,7 +59,7 @@ public class SearchResultActivityController {
 
     public void saveTenderToFirestore(final Tender tender) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        tendersDbColRef = db.collection("tenders_db");
+        tendersDbColRef = db.collection("tenders");
         OnCompleteListener<QuerySnapshot> onCompleteListener = new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

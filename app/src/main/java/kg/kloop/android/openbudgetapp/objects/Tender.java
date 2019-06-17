@@ -1,6 +1,8 @@
 package kg.kloop.android.openbudgetapp.objects;
 
 import java.io.Serializable;
+
+import com.google.firebase.Timestamp;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,64 +18,64 @@ public class Tender implements Serializable {
     private String url;
     @SerializedName("procurement_object")
     @Expose
-    private String procurementObject;
+    private String procurement_object;
     @SerializedName("procuring_entity")
     @Expose
-    private String procuringEntity;
+    private String procuring_entity;
     @SerializedName("procurement_format")
     @Expose
-    private String procurementFormat;
+    private String procurement_format;
     @SerializedName("procurement_method")
     @Expose
-    private String procurementMethod;
+    private String procurement_method;
     @SerializedName("planned_sum")
     @Expose
-    private String plannedSum;
+    private String planned_sum;
     @SerializedName("publication_date")
     @Expose
-    private String publicationDate;
-    @SerializedName("__last_seen")
+    private String publication_date;
+    /*@SerializedName("__last_seen")
     @Expose
-    private String lastSeen;
+    private Timestamp __last_seen;
     @SerializedName("__first_seen")
     @Expose
-    private long firstSeen;
+    private Timestamp __first_seen;*/
     @SerializedName("guarantee_provision")
     @Expose
-    private String guaranteeProvision;
+    private String guarantee_provision;
     @SerializedName("actual_address")
     @Expose
-    private String actualAddress;
+    private String actual_address;
     @SerializedName("phone_number")
     @Expose
-    private String phoneNumber;
+    private String phone_number;
     @SerializedName("planned_sum_int")
     @Expose
-    private long plannedSumLong;
+    private Long planned_sum_int;
     @SerializedName("currency")
     @Expose
     private String currency;
     @SerializedName("due_date")
     @Expose
-    private String dueDate;
+    private String due_date;
     @SerializedName("finance_source")
     @Expose
-    private String financeSource;
+    private String finance_source;
     @SerializedName("number_of_ads_for_contract")
     @Expose
-    private String numberOfAdsForContract;
+    private String number_of_ads_for_contract;
     @SerializedName("cancel_reason")
     @Expose
-    private String cancelReason;
+    private String cancel_reason;
     @SerializedName("eval_pub_date")
     @Expose
-    private String evalPubDate;
+    private String eval_pub_date;
     @SerializedName("id")
     @Expose
     private String id;
     @SerializedName("ateCode")
     @Expose
-    private String ateCode;
+    private Long ateCode;
     @SerializedName("countryName")
     @Expose
     private String countryName;
@@ -97,7 +99,7 @@ public class Tender implements Serializable {
     private String locality;
     @SerializedName("streetAddress")
     @Expose
-    private String streetAddress;
+    private Long streetAddress;
 
     private Boolean isCompleted;
     private Boolean hasTasks;
@@ -137,100 +139,100 @@ public class Tender implements Serializable {
         this.url = url;
     }
 
-    public String getProcurementObject() {
-        return procurementObject;
+    public String getProcurement_object() {
+        return procurement_object;
     }
 
-    public void setProcurementObject(String procurementObject) {
-        this.procurementObject = procurementObject;
+    public void setProcurement_object(String procurement_object) {
+        this.procurement_object = procurement_object;
     }
 
-    public String getProcuringEntity() {
-        return procuringEntity;
+    public String getProcuring_entity() {
+        return procuring_entity;
     }
 
-    public void setProcuringEntity(String procuringEntity) {
-        this.procuringEntity = procuringEntity;
+    public void setProcuring_entity(String procuring_entity) {
+        this.procuring_entity = procuring_entity;
     }
 
-    public String getProcurementFormat() {
-        return procurementFormat;
+    public String getProcurement_format() {
+        return procurement_format;
     }
 
-    public void setProcurementFormat(String procurementFormat) {
-        this.procurementFormat = procurementFormat;
+    public void setProcurement_format(String procurement_format) {
+        this.procurement_format = procurement_format;
     }
 
-    public String getProcurementMethod() {
-        return procurementMethod;
+    public String getProcurement_method() {
+        return procurement_method;
     }
 
-    public void setProcurementMethod(String procurementMethod) {
-        this.procurementMethod = procurementMethod;
+    public void setProcurement_method(String procurement_method) {
+        this.procurement_method = procurement_method;
     }
 
-    public String getPlannedSum() {
-        return plannedSum;
+    public String getPlanned_sum() {
+        return planned_sum;
     }
 
-    public void setPlannedSum(String plannedSum) {
-        this.plannedSum = plannedSum;
+    public void setPlanned_sum(String planned_sum) {
+        this.planned_sum = planned_sum;
     }
 
-    public String getPublicationDate() {
-        return publicationDate;
+    public String getPublication_date() {
+        return publication_date;
     }
 
-    public void setPublicationDate(String publicationDate) {
-        this.publicationDate = publicationDate;
+    public void setPublication_date(String publication_date) {
+        this.publication_date = publication_date;
     }
 
-    public String getLastSeen() {
-        return lastSeen;
+    /*public Timestamp get__last_seen() {
+        return __last_seen;
     }
 
-    public void setLastSeen(String lastSeen) {
-        this.lastSeen = lastSeen;
+    public void set__last_seen(Timestamp __last_seen) {
+        this.__last_seen = __last_seen;
     }
 
-    public long getFirstSeen() {
-        return firstSeen;
+    public Timestamp get__first_seen() {
+        return __first_seen;
     }
 
-    public void setFirstSeen(long firstSeen) {
-        this.firstSeen = firstSeen;
+    public void set__first_seen(Timestamp __first_seen) {
+        this.__first_seen = __first_seen;
+    }*/
+
+    public String getGuarantee_provision() {
+        return guarantee_provision;
     }
 
-    public String getGuaranteeProvision() {
-        return guaranteeProvision;
+    public void setGuarantee_provision(String guarantee_provision) {
+        this.guarantee_provision = guarantee_provision;
     }
 
-    public void setGuaranteeProvision(String guaranteeProvision) {
-        this.guaranteeProvision = guaranteeProvision;
+    public String getActual_address() {
+        return actual_address;
     }
 
-    public String getActualAddress() {
-        return actualAddress;
+    public void setActual_address(String actual_address) {
+        this.actual_address = actual_address;
     }
 
-    public void setActualAddress(String actualAddress) {
-        this.actualAddress = actualAddress;
+    public String getPhone_number() {
+        return phone_number;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public Long getPlanned_sum_int() {
+        return planned_sum_int;
     }
 
-    public long getPlannedSumLong() {
-        return plannedSumLong;
-    }
-
-    public void setPlannedSumLong(long plannedSumLong) {
-        this.plannedSumLong = plannedSumLong;
+    public void setPlanned_sum_int(Long planned_sum_int) {
+        this.planned_sum_int = planned_sum_int;
     }
 
     public String getCurrency() {
@@ -241,44 +243,44 @@ public class Tender implements Serializable {
         this.currency = currency;
     }
 
-    public String getDueDate() {
-        return dueDate;
+    public String getDue_date() {
+        return due_date;
     }
 
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
+    public void setDue_date(String due_date) {
+        this.due_date = due_date;
     }
 
-    public String getFinanceSource() {
-        return financeSource;
+    public String getFinance_source() {
+        return finance_source;
     }
 
-    public void setFinanceSource(String financeSource) {
-        this.financeSource = financeSource;
+    public void setFinance_source(String finance_source) {
+        this.finance_source = finance_source;
     }
 
-    public String getNumberOfAdsForContract() {
-        return numberOfAdsForContract;
+    public String getNumber_of_ads_for_contract() {
+        return number_of_ads_for_contract;
     }
 
-    public void setNumberOfAdsForContract(String numberOfAdsForContract) {
-        this.numberOfAdsForContract = numberOfAdsForContract;
+    public void setNumber_of_ads_for_contract(String number_of_ads_for_contract) {
+        this.number_of_ads_for_contract = number_of_ads_for_contract;
     }
 
-    public String getCancelReason() {
-        return cancelReason;
+    public String getCancel_reason() {
+        return cancel_reason;
     }
 
-    public void setCancelReason(String cancelReason) {
-        this.cancelReason = cancelReason;
+    public void setCancel_reason(String cancel_reason) {
+        this.cancel_reason = cancel_reason;
     }
 
-    public String getEvalPubDate() {
-        return evalPubDate;
+    public String getEval_pub_date() {
+        return eval_pub_date;
     }
 
-    public void setEvalPubDate(String evalPubDate) {
-        this.evalPubDate = evalPubDate;
+    public void setEval_pub_date(String eval_pub_date) {
+        this.eval_pub_date = eval_pub_date;
     }
 
     public String getId() {
@@ -289,11 +291,11 @@ public class Tender implements Serializable {
         this.id = id;
     }
 
-    public String getAteCode() {
+    public Long getAteCode() {
         return ateCode;
     }
 
-    public void setAteCode(String ateCode) {
+    public void setAteCode(Long ateCode) {
         this.ateCode = ateCode;
     }
 
@@ -353,11 +355,11 @@ public class Tender implements Serializable {
         this.locality = locality;
     }
 
-    public String getStreetAddress() {
+    public Long getStreetAddress() {
         return streetAddress;
     }
 
-    public void setStreetAddress(String streetAddress) {
+    public void setStreetAddress(Long streetAddress) {
         this.streetAddress = streetAddress;
     }
 

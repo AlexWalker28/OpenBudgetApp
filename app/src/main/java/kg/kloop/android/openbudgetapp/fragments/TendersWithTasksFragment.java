@@ -64,7 +64,7 @@ public class TendersWithTasksFragment extends Fragment {
         infoTextView = view.findViewById(R.id.tenders_with_tasks_info_text_view);
         infoTextView.setVisibility(View.GONE);
         tendersWithTasksRecyclerView = view.findViewById(R.id.tenders_with_tasks_recycler_view);
-        tendersColRef = db.collection("tenders_db");
+        tendersColRef = db.collection("tenders");
         tenderArrayList = new ArrayList<>();
         MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         userLiveData = viewModel.getUserLiveData();

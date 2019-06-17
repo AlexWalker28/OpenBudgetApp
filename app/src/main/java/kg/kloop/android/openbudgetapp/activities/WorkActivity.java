@@ -77,7 +77,7 @@ public class WorkActivity extends AppCompatActivity {
         RecyclerView workRecyclerView = findViewById(R.id.work_activity_recycler_view);
         FloatingActionButton fab = findViewById(R.id.do_work_fab);
         tenderNumberTextView = findViewById(R.id.tender_number_text_view);
-        tenderNumberTextView.setText(String.valueOf(model.getTask().getTenderId()));
+        tenderNumberTextView.setText(String.valueOf(model.getTask().getTenderNumber()));
         taskDescriptionTextView = findViewById(R.id.work_activity_task_description_text_view);
         adapter = new WorkRecyclerViewAdapter(WorkActivity.this, workArrayList, model.getTask(), controller, currentUser, getSupportFragmentManager());
         workRecyclerView.setAdapter(adapter);
@@ -107,7 +107,7 @@ public class WorkActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(WorkActivity.this, DoTaskActivity.class);
-                intent.putExtra("tender_num", model.getTask().getTenderId());
+                intent.putExtra("number", model.getTask().getTenderNumber());
                 intent.putExtra("task_id", model.getTask().getId());
                 intent.putExtra("user", currentUser);
                 startActivity(intent);
@@ -181,7 +181,7 @@ public class WorkActivity extends AppCompatActivity {
                 break;
             case R.id.open_tender_page_menu_item:
                 Intent openTenderIntent = new Intent(Intent.ACTION_VIEW);
-                openTenderIntent.setData(Uri.parse("http://zakupki.gov.kg/popp/view/order/view.xhtml?id=" + model.getTask().getTenderId().substring(6)));
+                openTenderIntent.setData(Uri.parse("http://zakupki.gov.kg/popp/view/order/view.xhtml?id=" + model.getTask().getTenderNumber().substring(6)));
                 startActivity(openTenderIntent);
                 break;
 
@@ -203,8 +203,8 @@ public class WorkActivity extends AppCompatActivity {
                 startActivityForResult(intent, EDIT_TASK);
 
             case R.id.user_work_activity_open_tender_page_menu_item:
-                CollectionReference tenderColRef = db.collection("tenders_db");
-                tenderColRef.whereEqualTo("tender_num", model.getTask().getTenderId())
+                CollectionReference tenderColRef = db.collection("tenders");
+                tenderColRef.whereEqualTo("number", model.getTask().getTenderNumber())
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override

@@ -59,7 +59,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_all_tenders, container, false);
         allTendersRecyclerView = view.findViewById(R.id.all_tenders_recycler_view);
-        tendersDbColRef = db.collection("tenders_db");
+        tendersDbColRef = db.collection("tenders/");
         viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         MutableLiveData<User> userLiveData = viewModel.getUserLiveData();
         userLiveData.observe(this, new Observer<User>() {
@@ -68,7 +68,7 @@ public class AllTendersFragment extends Fragment implements LifecycleOwner {
                 mUser = user;
                 // The "base query" is a query with no startAt/endAt/limit clauses that the adapter can use
                 // to form smaller queries for each page.  It should only include where() and orderBy() clauses
-                Query baseQuery = tendersDbColRef.orderBy("planSum", Query.Direction.DESCENDING);
+                Query baseQuery = tendersDbColRef.orderBy("planned_sum_int", Query.Direction.DESCENDING);
 
                 PagedList.Config config = new PagedList.Config.Builder()
                         .setEnablePlaceholders(false)

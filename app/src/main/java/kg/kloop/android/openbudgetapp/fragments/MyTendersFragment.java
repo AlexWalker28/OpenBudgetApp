@@ -56,7 +56,7 @@ public class MyTendersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_my_tenders, container, false);
         final RecyclerView myTendersRecyclerView = view.findViewById(R.id.my_tenders_recycler_view);
-        //final CollectionReference tendersCollectionReference = db.collection("tenders_db");
+        //final CollectionReference tendersCollectionReference = db.collection("tenders");
         MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         MutableLiveData<User> userLiveData = viewModel.getUserLiveData();
         tenderArrayList = new ArrayList<>();

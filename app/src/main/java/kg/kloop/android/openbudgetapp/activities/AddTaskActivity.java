@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -77,7 +76,7 @@ public class AddTaskActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.add_task_toolbar));
         Intent intent = getIntent();
         tenderNum = intent.getStringExtra("number");
-        tenderDocRef = db.document("tenders_db/" + tenderNum);
+        tenderDocRef = db.document("tenders/" + tenderNum);
 
         // edit task
         if (intent.getSerializableExtra("task") != null) {
@@ -197,7 +196,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     long time = System.currentTimeMillis();
                     task.setDescription(taskEditText.getText().toString());
                     task.setAttachmentTypes(getAttachmentTypes());
-                    task.setTenderId(tenderNum);
+                    task.setTenderNumber(tenderNum);
                     String taskId = tasksCollectionReference.document().getId();
                     task.setId(taskId);
                     task.setAuthor(user);

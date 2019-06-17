@@ -49,11 +49,11 @@ public class TenderActivityController {
         tender = (Tender) intent.getSerializableExtra("tender");
         model.setTender(tender);
         tasksCollectionReference = db.collection("tasks/");
-        tenderDocumentReference = db.document("tenders_db/" + tender.getNumber());
+        tenderDocumentReference = db.document("tenders/" + tender.getNumber());
         userDocRef = db.document("users/" + currentUser.getId());
         taskArrayList = new ArrayList<>();
 
-        query = tasksCollectionReference.whereEqualTo("tenderId", tender.getNumber());
+        query = tasksCollectionReference.whereEqualTo("tenderNumber", tender.getNumber());
 
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

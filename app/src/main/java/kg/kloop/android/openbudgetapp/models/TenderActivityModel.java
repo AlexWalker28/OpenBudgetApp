@@ -43,7 +43,7 @@ public class TenderActivityModel {
     }
 
     public String getPlannedSum() {
-        return tender.getPlannedSumLong() + " " + tender.getCurrency();
+        return tender.getPlanned_sum_int() + " " + tender.getCurrency();
     }
 
     public MutableLiveData<Boolean> getMyTender() {

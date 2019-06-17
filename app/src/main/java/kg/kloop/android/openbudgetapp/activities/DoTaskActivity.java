@@ -86,7 +86,7 @@ public class DoTaskActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("images");
         final Intent intent = getIntent();
-        tenderNum = intent.getStringExtra("tender_num");
+        tenderNum = intent.getStringExtra("number");
         String taskId = intent.getStringExtra("task_id");
         currentUser = (User) intent.getSerializableExtra("user");
         taskDocRef = db.document("/tasks/" + taskId);
@@ -326,7 +326,7 @@ public class DoTaskActivity extends AppCompatActivity {
         horizontalProgressBar.setVisibility(View.VISIBLE);
         //item.setEnabled(false);
         CollectionReference taskWorkCollectionRef = taskDocRef.collection("work");
-        CollectionReference tendersColRef = db.collection("tenders_db");
+        CollectionReference tendersColRef = db.collection("tenders");
         tendersColRef.document(tenderNum).update("hasWork", true);
         TenderTaskWork tenderTaskWork = new TenderTaskWork();
         tenderTaskWork.setId(taskWorkCollectionRef.document().getId());

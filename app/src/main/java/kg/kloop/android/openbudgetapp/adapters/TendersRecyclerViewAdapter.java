@@ -46,9 +46,9 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
         TextView purchaseTextView = viewHolder.purchaseTextView;
         TextView orgNameTextView = viewHolder.orgNameTextView;
         TextView plannedSumTextView = viewHolder.plannedSumTextView;
-        purchaseTextView.setText(tender.getProcurementObject());
-        orgNameTextView.setText(tender.getProcuringEntity());
-        String sum = tender.getPlannedSumLong() + " " + tender.getCurrency();
+        purchaseTextView.setText(tender.getProcurement_object());
+        orgNameTextView.setText(tender.getProcuring_entity());
+        String sum = tender.getPlanned_sum_int() + " " + tender.getCurrency();
         plannedSumTextView.setText(sum);
     }
 
