@@ -35,13 +35,11 @@ public class TenderFirestorePagingAdapter extends FirestorePagingAdapter<Tender,
         Log.i(TAG, "onBindViewHolder: list size: " + getCurrentList().size());
         try {
             Tender tender = getItem(position).toObject(Tender.class);
-            TextView purchaseTextView = holder.purchaseTextView;
-            TextView orgNameTextView = holder.orgNameTextView;
-            TextView plannedSumTextView = holder.plannedSumTextView;
-            purchaseTextView.setText(tender.getProcurement_object());
-            orgNameTextView.setText(tender.getProcuring_entity());
+            holder.purchaseTextView.setText(tender.getProcurement_object());
+            holder.orgNameTextView.setText(tender.getProcuring_entity());
+            holder.addressTextView.setText(tender.getRegion());
             String sum = tender.getPlanned_sum_int() + " " + tender.getCurrency();
-            plannedSumTextView.setText(sum);
+            holder.plannedSumTextView.setText(sum);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
@@ -67,11 +65,13 @@ public class TenderFirestorePagingAdapter extends FirestorePagingAdapter<Tender,
         TextView purchaseTextView;
         TextView orgNameTextView;
         TextView plannedSumTextView;
+        TextView addressTextView;
         public TenderViewHolder(@NonNull View itemView) {
             super(itemView);
             purchaseTextView = itemView.findViewById(R.id.item_purchase_text_view);
             orgNameTextView = itemView.findViewById(R.id.item_org_name_text_view);
             plannedSumTextView = itemView.findViewById(R.id.item_planned_sum_text_view);
+            addressTextView = itemView.findViewById(R.id.item_address_text_view);
             itemView.setOnClickListener(this);
         }
         @Override

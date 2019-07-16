@@ -46,8 +46,10 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
         TextView purchaseTextView = viewHolder.purchaseTextView;
         TextView orgNameTextView = viewHolder.orgNameTextView;
         TextView plannedSumTextView = viewHolder.plannedSumTextView;
+        TextView addressTextView = viewHolder.addressTextView;
         purchaseTextView.setText(tender.getProcurement_object());
         orgNameTextView.setText(tender.getProcuring_entity());
+        addressTextView.setText(tender.getRegion());
         String sum = tender.getPlanned_sum_int() + " " + tender.getCurrency();
         plannedSumTextView.setText(sum);
     }
@@ -61,12 +63,14 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
         TextView purchaseTextView;
         TextView orgNameTextView;
         TextView plannedSumTextView;
+        TextView addressTextView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             purchaseTextView = itemView.findViewById(R.id.item_purchase_text_view);
             orgNameTextView = itemView.findViewById(R.id.item_org_name_text_view);
             plannedSumTextView = itemView.findViewById(R.id.item_planned_sum_text_view);
+            addressTextView = itemView.findViewById(R.id.item_address_text_view);
             itemView.setOnClickListener(this);
         }
 

@@ -47,19 +47,33 @@
             tools:text="10000" />
 
         <TextView
+            android:id="@+id/item_address_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@android:color/black"
+            tools:text="Чуйская область"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_planned_sum_text_view" />
+
+        <TextView
             android:id="@+id/item_org_name_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="@+id/item_planned_sum_text_view"
             app:layout_constraintStart_toStartOf="@+id/item_planned_sum_text_view"
-            app:layout_constraintTop_toBottomOf="@+id/item_planned_sum_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/item_address_text_view"
             tools:text="Org name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

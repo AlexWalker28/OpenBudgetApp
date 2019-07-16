@@ -64,12 +64,14 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
         TextView purchaseTextView = findViewById(R.id.tender_purchase_text_view);
         TextView plannedSumTextView = findViewById(R.id.tender_planned_sum_text_view);
         TextView orgNameTextView = findViewById(R.id.tender_org_name_text_view);
+        TextView addressTextView = findViewById(R.id.tender_address_text_view);
         RecyclerView tasksRecyclerView = findViewById(R.id.tender_task_recycler_view);
         RecyclerView workRecyclerView = findViewById(R.id.tender_work_recycler_view);
 
         purchaseTextView.setText(tender.getProcurement_object());
         plannedSumTextView.setText(model.getPlannedSum());
         orgNameTextView.setText(tender.getProcuring_entity());
+        addressTextView.setText(tender.getRegion());
         taskAdapter = new TenderTaskRecyclerViewAdapter(getApplicationContext(), tenderTaskArrayList, currentUser);
         taskWorkAdapter = new TenderWorkRecyclerViewAdapter(getApplicationContext(), tenderTaskWorkArrayList);
         workRecyclerView.setAdapter(taskWorkAdapter);
