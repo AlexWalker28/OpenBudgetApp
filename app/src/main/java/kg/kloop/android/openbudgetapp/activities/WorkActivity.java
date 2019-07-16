@@ -201,6 +201,7 @@ public class WorkActivity extends AppCompatActivity {
                 intent.putExtra("task", model.getTask());
                 intent.putExtra("isEdit", true);
                 startActivityForResult(intent, EDIT_TASK);
+                break;
 
             case R.id.user_work_activity_open_tender_page_menu_item:
                 CollectionReference tenderColRef = db.collection("tenders");
@@ -215,6 +216,7 @@ public class WorkActivity extends AppCompatActivity {
                                 }
                             }
                         });
+                break;
         }
         return true;
     }
