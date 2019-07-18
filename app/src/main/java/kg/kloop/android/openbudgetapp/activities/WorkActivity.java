@@ -181,7 +181,7 @@ public class WorkActivity extends AppCompatActivity {
                 break;
             case R.id.open_tender_page_menu_item:
                 Intent openTenderIntent = new Intent(Intent.ACTION_VIEW);
-                openTenderIntent.setData(Uri.parse("http://zakupki.gov.kg/popp/view/order/view.xhtml?id=" + model.getTask().getTenderNumber().substring(6)));
+                openTenderIntent.setData(Uri.parse("http://zakupki.gov.kg/popp/view/order/view.xhtml?id=" + model.getTask().getTenderNumber()));
                 startActivity(openTenderIntent);
                 break;
 
