@@ -2,7 +2,9 @@ package kg.kloop.android.openbudgetapp.fragments;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,15 +27,20 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.activities.TasksMapActivity;
+import kg.kloop.android.openbudgetapp.adapters.TenderTaskRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.adapters.TendersRecyclerViewAdapter;
+import kg.kloop.android.openbudgetapp.database.TendersDatabaseDao;
 import kg.kloop.android.openbudgetapp.models.MainViewModel;
 import kg.kloop.android.openbudgetapp.objects.Tender;
+import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.User;
+import kg.kloop.android.openbudgetapp.utils.App;
 
 public class TendersWithTasksFragment extends Fragment {
 
@@ -45,6 +52,7 @@ public class TendersWithTasksFragment extends Fragment {
     private RecyclerView tendersWithTasksRecyclerView;
     private CollectionReference tendersColRef;
     private TextView infoTextView;
+    private TendersDatabaseDao databaseDao;
     private boolean isFiltered = false;
 
 
@@ -61,6 +69,8 @@ public class TendersWithTasksFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tenders_with_tasks, container, false);
         setHasOptionsMenu(true);
+
+        databaseDao = App.getInstance().getDatabase().tendersDatabaseDao();
         infoTextView = view.findViewById(R.id.tenders_with_tasks_info_text_view);
         infoTextView.setVisibility(View.GONE);
         tendersWithTasksRecyclerView = view.findViewById(R.id.tenders_with_tasks_recycler_view);
@@ -136,7 +146,18 @@ public class TendersWithTasksFragment extends Fragment {
                 });
                 break;
             case R.id.filter_task_menu_item:
-                if (!isFiltered) {
+                /*db.collection("tasks").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<TenderTask> tasks = queryDocumentSnapshots.toObjects(TenderTask.class);
+                        for (TenderTask task : tasks) {
+                            new AddTasksAsyncTask().execute(task);
+                        }
+                    }
+                });*/
+                new GetTenderAsyncTask().execute("дорог, дорог");
+
+                /*if (!isFiltered) {
                     tendersColRef
                             .whereEqualTo("hasWork", true)
                             .whereEqualTo("isCompleted", false)
@@ -146,6 +167,9 @@ public class TendersWithTasksFragment extends Fragment {
                                     //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
                                     tenderArrayList.clear();
                                     tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
+                                    for (Tender tender : tenderArrayList) {
+                                        new AddTendersAsyncTask().execute(tender);
+                                    }
                                     adapter.notifyDataSetChanged();
                                 }
                             });
@@ -158,9 +182,68 @@ public class TendersWithTasksFragment extends Fragment {
                     infoTextView.setVisibility(View.GONE);
                     infoTextView.setText("");
                     isFiltered = false;
-                }
+                }*/
                 break;
         }
         return true;
     }
+    private class GetTenderTaskAsyncTask extends AsyncTask<Void, Void, List<TenderTask>> {
+
+        @Override
+        protected List<TenderTask> doInBackground(Void... voids) {
+            return databaseDao.getTasks();
+        }
+
+        @Override
+        protected void onPostExecute(List<TenderTask> tenderTasks) {
+            TenderTaskRecyclerViewAdapter recyclerViewAdapter =
+                    new TenderTaskRecyclerViewAdapter(getActivity(),
+                            new ArrayList<>(tenderTasks),
+                            userLiveData.getValue());
+            tendersWithTasksRecyclerView.setHasFixedSize(true);
+            tendersWithTasksRecyclerView.setAdapter(recyclerViewAdapter);
+            tendersWithTasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
+    }
+
+    private class GetTenderAsyncTask extends AsyncTask<String, Void, List<Tender>> {
+
+        @Override
+        protected List<Tender> doInBackground(String... strings) {
+            Log.v(TAG, strings[0]);
+            return databaseDao.getTenders(strings[0].split(",")[0], strings[0].split(",")[1]);
+        }
+
+        @Override
+        protected void onPostExecute(List<Tender> tenders) {
+            Log.v(TAG, "tenders found: " + tenders.size());
+            tenderArrayList.clear();
+            tenderArrayList.addAll(tenders);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private class AddTasksAsyncTask extends AsyncTask<TenderTask, Void, Void> {
+
+        @Override
+        protected Void doInBackground(TenderTask... tenderTasks) {
+            for (TenderTask task : tenderTasks) {
+                Log.v(TAG, task.toString());
+                databaseDao.insertTask(task);
+            }
+            return null;
+        }
+    }
+
+    private class AddTendersAsyncTask extends AsyncTask<Tender, Void, Void> {
+        @Override
+        protected Void doInBackground(Tender... tenders) {
+            for (Tender tender : tenders) {
+                databaseDao.insertTender(tender);
+            }
+            return null;
+        }
+    }
+
 }
+

@@ -1,22 +1,57 @@
 package kg.kloop.android.openbudgetapp.objects;
 
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
+@Entity(tableName = "tender_tasks_table")
 public class TenderTask implements Serializable {
+    @PrimaryKey
+    @NonNull
     private String id;
+
+    @ColumnInfo(name = "description")
     private String description;
+
+    @ColumnInfo(name = "is_completed")
     private boolean isCompleted;
+
+    //@ColumnInfo(name = "attachment_types")
+    @Ignore
     private ArrayList<String> attachmentTypes;
+
+    @ColumnInfo(name = "latitude")
     private double latitude;
+
+    @ColumnInfo(name = "longitude")
     private double longitude;
+
+    @ColumnInfo(name = "tender_number")
     private String tenderNumber;
+
+    //@ColumnInfo(name = "author")
+    @Ignore
     private User author;
+
+    //@ColumnInfo(name = "description")
     private boolean needModeration;
+
+    @ColumnInfo(name = "place_name")
     private String placeName;
+
+    @ColumnInfo(name = "has_work")
     private boolean hasWork;
+
+    @ColumnInfo(name = "create_time_milli")
     private long createTime;
+
+    @ColumnInfo(name = "update_time_milli")
     private long updateTime;
 
     public TenderTask() {

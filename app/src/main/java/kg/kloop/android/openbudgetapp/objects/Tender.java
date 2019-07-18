@@ -1,12 +1,20 @@
 package kg.kloop.android.openbudgetapp.objects;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
 import com.google.firebase.Timestamp;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "tenders_table")
 public class Tender implements Serializable {
+    @PrimaryKey
+    @NonNull
     @SerializedName("number")
     @Expose
     private String number;
@@ -16,21 +24,27 @@ public class Tender implements Serializable {
     @SerializedName("url")
     @Expose
     private String url;
+    @ColumnInfo(name = "procurement_object")
     @SerializedName("procurement_object")
     @Expose
     private String procurement_object;
+    @ColumnInfo(name = "procuring_entity")
     @SerializedName("procuring_entity")
     @Expose
     private String procuring_entity;
+    @ColumnInfo(name = "procurement_format")
     @SerializedName("procurement_format")
     @Expose
     private String procurement_format;
+    @ColumnInfo(name = "procurement_method")
     @SerializedName("procurement_method")
     @Expose
     private String procurement_method;
+    @ColumnInfo(name = "planned_sum")
     @SerializedName("planned_sum")
     @Expose
     private String planned_sum;
+    @ColumnInfo(name = "publication_date")
     @SerializedName("publication_date")
     @Expose
     private String publication_date;
@@ -40,71 +54,96 @@ public class Tender implements Serializable {
     @SerializedName("__first_seen")
     @Expose
     private Timestamp __first_seen;*/
+    @ColumnInfo(name = "guarantee_provision")
     @SerializedName("guarantee_provision")
     @Expose
     private String guarantee_provision;
+    @ColumnInfo(name = "actual_address")
     @SerializedName("actual_address")
     @Expose
     private String actual_address;
+    @ColumnInfo(name = "phone_number")
     @SerializedName("phone_number")
     @Expose
     private String phone_number;
+    @ColumnInfo(name = "planned_sum_int")
     @SerializedName("planned_sum_int")
     @Expose
     private Long planned_sum_int;
+    @ColumnInfo(name = "currency")
     @SerializedName("currency")
     @Expose
     private String currency;
+    @ColumnInfo(name = "due_date")
     @SerializedName("due_date")
     @Expose
     private String due_date;
+    @ColumnInfo(name = "finance_source")
     @SerializedName("finance_source")
     @Expose
     private String finance_source;
+    @ColumnInfo(name = "number_of_ads_for_contract")
     @SerializedName("number_of_ads_for_contract")
     @Expose
     private String number_of_ads_for_contract;
+    @ColumnInfo(name = "cancel_reason")
     @SerializedName("cancel_reason")
     @Expose
     private String cancel_reason;
+    @ColumnInfo(name = "eval_pub_date")
     @SerializedName("eval_pub_date")
     @Expose
     private String eval_pub_date;
+    @ColumnInfo(name = "id")
     @SerializedName("id")
     @Expose
     private String id;
+    @ColumnInfo(name = "ateCode")
     @SerializedName("ateCode")
     @Expose
     private Long ateCode;
+    @ColumnInfo(name = "countryName")
     @SerializedName("countryName")
     @Expose
     private String countryName;
+    @ColumnInfo(name = "region")
     @SerializedName("region")
     @Expose
     private String region;
+    @ColumnInfo(name = "subRegion")
     @SerializedName("subRegion")
     @Expose
     private String subRegion;
+    @ColumnInfo(name = "district")
     @SerializedName("district")
     @Expose
     private String district;
+    @ColumnInfo(name = "subDistrict")
     @SerializedName("subDistrict")
     @Expose
     private String subDistrict;
+    @ColumnInfo(name = "subSubDistrict")
     @SerializedName("subSubDistrict")
     @Expose
     private String subSubDistrict;
+    @ColumnInfo(name = "locality")
     @SerializedName("locality")
     @Expose
     private String locality;
+    @ColumnInfo(name = "streetAddress")
     @SerializedName("streetAddress")
     @Expose
     private Long streetAddress;
 
+    @ColumnInfo(name = "is_completed")
     private Boolean isCompleted;
+    @ColumnInfo(name = "has_tasks")
     private Boolean hasTasks;
+    @ColumnInfo(name = "has_work")
     private Boolean hasWork;
+    @ColumnInfo(name = "create_time_milli")
     private long createTime;
+    @ColumnInfo(name = "update_time_milli")
     private long updateTime;
 
     public Tender() {

@@ -184,6 +184,7 @@ public class TenderActivity extends AppCompatActivity implements LifecycleOwner 
                 Intent openTenderIntent = new Intent(Intent.ACTION_VIEW);
                 openTenderIntent.setData(Uri.parse(tender.getUrl()));
                 startActivity(openTenderIntent);
+                break;
         }
         return true;
     }
