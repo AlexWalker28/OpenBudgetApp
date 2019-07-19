@@ -3,6 +3,7 @@ package kg.kloop.android.openbudgetapp.database;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -17,7 +18,7 @@ public interface TendersDatabaseDao {
     @Insert
     void insertTask(TenderTask tenderTask);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTender(Tender tender);
 
     @Update
@@ -44,5 +45,7 @@ public interface TendersDatabaseDao {
             "procuring_entity LIKE '%' || :procuringEntity || '%'")
     List<Tender> getTenders(String procurementObject, String procuringEntity);
 
+    @Query("DELETE FROM tenders_table")
+    void clearTendersTable();
 
 }

@@ -14,6 +14,8 @@ import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.firebase.ui.firestore.paging.LoadingState;
 
+import java.io.Serializable;
+
 import kg.kloop.android.openbudgetapp.R;
 import kg.kloop.android.openbudgetapp.activities.TenderActivity;
 import kg.kloop.android.openbudgetapp.objects.Tender;
@@ -77,7 +79,7 @@ public class TenderFirestorePagingAdapter extends FirestorePagingAdapter<Tender,
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(context, TenderActivity.class);
-            intent.putExtra("tender", getItem(getAdapterPosition()).toObject(Tender.class));
+            intent.putExtra("tender", (Serializable) getItem(getAdapterPosition()).toObject(Tender.class));
             if (currentUser != null) {
                 intent.putExtra("current_user", currentUser);
                 Log.v(TAG, "current_user: " + currentUser.getName());

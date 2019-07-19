@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/sorted_by_work_presence" />
+            tools:text="@string/filter_by_work_presence" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tenders_with_tasks_recycler_view"

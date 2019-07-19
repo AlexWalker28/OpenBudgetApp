@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<item
-    android:id="@+id/map_task_menu_item"
-    android:title="@string/map"
-    app:showAsAction="ifRoom"
-    android:icon="@drawable/ic_map_black_24dp">
-</item>
+    <item
+        android:id="@+id/map_task_menu_item"
+        android:icon="@drawable/ic_map_black_24dp"
+        android:title="@string/map"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/filter_task_menu_item"
-        android:title="@string/filter"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_filter_list_black_24dp"/>
+        android:icon="@drawable/ic_filter_list_black_24dp"
+        android:title="@string/tenders_with_work"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/search_tenders_menu_item"
+        android:title="@string/search_tenders_with_tasks" />
 </menu>

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
@@ -77,7 +78,7 @@ public class TendersRecyclerViewAdapter extends RecyclerView.Adapter<TendersRecy
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(context, TenderActivity.class);
-            intent.putExtra("tender", tenderArrayList.get(getAdapterPosition()));
+            intent.putExtra("tender", (Serializable) tenderArrayList.get(getAdapterPosition()));
             if (currentUser != null) {
                 intent.putExtra("current_user", currentUser);
                 Log.v(TAG, "current_user: " + currentUser.getName());

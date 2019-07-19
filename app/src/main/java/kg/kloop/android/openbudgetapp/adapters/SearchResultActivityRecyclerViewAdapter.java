@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import kg.kloop.android.openbudgetapp.R;
@@ -42,13 +43,11 @@ public class SearchResultActivityRecyclerViewAdapter extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Tender tender = tenderArrayList.get(i);
-        TextView purchaseTextView = viewHolder.purchaseTextView;
-        TextView orgNameTextView = viewHolder.orgNameTextView;
-        TextView plannedSumTextView = viewHolder.plannedSumTextView;
-        purchaseTextView.setText(tender.getProcurement_object());
-        orgNameTextView.setText(tender.getProcuring_entity());
+        viewHolder.purchaseTextView.setText(tender.getProcurement_object());
+        viewHolder.orgNameTextView.setText(tender.getProcuring_entity());
+        viewHolder.addressTextView.setText(tender.getRegion());
         String sum = tender.getPlanned_sum_int() + " " + tender.getCurrency();
-        plannedSumTextView.setText(sum);
+        viewHolder.plannedSumTextView.setText(sum);
     }
 
 
@@ -60,12 +59,14 @@ public class SearchResultActivityRecyclerViewAdapter extends RecyclerView.Adapte
         TextView purchaseTextView;
         TextView orgNameTextView;
         TextView plannedSumTextView;
+        TextView addressTextView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             purchaseTextView = itemView.findViewById(R.id.item_purchase_text_view);
             orgNameTextView = itemView.findViewById(R.id.item_org_name_text_view);
             plannedSumTextView = itemView.findViewById(R.id.item_planned_sum_text_view);
+            addressTextView = itemView.findViewById(R.id.item_address_text_view);
             itemView.setOnClickListener(this);
         }
 
@@ -74,7 +75,7 @@ public class SearchResultActivityRecyclerViewAdapter extends RecyclerView.Adapte
             Tender tender = tenderArrayList.get(getAdapterPosition());
             controller.saveTenderToFirestore(tender);
             Intent intent = new Intent(context, TenderActivity.class);
-            intent.putExtra("tender", tender);
+            intent.putExtra("tender", (Serializable) tender);
             if (currentUser != null) {
                 intent.putExtra("current_user", currentUser);
                 Log.v(TAG, "current_user: " + currentUser.getName());

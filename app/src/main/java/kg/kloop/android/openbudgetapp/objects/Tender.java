@@ -1,5 +1,8 @@
 package kg.kloop.android.openbudgetapp.objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -12,7 +15,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "tenders_table")
-public class Tender implements Serializable {
+public class Tender implements Serializable, Parcelable {
     @PrimaryKey
     @NonNull
     @SerializedName("number")
@@ -441,4 +444,96 @@ public class Tender implements Serializable {
     public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.number);
+        dest.writeString(this.status);
+        dest.writeString(this.url);
+        dest.writeString(this.procurement_object);
+        dest.writeString(this.procuring_entity);
+        dest.writeString(this.procurement_format);
+        dest.writeString(this.procurement_method);
+        dest.writeString(this.planned_sum);
+        dest.writeString(this.publication_date);
+        dest.writeString(this.guarantee_provision);
+        dest.writeString(this.actual_address);
+        dest.writeString(this.phone_number);
+        dest.writeValue(this.planned_sum_int);
+        dest.writeString(this.currency);
+        dest.writeString(this.due_date);
+        dest.writeString(this.finance_source);
+        dest.writeString(this.number_of_ads_for_contract);
+        dest.writeString(this.cancel_reason);
+        dest.writeString(this.eval_pub_date);
+        dest.writeString(this.id);
+        dest.writeValue(this.ateCode);
+        dest.writeString(this.countryName);
+        dest.writeString(this.region);
+        dest.writeString(this.subRegion);
+        dest.writeString(this.district);
+        dest.writeString(this.subDistrict);
+        dest.writeString(this.subSubDistrict);
+        dest.writeString(this.locality);
+        dest.writeValue(this.streetAddress);
+        dest.writeValue(this.isCompleted);
+        dest.writeValue(this.hasTasks);
+        dest.writeValue(this.hasWork);
+        dest.writeLong(this.createTime);
+        dest.writeLong(this.updateTime);
+    }
+
+    protected Tender(Parcel in) {
+        this.number = in.readString();
+        this.status = in.readString();
+        this.url = in.readString();
+        this.procurement_object = in.readString();
+        this.procuring_entity = in.readString();
+        this.procurement_format = in.readString();
+        this.procurement_method = in.readString();
+        this.planned_sum = in.readString();
+        this.publication_date = in.readString();
+        this.guarantee_provision = in.readString();
+        this.actual_address = in.readString();
+        this.phone_number = in.readString();
+        this.planned_sum_int = (Long) in.readValue(Long.class.getClassLoader());
+        this.currency = in.readString();
+        this.due_date = in.readString();
+        this.finance_source = in.readString();
+        this.number_of_ads_for_contract = in.readString();
+        this.cancel_reason = in.readString();
+        this.eval_pub_date = in.readString();
+        this.id = in.readString();
+        this.ateCode = (Long) in.readValue(Long.class.getClassLoader());
+        this.countryName = in.readString();
+        this.region = in.readString();
+        this.subRegion = in.readString();
+        this.district = in.readString();
+        this.subDistrict = in.readString();
+        this.subSubDistrict = in.readString();
+        this.locality = in.readString();
+        this.streetAddress = (Long) in.readValue(Long.class.getClassLoader());
+        this.isCompleted = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.hasTasks = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.hasWork = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.createTime = in.readLong();
+        this.updateTime = in.readLong();
+    }
+
+    public static final Parcelable.Creator<Tender> CREATOR = new Parcelable.Creator<Tender>() {
+        @Override
+        public Tender createFromParcel(Parcel source) {
+            return new Tender(source);
+        }
+
+        @Override
+        public Tender[] newArray(int size) {
+            return new Tender[size];
+        }
+    };
 }

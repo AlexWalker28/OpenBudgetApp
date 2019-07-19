@@ -32,6 +32,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import kg.kloop.android.openbudgetapp.R;
+import kg.kloop.android.openbudgetapp.activities.FilterOptionsActivity;
 import kg.kloop.android.openbudgetapp.activities.TasksMapActivity;
 import kg.kloop.android.openbudgetapp.adapters.TenderTaskRecyclerViewAdapter;
 import kg.kloop.android.openbudgetapp.adapters.TendersRecyclerViewAdapter;
@@ -42,9 +43,12 @@ import kg.kloop.android.openbudgetapp.objects.TenderTask;
 import kg.kloop.android.openbudgetapp.objects.User;
 import kg.kloop.android.openbudgetapp.utils.App;
 
+import static android.app.Activity.RESULT_OK;
+
 public class TendersWithTasksFragment extends Fragment {
 
     private static final String TAG = TendersWithTasksFragment.class.getSimpleName();
+    private static final int FILTER_REQUEST = 34523;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TendersRecyclerViewAdapter adapter;
     private ArrayList<Tender> tenderArrayList;
@@ -111,6 +115,8 @@ public class TendersWithTasksFragment extends Fragment {
                                 try {
                                     tenderArrayList.clear();
                                     tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
+                                    // just a quick solution
+                                    rewriteTendersTable();
                                     adapter.notifyDataSetChanged();
 
                                 } catch (NullPointerException npe) {
@@ -146,6 +152,7 @@ public class TendersWithTasksFragment extends Fragment {
                 });
                 break;
             case R.id.filter_task_menu_item:
+                // in case I'll need to save tasks
                 /*db.collection("tasks").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -155,9 +162,7 @@ public class TendersWithTasksFragment extends Fragment {
                         }
                     }
                 });*/
-                new GetTenderAsyncTask().execute("дорог, дорог");
-
-                /*if (!isFiltered) {
+                if (!isFiltered) {
                     tendersColRef
                             .whereEqualTo("hasWork", true)
                             .whereEqualTo("isCompleted", false)
@@ -167,26 +172,38 @@ public class TendersWithTasksFragment extends Fragment {
                                     //TODO: implement correctly https://firebase.google.com/docs/firestore/query-data/listen
                                     tenderArrayList.clear();
                                     tenderArrayList.addAll(queryDocumentSnapshots.toObjects(Tender.class));
-                                    for (Tender tender : tenderArrayList) {
-                                        new AddTendersAsyncTask().execute(tender);
-                                    }
                                     adapter.notifyDataSetChanged();
                                 }
                             });
 
                 infoTextView.setVisibility(View.VISIBLE);
-                infoTextView.setText(getString(R.string.sorted_by_work_presence));
+                infoTextView.setText(getString(R.string.filter_by_work_presence));
                 isFiltered = true;
                 } else {
                     updateContent();
                     infoTextView.setVisibility(View.GONE);
                     infoTextView.setText("");
                     isFiltered = false;
-                }*/
+                }
                 break;
+
+            case R.id.search_tenders_menu_item:
+                startActivityForResult(new Intent(getActivity(), FilterOptionsActivity.class), FILTER_REQUEST);
         }
         return true;
     }
+
+    private void rewriteTendersTable() {
+        synchronized (TendersWithTasksFragment.class) {
+            new ClearTendersTableAsyncTask();
+        }
+        synchronized (this) {
+            for (Tender tender : tenderArrayList) {
+                new AddTendersAsyncTask().execute(tender);
+            }
+        }
+    }
+
     private class GetTenderTaskAsyncTask extends AsyncTask<Void, Void, List<TenderTask>> {
 
         @Override
@@ -206,20 +223,11 @@ public class TendersWithTasksFragment extends Fragment {
         }
     }
 
-    private class GetTenderAsyncTask extends AsyncTask<String, Void, List<Tender>> {
-
+    private class ClearTendersTableAsyncTask extends AsyncTask<Void, Void, Void> {
         @Override
-        protected List<Tender> doInBackground(String... strings) {
-            Log.v(TAG, strings[0]);
-            return databaseDao.getTenders(strings[0].split(",")[0], strings[0].split(",")[1]);
-        }
-
-        @Override
-        protected void onPostExecute(List<Tender> tenders) {
-            Log.v(TAG, "tenders found: " + tenders.size());
-            tenderArrayList.clear();
-            tenderArrayList.addAll(tenders);
-            adapter.notifyDataSetChanged();
+        protected Void doInBackground(Void... voids) {
+            databaseDao.clearTendersTable();
+            return null;
         }
     }
 
@@ -245,5 +253,18 @@ public class TendersWithTasksFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FILTER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    tenderArrayList.clear();
+                    tenderArrayList.addAll(data.<Tender>getParcelableArrayListExtra("tenders"));
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
 }
 
