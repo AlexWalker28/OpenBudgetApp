@@ -56,6 +56,7 @@ public class TendersWithTasksFragment extends Fragment {
     private RecyclerView tendersWithTasksRecyclerView;
     private CollectionReference tendersColRef;
     private TextView infoTextView;
+    private TextView searchInfoTextView;
     private TendersDatabaseDao databaseDao;
     private boolean isFiltered = false;
 
@@ -75,8 +76,7 @@ public class TendersWithTasksFragment extends Fragment {
         setHasOptionsMenu(true);
 
         databaseDao = App.getInstance().getDatabase().tendersDatabaseDao();
-        infoTextView = view.findViewById(R.id.tenders_with_tasks_info_text_view);
-        infoTextView.setVisibility(View.GONE);
+        setupInfoViews(view);
         tendersWithTasksRecyclerView = view.findViewById(R.id.tenders_with_tasks_recycler_view);
         tendersColRef = db.collection("tenders");
         tenderArrayList = new ArrayList<>();
@@ -85,6 +85,28 @@ public class TendersWithTasksFragment extends Fragment {
         updateContent();
 
         return view;
+    }
+
+    private void setupInfoViews(View view) {
+        infoTextView = view.findViewById(R.id.tenders_with_tasks_info_text_view);
+        infoTextView.setVisibility(View.GONE);
+        infoTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                infoTextView.setVisibility(View.GONE);
+                updateContent();
+            }
+        });
+        searchInfoTextView = view.findViewById(R.id.tenders_with_tasks_search_info_text_view);
+        searchInfoTextView.setVisibility(View.GONE);
+        searchInfoTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchInfoTextView.setVisibility(View.GONE);
+                updateContent();
+            }
+        });
+
     }
 
     private void updateContent() {
@@ -261,6 +283,8 @@ public class TendersWithTasksFragment extends Fragment {
                 if (data != null) {
                     tenderArrayList.clear();
                     tenderArrayList.addAll(data.<Tender>getParcelableArrayListExtra("tenders"));
+                    searchInfoTextView.setVisibility(View.VISIBLE);
+                    searchInfoTextView.setText(getString(R.string.search) + ": " + data.getStringExtra("search_word"));
                     adapter.notifyDataSetChanged();
                 }
             }

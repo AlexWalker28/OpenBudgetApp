@@ -25,6 +25,7 @@ public class FilterOptionsActivity extends AppCompatActivity {
 
     private static final String TAG  = FilterOptionsActivity.class.getSimpleName();
     private TendersDatabaseDao databaseDao;
+    private String searchWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,11 @@ public class FilterOptionsActivity extends AppCompatActivity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String word = searchEditText.getText().toString();
-                if (word.length() < 1) {
+                searchWord = searchEditText.getText().toString();
+                if (searchWord.length() < 1) {
                     Toast.makeText(FilterOptionsActivity.this, getString(R.string.enter_words), Toast.LENGTH_SHORT).show();
                 } else {
-                    new GetTenderAsyncTask().execute(word + "," + word);
+                    new GetTenderAsyncTask().execute(searchWord + "," + searchWord);
                 }
             }
         });
@@ -65,6 +66,7 @@ public class FilterOptionsActivity extends AppCompatActivity {
         protected void onPostExecute(List<Tender> tenders) {
             Intent data = new Intent();
             data.putParcelableArrayListExtra("tenders", new ArrayList<Parcelable>(tenders));
+            data.putExtra("search_word", searchWord);
             setResult(RESULT_OK, data);
             finish();
         }

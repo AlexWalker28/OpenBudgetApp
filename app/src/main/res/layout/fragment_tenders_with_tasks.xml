@@ -25,6 +25,20 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/filter_by_work_presence" />
 
+        <TextView
+            android:id="@+id/tenders_with_tasks_search_info_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="@style/FirebaseUI.Text.BodyText"
+            android:padding="8dp"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Lorem ipsum" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tenders_with_tasks_recycler_view"
             android:layout_width="match_parent"
