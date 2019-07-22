@@ -41,9 +41,43 @@ public interface TendersDatabaseDao {
 
     @Query("SELECT * FROM tenders_table " +
             "WHERE " +
-            "procurement_object LIKE '%' || :procurementObject || '%' OR " +
+            "procurement_object LIKE '%' || :procurementObject || '%' AND " +
+            "procuring_entity LIKE '%' || :procuringEntity || '%' AND " +
+            "region LIKE '%' || :region || '%'")
+    List<Tender> getTenders(String procurementObject, String procuringEntity, String region);
+
+    @Query("SELECT * FROM tenders_table " +
+            "WHERE " +
+            "procurement_object LIKE '%' || :procurementObject || '%' AND " +
             "procuring_entity LIKE '%' || :procuringEntity || '%'")
-    List<Tender> getTenders(String procurementObject, String procuringEntity);
+    List<Tender> getTendersObjEnt(String procurementObject, String procuringEntity);
+
+    @Query("SELECT * FROM tenders_table " +
+            "WHERE " +
+            "procurement_object LIKE '%' || :procurementObject || '%' AND " +
+            "region LIKE '%' || :region || '%'")
+    List<Tender> getTendersObjReg(String procurementObject, String region);
+
+    @Query("SELECT * FROM tenders_table " +
+            "WHERE " +
+            "procurement_object LIKE '%' || :procurementObject || '%'")
+    List<Tender> getTendersObj(String procurementObject);
+
+    @Query("SELECT * FROM tenders_table " +
+            "WHERE " +
+            "procuring_entity LIKE '%' || :procuringEntity || '%' AND " +
+            "region LIKE '%' || :region || '%'")
+    List<Tender> getTendersEntReg(String procuringEntity, String region);
+
+    @Query("SELECT * FROM tenders_table " +
+            "WHERE " +
+            "procuring_entity LIKE '%' || :procuringEntity || '%'")
+    List<Tender> getTendersEnt(String procuringEntity);
+
+    @Query("SELECT * FROM tenders_table " +
+            "WHERE " +
+            "region LIKE '%' || :region || '%'")
+    List<Tender> getTendersReg(String region);
 
     @Query("DELETE FROM tenders_table")
     void clearTendersTable();

@@ -61,4 +61,7 @@
     <string name="tenders_with_work">Тендеры с работами</string>
     <string name="search_tenders_with_tasks">Тендеры с заданиями</string>
     <string name="enter_words">Введите слово для поиска</string>
+    <string name="region">Регион</string>
+    <string name="procuring_entity">Закупающая организация</string>
+    <string name="procurement_object">Закупка</string>
 </resources>
